@@ -8,7 +8,7 @@ import { reducers, metaReducers } from "./reducers";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { EffectsModule } from "@ngrx/effects";
-import { CoreModule } from './core/core/core.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   imports: [
