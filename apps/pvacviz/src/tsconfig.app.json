@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc/apps/pvacviz",
     "module": "es2015"
+
   },
   "include": [
     "**/*.ts"
