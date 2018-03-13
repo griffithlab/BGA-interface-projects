@@ -8,6 +8,7 @@ import { reducers, metaReducers } from "./reducers";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { EffectsModule } from "@ngrx/effects";
+import { ClarityModule } from '@clr/angular';
 import { CoreModule } from './core/core.module';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { CoreModule } from './core/core.module';
 
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
+    ClarityModule.forRoot(),
     CoreModule.forRoot()
   ],
   bootstrap: [AppComponent],
