@@ -3,7 +3,7 @@
     <div class="branding">
       <a class="nav-link">
         <clr-icon shape="storage"></clr-icon>
-        <span class="title">My Apps</span>
+        <span class="title">pVACviz</span>
       </a>
     </div>
     <div class="header-nav">
@@ -22,18 +22,6 @@
       <a class=" nav-link nav-icon" routerLink='/admin/packages' routerLinkActive='active'>
         <clr-icon shape="archive"></clr-icon>
       </a>
-    </div>
-    <div class="header-actions">
-      <clr-dropdown class="dropdown bottom-right">
-        <button class="nav-text" clrDropdownToggle>
-          {{ fullname }}
-          <clr-icon shape="caret down"></clr-icon>
-        </button>
-        <div class="dropdown-menu">
-          <a href="javascript://" clrDropdownItem>Preferences</a>
-          <a (click)="logout()" clrDropdownItem>Log out</a>
-        </div>
-      </clr-dropdown>
     </div>
   </clr-header>
 
