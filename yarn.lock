@@ -208,15 +208,15 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
-"@nrwl/nx@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx/-/nx-0.9.0.tgz#5af5421e2a000066f4ce3d4039d1a1bdbd9e5c96"
+"@nrwl/nx@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx/-/nx-0.9.1.tgz#1b7b0c71254aae7cd32ef53de523b5b1369b5395"
   dependencies:
     jasmine-marbles "0.2.0"
 
-"@nrwl/schematics@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@nrwl/schematics/-/schematics-0.9.0.tgz#c292f8cf98039bff23e58075e1bb5cd877c012bf"
+"@nrwl/schematics@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/schematics/-/schematics-0.9.1.tgz#e1cb3836eb92a794de73a627789f0109b685ba13"
   dependencies:
     app-root-path "^2.0.1"
     semver "5.4.1"
@@ -1728,6 +1728,10 @@ deep-equal@^1.0.1:
 deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
+
+deep-freeze-strict@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/deep-freeze-strict/-/deep-freeze-strict-1.1.1.tgz#77d0583ca24a69be4bbd9ac2fae415d55523e5b0"
 
 deep-is@~0.1.3:
   version "0.1.3"
@@ -4348,6 +4352,12 @@ neo-async@^2.5.0:
 netmask@~1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
+
+ngrx-store-freeze@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/ngrx-store-freeze/-/ngrx-store-freeze-0.2.1.tgz#04fb29db33cafda0f2d6ea32adeaac4891b1b27b"
+  dependencies:
+    deep-freeze-strict "^1.1.1"
 
 no-case@^2.2.0:
   version "2.3.2"

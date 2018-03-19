@@ -19,6 +19,7 @@ import { ProcessesPageComponent } from './containers/processes-page/processes-pa
      * the existing state.
      */
     StoreModule.forFeature('processes', fromProcesses.reducer),
+
     /**
      * Effects.forFeature is used to register effects
      * from feature modules. Effects can be loaded
