@@ -17,15 +17,17 @@ import { NxModule } from "@nrwl/nx";
 // pvacviz
 import { CustomRouterStateSerializer } from './shared/utilities';
 import { environment } from "../environments/environment";
-import { reducers, metaReducers } from "./reducers";
 import { CoreModule } from './core/core.module';
 import { AppComponent } from "./core/containers/app/app.component";
+
+import { reducers, metaReducers } from "./reducers";
+import { routes } from './routes';
 
 @NgModule({
   imports: [
     BrowserModule,
     NxModule.forRoot(),
-    RouterModule.forRoot([], { initialNavigation: "enabled" }),
+    RouterModule.forRoot(routes, { initialNavigation: "enabled" }),
 
     /**
      * Store devtools instrument the store retaining past versions of state
