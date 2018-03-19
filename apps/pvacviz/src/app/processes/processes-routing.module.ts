@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
 const routes: Routes = [
   // { path: 'find', component: FindBookPageComponent },
   // {
@@ -8,7 +8,7 @@ const routes: Routes = [
   //   component: ViewBookPageComponent,
   //   canActivate: [BookExistsGuard],
   // },
-  { path: '', component: CollectionPageComponent },
+  { path: '', component: ProcessesPageComponent },
 ];
 
 @NgModule({

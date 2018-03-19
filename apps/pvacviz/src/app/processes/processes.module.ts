@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import * as fromProcesses from './reducers/processes.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProcessesEffects } from './effects/processes.effects';
+import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,6 @@ import { ProcessesEffects } from './effects/processes.effects';
      */
     EffectsModule.forFeature([ProcessesEffects])
   ],
-  declarations: []
+  declarations: [ProcessesPageComponent]
 })
 export class ProcessesModule { }
