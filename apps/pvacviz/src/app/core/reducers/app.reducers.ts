@@ -1,11 +1,11 @@
 import { LayoutActionTypes, LayoutActions } from '../actions/app.actions';
 
 export interface State {
-  showSidenav: boolean;
+  collapsed: boolean;
 }
 
 const initialState: State = {
-  showSidenav: false,
+  collapsed: false,
 };
 
 export function reducer(
@@ -13,14 +13,14 @@ export function reducer(
   action: LayoutActions
 ): State {
   switch (action.type) {
-    case LayoutActionTypes.CloseSidenav:
+    case LayoutActionTypes.CollapseSideNav:
       return {
-        showSidenav: false,
+        collapsed: false,
       };
 
     case LayoutActionTypes.OpenSidenav:
       return {
-        showSidenav: true,
+        collapsed: true,
       };
 
     default:
@@ -28,4 +28,4 @@ export function reducer(
   }
 }
 
-export const getShowSidenav = (state: State) => state.showSidenav;
+export const getCollapsed = (state: State) => state.collapsed;

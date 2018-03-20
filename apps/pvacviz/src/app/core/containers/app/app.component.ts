@@ -14,7 +14,7 @@ import * as app from '../../actions/app.actions';
 export class AppComponent implements OnInit {
   collapsible: boolean = true;
   collapsed: boolean = true;
-  showSidenav$: Observable<boolean>;
+  collapsed$: Observable<boolean>;
 
   ngOnInit() {
   }
@@ -25,17 +25,17 @@ export class AppComponent implements OnInit {
      * Selectors can be applied with the `select` operator which passes the state
      * tree to the provided selector
      */
-    this.showSidenav$ = this.store.pipe(select(fromRoot.getShowSidenav));
+    this.collapsed$ = this.store.pipe(select(fromRoot.getCollapsed));
   }
 
-  closeSidenav() {
+  collapseSideNav() {
     /**
      * All state updates are handled through dispatched actions in 'container'
      * components. This provides a clear, reproducible history of state
      * updates and user interaction through the life of our
      * application.
      */
-    this.store.dispatch(new app.CloseSidenav());
+    this.store.dispatch(new app.CollapseSideNav());
   }
 
   openSidenav() {

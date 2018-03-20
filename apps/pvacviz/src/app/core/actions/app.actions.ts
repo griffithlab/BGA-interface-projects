@@ -2,15 +2,15 @@ import { Action } from '@ngrx/store';
 
 export enum LayoutActionTypes {
   OpenSidenav = '[App] Open Sidenav',
-  CloseSidenav = '[App] Close Sidenav',
+  CollapseSideNav = '[App] Close Sidenav',
 }
 
 export class OpenSidenav implements Action {
   readonly type = LayoutActionTypes.OpenSidenav;
 }
 
-export class CloseSidenav implements Action {
-  readonly type = LayoutActionTypes.CloseSidenav;
+export class CollapseSideNav implements Action {
+  readonly type = LayoutActionTypes.CollapseSideNav;
 }
 
-export type LayoutActions = OpenSidenav | CloseSidenav;
+export type LayoutActions = OpenSidenav | CollapseSideNav;

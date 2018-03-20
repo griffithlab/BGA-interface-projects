@@ -67,7 +67,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
  */
 export const getLayoutState = createFeatureSelector<fromApp.State>('layout');
 
-export const getShowSidenav = createSelector(
+export const getCollapsed = createSelector(
   getLayoutState,
-  fromApp.getShowSidenav
+  fromApp.getCollapsed
 );
