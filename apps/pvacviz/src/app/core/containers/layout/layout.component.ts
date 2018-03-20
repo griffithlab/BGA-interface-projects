@@ -4,26 +4,26 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import * as fromRoot from '../../../reducers';
-import * as app from '../../actions/app.actions';
+import * as layout from '../../actions/layout.actions';
 
 @Component({
-  selector: 'pvz-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'pvz-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss']
 })
-export class AppComponent {
+export class LayoutComponent {
   collapsible: boolean = true;
   collapsed$: Observable<boolean>;
 
   constructor(private store: Store<fromRoot.State>) {
     /**
-     * Selectors can be applied with the `select` operator which passes the state
+     * Selectors can be layoutlied with the `select` operator which passes the state
      * tree to the provided selector
      */
     this.collapsed$ = this.store.pipe(select(fromRoot.getCollapsed));
   }
 
   collapseChange($event) {
-    $event ? this.store.dispatch(new app.CollapseSidenav()) : this.store.dispatch(new app.OpenSidenav());
+    $event ? this.store.dispatch(new layout.CollapseSidenav()) : this.store.dispatch(new layout.OpenSidenav());
   }
 }

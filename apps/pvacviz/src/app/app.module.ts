@@ -18,7 +18,7 @@ import { NxModule } from "@nrwl/nx";
 import { CustomRouterStateSerializer } from './shared/utilities';
 import { environment } from "../environments/environment";
 import { CoreModule } from './core/core.module';
-import { AppComponent } from "./core/containers/app/app.component";
+import { LayoutComponent } from "./core/containers/layout/layout.component";
 
 import { reducers, metaReducers } from "./reducers";
 import { routes } from './routes';
@@ -82,6 +82,6 @@ import { routes } from './routes';
      */
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [LayoutComponent],
 })
 export class AppModule { }

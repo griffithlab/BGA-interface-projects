@@ -1,4 +1,4 @@
-import { LayoutActionTypes, LayoutActions } from '../actions/app.actions';
+import { LayoutActionTypes, LayoutActions } from '../actions/layout.actions';
 
 export interface State {
   collapsed: boolean;
