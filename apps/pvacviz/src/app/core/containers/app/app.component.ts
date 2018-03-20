@@ -11,14 +11,9 @@ import * as app from '../../actions/app.actions';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   collapsible: boolean = true;
-  collapsed: boolean = true;
   collapsed$: Observable<boolean>;
-
-  ngOnInit() {
-  }
-
 
   constructor(private store: Store<fromRoot.State>) {
     /**
@@ -28,17 +23,7 @@ export class AppComponent implements OnInit {
     this.collapsed$ = this.store.pipe(select(fromRoot.getCollapsed));
   }
 
-  collapseSideNav() {
-    /**
-     * All state updates are handled through dispatched actions in 'container'
-     * components. This provides a clear, reproducible history of state
-     * updates and user interaction through the life of our
-     * application.
-     */
-    this.store.dispatch(new app.CollapseSideNav());
-  }
-
-  openSidenav() {
-    this.store.dispatch(new app.OpenSidenav());
+  collapseChange($event) {
+    $event ? this.store.dispatch(new app.CollapseSidenav()) : this.store.dispatch(new app.OpenSidenav());
   }
 }

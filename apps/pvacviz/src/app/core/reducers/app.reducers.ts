@@ -5,7 +5,7 @@ export interface State {
 }
 
 const initialState: State = {
-  collapsed: false,
+  collapsed: true,
 };
 
 export function reducer(
@@ -13,14 +13,14 @@ export function reducer(
   action: LayoutActions
 ): State {
   switch (action.type) {
-    case LayoutActionTypes.CollapseSideNav:
+    case LayoutActionTypes.CollapseSidenav:
       return {
-        collapsed: false,
+        collapsed: true,
       };
 
     case LayoutActionTypes.OpenSidenav:
       return {
-        collapsed: true,
+        collapsed: false,
       };
 
     default:
