@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import * as fromRoot from '../../../reducers';
+import * as app from '../../actions/app.actions';
 
 @Component({
   selector: 'pvz-app',
@@ -9,11 +14,31 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   collapsible: boolean = true;
   collapsed: boolean = true;
-
-  constructor(private router: Router) {
-  }
+  showSidenav$: Observable<boolean>;
 
   ngOnInit() {
   }
 
+
+  constructor(private store: Store<fromRoot.State>) {
+    /**
+     * Selectors can be applied with the `select` operator which passes the state
+     * tree to the provided selector
+     */
+    this.showSidenav$ = this.store.pipe(select(fromRoot.getShowSidenav));
+  }
+
+  closeSidenav() {
+    /**
+     * All state updates are handled through dispatched actions in 'container'
+     * components. This provides a clear, reproducible history of state
+     * updates and user interaction through the life of our
+     * application.
+     */
+    this.store.dispatch(new app.CloseSidenav());
+  }
+
+  openSidenav() {
+    this.store.dispatch(new app.OpenSidenav());
+  }
 }
