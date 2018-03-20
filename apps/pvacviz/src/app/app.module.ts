@@ -2,6 +2,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // @ngrx
 import { StoreModule } from "@ngrx/store";
@@ -16,6 +17,7 @@ import { NxModule } from "@nrwl/nx";
 
 // pvacviz
 import { CustomRouterStateSerializer } from './shared/utilities';
+import { NetworkLoggerService } from './shared/networkLogger.service';
 import { environment } from "../environments/environment";
 import { CoreModule } from './core/core.module';
 import { LayoutComponent } from "./core/containers/layout/layout.component";
@@ -72,7 +74,7 @@ import { routes } from './routes';
      * See: https://github.com/ngrx/platform/blob/master/docs/effects/api.md#forroot
      */
     EffectsModule.forRoot([]),
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
   ],
   providers: [
     /**
@@ -81,6 +83,15 @@ import { routes } from './routes';
      * by `@ngrx/router-store` to include only the desired pieces of the snapshot.
      */
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+    /**
+     * Log HTTP activity to console if in not in production mode
+     */
+    !environment.production ? NetworkLoggerService : [],
+    !environment.production ? {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkLoggerService,
+      multi: true,
+    } : [],
   ],
   bootstrap: [LayoutComponent],
 })
