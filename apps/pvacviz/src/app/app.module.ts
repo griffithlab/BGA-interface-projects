@@ -13,6 +13,7 @@ import {
   RouterStateSerializer,
 } from '@ngrx/router-store';
 
+// nrwl
 import { NxModule } from "@nrwl/nx";
 
 // pvacviz
@@ -82,7 +83,8 @@ import { routes } from './routes';
      * A custom RouterStateSerializer is used to parse the `RouterStateSnapshot` provided
      * by `@ngrx/router-store` to include only the desired pieces of the snapshot.
      */
-    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+    { provide: RouterStateSerializer,
+      useClass: CustomRouterStateSerializer },
     /**
      * Log HTTP activity to console if in not in production mode
      */
@@ -90,8 +92,7 @@ import { routes } from './routes';
     !environment.production ? {
       provide: HTTP_INTERCEPTORS,
       useClass: NetworkLoggerService,
-      multi: true,
-    } : [],
+      multi: true } : [],
   ],
   bootstrap: [LayoutComponent],
 })
