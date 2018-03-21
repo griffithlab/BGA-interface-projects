@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { ProcessesActions, ProcessesActionTypes } from '../actions/processes.actions';
+import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
 
 @Injectable()
 export class ProcessesEffects {
 
   @Effect()
-  effect$ = this.actions$.ofType(ProcessesActionTypes.ProcessesAction);
+  effect$ = this.actions$.ofType(ProcessActionTypes.Load);
 
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions) { }
 }
