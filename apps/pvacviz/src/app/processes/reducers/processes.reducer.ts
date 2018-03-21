@@ -3,6 +3,10 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Process } from '../models/process.model';
 import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
 
+import {
+  ProcessCollectionActions,
+  ProcessCollectionActionTypes,
+} from '../actions/process-collection.actions';
 export interface State {
 
 }

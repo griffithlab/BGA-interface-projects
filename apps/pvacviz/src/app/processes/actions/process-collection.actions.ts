@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 import { Process } from '../models/process.model';
 
-export enum ProcessActionTypes {
-  Load = '[Process] Load',
-  LoadSuccess = '[Process] Load Success',
-  LoadFail = '[Process] Load Fail',
+export enum ProcessCollectionActionTypes {
+  Load = '[Process Collection] Load',
+  LoadSuccess = '[Process Collection] Load Success',
+  LoadFail = '[Process Collection] Load Fail',
 }
 
 /**
@@ -14,27 +14,29 @@ export enum ProcessActionTypes {
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
  */
+/**
+ * Load Collection Actions
+ */
 export class Load implements Action {
-  readonly type = ProcessActionTypes.Load;
-
-  constructor(public id: number) { }
+  readonly type = ProcessCollectionActionTypes.Load;
 }
 
 export class LoadSuccess implements Action {
-  readonly type = ProcessActionTypes.LoadSuccess;
+  readonly type = ProcessCollectionActionTypes.LoadSuccess;
 
-  constructor(public payload: Process) { }
+  constructor(public payload: Process[]) { }
 }
 
 export class LoadFail implements Action {
-  readonly type = ProcessActionTypes.LoadFail;
+  readonly type = ProcessCollectionActionTypes.LoadFail;
 
   constructor(public payload: any) { }
 }
-
 
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
-export type ProcessActions = Load | LoadSuccess | LoadFail;
+export type ProcessCollectionActions = Load
+  | LoadSuccess
+  | LoadFail;
