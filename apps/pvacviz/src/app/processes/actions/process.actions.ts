@@ -5,6 +5,10 @@ export enum ProcessActionTypes {
   Load = '[Process] Load',
   LoadSuccess = '[Process] Load Success',
   LoadFail = '[Process] Load Fail',
+
+  LoadDetail = '[Process] Load Detail',
+  LoadDetailSuccess = '[Process] Load Detail Success',
+  LoadDetailFail = '[Process] Load Detail Fail',
 }
 
 /**
@@ -17,13 +21,13 @@ export enum ProcessActionTypes {
 export class Load implements Action {
   readonly type = ProcessActionTypes.Load;
 
-  constructor(public id: number) { }
+  constructor() { }
 }
 
 export class LoadSuccess implements Action {
   readonly type = ProcessActionTypes.LoadSuccess;
 
-  constructor(public payload: Process) { }
+  constructor(public payload: Process[]) { }
 }
 
 export class LoadFail implements Action {
