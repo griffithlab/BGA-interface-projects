@@ -3,7 +3,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
 
 @Injectable()
-export class ProcessesEffects {
+export class ProcessEffects {
 
   @Effect()
   effect$ = this.actions$.ofType(ProcessActionTypes.Load);

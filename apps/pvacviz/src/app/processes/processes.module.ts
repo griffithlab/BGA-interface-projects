@@ -5,7 +5,7 @@ import { ProcessesRoutingModule } from './processes-routing.module';
 import { StoreModule } from '@ngrx/store';
 import * as fromProcesses from './reducers/processes.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ProcessesEffects } from './effects/processes.effects';
+import { ProcessEffects } from './effects/process.effects';
 import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
 
 @NgModule({
@@ -28,7 +28,7 @@ import { ProcessesPageComponent } from './containers/processes-page/processes-pa
      * All Effects will only be instantiated once regardless of
      * whether they are registered once or multiple times.
      */
-    EffectsModule.forFeature([ProcessesEffects])
+    EffectsModule.forFeature([ProcessEffects])
   ],
   declarations: [ProcessesPageComponent]
 })
