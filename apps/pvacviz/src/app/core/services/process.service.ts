@@ -10,7 +10,7 @@ export class ProcessService {
 
   constructor(private http: HttpClient) { }
 
-  queryBooks(): Observable<Process[]> {
+  query(): Observable<Process[]> {
     return this.http
       .get<{ result: Process[] }>(`${this.API_PATH}`)
       .pipe(map(processes => processes.result || []));

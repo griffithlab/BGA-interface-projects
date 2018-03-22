@@ -28,6 +28,7 @@ import { routes } from './routes';
 
 @NgModule({
   imports: [
+    HttpClientModule,
     BrowserModule,
     NxModule.forRoot(),
     RouterModule.forRoot(routes, { initialNavigation: "enabled" }),

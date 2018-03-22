@@ -5,6 +5,8 @@ import { ClarityModule } from '@clr/angular';
 import { LayoutComponent } from './containers/layout/layout.component';
 import { NotFoundComponent } from './containers/not-found/not-found.component';
 
+import { ProcessService } from './services/process.service';
+
 export const COMPONENTS = [
   LayoutComponent,
   NotFoundComponent
@@ -16,6 +18,7 @@ export const COMPONENTS = [
     RouterModule,
     ClarityModule
   ],
+  providers: [ProcessService],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })
