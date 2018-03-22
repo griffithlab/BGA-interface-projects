@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { ProcessesRoutingModule } from './processes-routing.module';
 import { StoreModule } from '@ngrx/store';
-import * as fromProcesses from './reducers/processes.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ProcessEffects } from './effects/process.effects';
 import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
+
+import { reducers } from './reducers';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { ProcessesPageComponent } from './containers/processes-page/processes-pa
      * eagerly or lazily and will be dynamically added to
      * the existing state.
      */
-    StoreModule.forFeature('processes', fromProcesses.reducer),
+    StoreModule.forFeature('processes', reducers),
 
     /**
      * Effects.forFeature is used to register effects

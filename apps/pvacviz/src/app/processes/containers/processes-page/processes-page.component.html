@@ -1,3 +1,6 @@
-<h2>PROCESSES</h2>
-
-<p>Process table goes here.</p>
+<h5>Processes</h5>
+<ul>
+  <li *ngFor="let process of processes$ | async" >
+    <span>Id: {{process.id}} </span>
+  </li>
+</ul>
