@@ -6,7 +6,7 @@ import { Process } from '../../processes/models/process.model';
 
 @Injectable()
 export class ProcessService {
-  private API_PATH = 'localhost:4200/api/v1/processes';
+  private API_PATH = 'http://localhost:8080/api/v1/processes';
 
   constructor(private http: HttpClient) { }
 

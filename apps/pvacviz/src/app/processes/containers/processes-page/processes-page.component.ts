@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+// TODO: NgFofOf should have been imported along with CommonModule in process.module (?), figure out why it's required here
 import { NgForOf } from '@angular/common';
 
 import { Process } from '../../models/process.model';
