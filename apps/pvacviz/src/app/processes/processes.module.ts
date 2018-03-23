@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ClarityModule } from '@clr/angular';
 import { ProcessesRoutingModule } from './processes-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -12,6 +12,7 @@ import { reducers } from './reducers';
 @NgModule({
   imports: [
     CommonModule,
+    ClarityModule,
     ProcessesRoutingModule,
     /**
      * StoreModule.forFeature is used for composing state
