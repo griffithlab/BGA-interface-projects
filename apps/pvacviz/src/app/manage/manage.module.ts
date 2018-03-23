@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClarityModule } from '@clr/angular';
-import { ProcessesRoutingModule } from './processes-routing.module';
+import { ManageRoutingModule } from './manage-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ProcessEffects } from './effects/process.effects';
-import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
+import { ManagePageComponent } from './containers/manage-page/manage-page.component';
 
 import { reducers } from './reducers';
 
@@ -13,7 +13,7 @@ import { reducers } from './reducers';
   imports: [
     CommonModule,
     ClarityModule,
-    ProcessesRoutingModule,
+    ManageRoutingModule,
     /**
      * StoreModule.forFeature is used for composing state
      * from feature modules. These modules can be loaded
@@ -32,6 +32,6 @@ import { reducers } from './reducers';
      */
     EffectsModule.forFeature([ProcessEffects])
   ],
-  declarations: [ProcessesPageComponent]
+  declarations: [ManagePageComponent]
 })
-export class ProcessesModule { }
+export class ManageModule { }

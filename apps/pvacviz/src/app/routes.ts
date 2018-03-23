@@ -3,10 +3,10 @@ import { Routes } from '@angular/router';
 import { NotFoundComponent } from './core/containers/not-found/not-found.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/processes', pathMatch: 'full' },
+  { path: '', redirectTo: '/manage', pathMatch: 'full' },
   {
-    path: 'processes',
-    loadChildren: './processes/processes.module#ProcessesModule',
+    path: 'manage',
+    loadChildren: './manage/manage.module#ManageModule',
     // canActivate: [AuthGuard],
   },
   { path: '**', component: NotFoundComponent },

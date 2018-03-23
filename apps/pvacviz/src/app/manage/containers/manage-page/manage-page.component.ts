@@ -8,12 +8,12 @@ import * as processes from '../../actions/process.actions';
 import * as fromProcesses from '../../reducers';
 
 @Component({
-  selector: 'pvz-processes-page',
-  templateUrl: './processes-page.component.html',
-  styleUrls: ['./processes-page.component.scss'],
+  selector: 'pvz-manage-page',
+  templateUrl: './manage-page.component.html',
+  styleUrls: ['./manage-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProcessesPageComponent implements OnInit {
+export class ManagePageComponent implements OnInit {
 
   processes$: Observable<Process[]>;
 

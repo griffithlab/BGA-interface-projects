@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { Process } from '../../processes/models/process.model';
+import { Process } from '../../manage/models/process.model';
 
 @Injectable()
 export class ProcessService {

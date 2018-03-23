@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProcessesPageComponent } from './containers/processes-page/processes-page.component';
+import { ManagePageComponent } from './containers/manage-page/manage-page.component';
 const routes: Routes = [
   // { path: 'find', component: FindBookPageComponent },
   // {
@@ -8,11 +8,11 @@ const routes: Routes = [
   //   component: ViewBookPageComponent,
   //   canActivate: [BookExistsGuard],
   // },
-  { path: '', component: ProcessesPageComponent },
+  { path: '', component: ManagePageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProcessesRoutingModule { }
+export class ManageRoutingModule { }
