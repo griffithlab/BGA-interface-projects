@@ -15,5 +15,9 @@ export const routes: Routes = [
     path: 'review',
     loadChildren: './review/review.module#ReviewModule',
   },
+  {
+    path: 'visualize',
+    loadChildren: './visualize/visualize.module#VisualizeModule',
+  },
   { path: '**', component: NotFoundComponent },
 ];
