@@ -2,12 +2,11 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc/apps/pvacviz",
-    "module": "es2015"
-
+    "module": "es2015",
+    "experimentalDecorators": true
   },
   "include": [
     "**/*.ts"
-    /* add all lazy-loaded libraries here: "../../../libs/my-lib/index.ts" */
   ],
   "exclude": [
     "**/*.spec.ts"

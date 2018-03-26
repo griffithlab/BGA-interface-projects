@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ManagePageComponent } from './containers/manage-page/manage-page.component';
+import { ReviewPageComponent } from './containers/review-page/review-page.component';
+
 const routes: Routes = [
-  { path: '', component: ManagePageComponent },
+  { path: '', component: ReviewPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ManageRoutingModule { }
+
+export class ReviewRoutingModule { }
