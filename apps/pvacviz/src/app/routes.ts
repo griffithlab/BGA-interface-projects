@@ -11,5 +11,9 @@ export const routes: Routes = [
     path: 'manage',
     loadChildren: './manage/manage.module#ManageModule',
   },
+  {
+    path: 'review',
+    loadChildren: './review/review.module#ReviewModule',
+  },
   { path: '**', component: NotFoundComponent },
 ];
