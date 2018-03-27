@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { Process } from '../../manage/models/process.model';
+import { Process } from '../../core/models/process.model';
+import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 @Injectable()
 export class ProcessService {
@@ -16,20 +17,19 @@ export class ProcessService {
       .pipe(map(processes => processes.result || []));
   }
 
-  // start(processParameters: any): Observable<any> {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json'
-  //     })
-  //   }
-  //   const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+  start(processParameters: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
 
-  //   return this.http.post<number>(`${this.API_PATH}/staging`, processParameters, httpOptions)
-  //     .pipe((response: Response) => {
-  //       console.log(response);
-  //       return JSON.parse(response['_body']) as number;
-  //     });
-  // }
+    return this.http.post<Observable<ApiStartResponse>>(`${this.API_PATH}/staging`, processParameters, httpOptions)
+      .pipe((response) => {
+        console.log(response);
+        return JSON.parse(response['_body']) as Observable<ApiStartResponse>;
+      });
+  }
 
   // archive(id: number): Observable<string> {
   //   return this.http.get(`${this.api}/archive/${id}`)

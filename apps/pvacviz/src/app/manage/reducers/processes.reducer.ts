@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Process } from '../models/process.model';
+import { Process } from '../../core/models/process.model';
 import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
 
 /**

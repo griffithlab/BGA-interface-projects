@@ -17,7 +17,7 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { Process } from '../models/process.model';
+import { Process } from '../../core/models/process.model';
 import { ProcessService } from '../../core/services/process.service';
 import {
   ProcessActionTypes,
@@ -59,4 +59,3 @@ export class ProcessEffects {
   );
 
 }
-
