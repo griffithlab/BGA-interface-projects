@@ -4,7 +4,7 @@ import { ClarityModule } from '@clr/angular';
 import { ManageRoutingModule } from './manage-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { ProcessEffects } from './effects/process.effects';
+import { ProcessEffects } from './effects/manage.effects';
 import { ManagePageComponent } from './containers/manage-page/manage-page.component';
 
 import { reducers } from './reducers';

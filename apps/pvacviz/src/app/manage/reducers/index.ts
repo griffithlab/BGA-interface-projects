@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromProcesses from './processes.reducer';
+import * as fromProcesses from './manage.reducer';
 import * as fromRoot from '../../reducers';
 
 export interface ProcessesState {

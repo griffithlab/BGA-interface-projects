@@ -7,6 +7,7 @@ import chain from 'lodash/chain';
 import first from 'lodash/first';
 
 import { ApiInputResponse } from '../../core/models/api-responses.model';
+import { File } from '../../core/models/file.model';
 
 @Injectable()
 export class InputService {
