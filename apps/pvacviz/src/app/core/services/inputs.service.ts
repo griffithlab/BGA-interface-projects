@@ -20,7 +20,7 @@ export class InputService {
 
     function parseResponse(res: Response): ApiInputResponse {
       return _.map(res, f => f as File)
-        .filter(f => _.first(f.display_name) !== '.');
+        .filter(f => _.first(f.display_name) !== '.'); // filter out invisible files
     }
   }
 }
