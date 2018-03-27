@@ -2,3 +2,25 @@
 <pre>
 {{inputs$ | async | json}}
 </pre>
+
+<form (formGroup)="startForm" (ngSubmit)="onSubmit(startForm.value)" class="compact"
+  enctype="application/x-www-form-urlencoded">
+
+  <div class="form-group row">
+    <label for="vcfDropdown" class="col-sm-3 col-form-label">*Input VCF</label>
+    <div class="col-sm-4">
+      <p-dropdown [options]="inputs$ | async"
+        [formControl]="startForm.controls['input']"
+        placeholder="Select Input VCF"
+        id="vcfDropdown">
+      </p-dropdown>
+      <small class="form-text text-danger"
+        *ngIf="!startForm.controls['input'].valid&&startForm.controls['input'].dirty">
+        Input VCF is required.
+      </small>
+    </div>
+    <div class="col-sm-5 col-form-help">
+      <p>VCF Input file</p>
+    </div>
+  </div>
+</form>

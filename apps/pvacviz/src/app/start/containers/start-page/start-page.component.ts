@@ -23,12 +23,10 @@ import * as fromStart from '../../reducers';
 })
 
 export class StartPageComponent implements OnInit {
-  // inputs$: Observable<Files>;
-  inputs$: Observable<any>;
+  inputs$: Observable<Files>;
 
   constructor(private store: Store<fromStart.State>) {
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
-    // .map((fileMap) => fileMap);
   }
 
   ngOnInit() {
