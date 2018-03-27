@@ -4,10 +4,11 @@ import { ClarityModule } from '@clr/angular';
 import { StartRoutingModule } from './start-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StartEffects } from './effects/start.effects';
-import { StartPageComponent } from './containers/start-page/start-page.component';
 
+import { StartEffects } from './effects/start.effects';
 import { reducers } from './reducers';
+
+import { StartPageComponent } from './containers/start-page/start-page.component';
 
 @NgModule({
   imports: [

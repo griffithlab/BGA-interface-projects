@@ -27,11 +27,12 @@ export class StartPageComponent implements OnInit {
   inputs$: Observable<any>;
 
   constructor(private store: Store<fromStart.State>) {
-    this.inputs$ = store.pipe(select(fromStart.getAllInputs))
-      .map((fileMap) => fileMap);
+    this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    // .map((fileMap) => fileMap);
   }
 
   ngOnInit() {
+    this.store.dispatch(new fromStartActions.LoadInputs());
   }
 
 }
