@@ -17,18 +17,20 @@ export class ProcessService {
       .pipe(map(processes => processes.result || []));
   }
 
-  start(processParameters: any): Observable<any> {
+  start(processParameters: any): Observable<ApiStartResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     }
 
-    return this.http.post<Observable<ApiStartResponse>>(`${this.API_PATH}/staging`, processParameters, httpOptions)
-      .pipe((response) => {
-        console.log(response);
-        return JSON.parse(response['_body']) as Observable<ApiStartResponse>;
-      });
+    return this.http.post(`${this.API_PATH}/staging`, processParameters, httpOptions)
+      .map(parseResponse);
+
+    function parseResponse(res: Response): ApiStartResponse {
+      console.log(res);
+      return JSON.parse(res['_body']) as ApiStartResponse;
+    }
   }
 
   // archive(id: number): Observable<string> {
