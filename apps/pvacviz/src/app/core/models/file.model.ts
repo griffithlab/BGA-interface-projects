@@ -7,3 +7,5 @@ export interface File {
   readonly rows?: number;
   readonly size?: number;
 }
+
+export interface Files extends Array<File> { };

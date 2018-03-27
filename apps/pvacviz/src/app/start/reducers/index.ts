@@ -1,17 +1,17 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromManage from './manage.reducer';
+import * as fromStart from './start.reducer';
 import * as fromRoot from '../../reducers';
 
-export interface ManageState {
-  processes: fromManage.State;
+export interface StartState {
+  inputs: fromStart.State;
 }
 
 export interface State extends fromRoot.State {
-  processes: ManageState;
+  inputs: StartState;
 }
 
 export const reducers = {
-  processes: fromManage.reducer
+  inputs: fromStart.reducer
 }
 
 
@@ -35,7 +35,7 @@ export const reducers = {
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
-export const getManageState = createFeatureSelector<ManageState>('processes');
+export const getStartState = createFeatureSelector<StartState>('start');
 
 /**
  * Every reducer module exports selector functions, however child reducers
@@ -46,9 +46,9 @@ export const getManageState = createFeatureSelector<ManageState>('processes');
  * only recompute when arguments change. The created selectors can also be composed
  * together to select different pieces of state.
  */
-export const getProcessEntitiesState = createSelector(
-  getManageState,
-  state => state.processes
+export const getInputsState = createSelector(
+  getStartState,
+  state => state.inputs
 );
 
 /**
@@ -60,6 +60,6 @@ export const getProcessEntitiesState = createSelector(
  * in selecting records from the entity state.
  */
 export const {
-  selectEntities: getProcesses,
-  selectAll: getAllProcesses,
-} = fromManage.adapter.getSelectors(getProcessEntitiesState);
+  selectEntities: getInputs,
+  selectAll: getAllInputs,
+} = fromStart.adapter.getSelectors(getInputsState);

@@ -2,13 +2,13 @@ import { Action } from '@ngrx/store';
 import { Process } from '../../core/models/process.model';
 
 export enum ManageActionTypes {
-  Load = '[Process] Load',
-  LoadSuccess = '[Process] Load Success',
-  LoadFail = '[Process] Load Fail',
+  Load = '[Manage] Load Processes',
+  LoadSuccess = '[Manage] Load Processes Success',
+  LoadFail = '[Manage] Load Processes Fail',
 
-  LoadDetail = '[Process] Load Detail',
-  LoadDetailSuccess = '[Process] Load Detail Success',
-  LoadDetailFail = '[Process] Load Detail Fail',
+  LoadDetail = '[Manage] Load Process Detail',
+  LoadDetailSuccess = '[Manage] Load Process Detail Success',
+  LoadDetailFail = '[Manage] Load Process Detail Fail',
 }
 
 /**
