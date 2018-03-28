@@ -6,7 +6,7 @@
       <label for="inputVcf">Input VCF</label>
       <div class="select">
         <select id="inputVcf" name="inputVcf" formControlName="input">
-          <option value="Default">Please select input VCF file</option>
+          <option value="null">Please select input VCF file</option>
           <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
         </select>
       </div>
