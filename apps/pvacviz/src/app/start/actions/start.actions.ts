@@ -1,10 +1,15 @@
 import { Action } from '@ngrx/store';
 import { File, Files } from '../../core/models/file.model';
-
+import { ProcessParameters } from '../../core/models/process-parameters.model';
+import { ApiStartResponse } from '../../core/models/api-responses.model';
 export enum StartActionTypes {
   LoadInputs = '[Start] Load Inputs',
   LoadInputsSuccess = '[Start] Load Inputs Success',
   LoadInputsFail = '[Start] Load Inputs Fail',
+
+  StartProcess = '[Start] Start Process',
+  StartProcessSuccess = '[Start] Start Process Success',
+  StartProcessFail = '[Start] Start Process Fail'
 }
 
 /**
@@ -32,7 +37,23 @@ export class LoadInputsFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class StartProcess implements Action {
+  readonly type = StartActionTypes.StartProcess;
 
+  constructor(public payload: ProcessParameters) { }
+}
+
+export class StartProcessSuccess implements Action {
+  readonly type = StartActionTypes.StartProcessSuccess;
+
+  constructor(public payload: number) { }
+}
+
+export class StartProcessFail implements Action {
+  readonly type = StartActionTypes.StartProcessFail;
+
+  constructor(public payload: any) { }
+}
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
