@@ -86,8 +86,9 @@ export class StartPageComponent implements OnInit {
     this.store.dispatch(new fromStartActions.LoadInputs());
   }
 
-  onSubmit(): void {
-    console.log('startForm onSubmit() called.');
+  onSubmit(startParameters): void {
+    console.log('startForm onSubmit() called; Parameters:');
+    console.log(startParameters);
     // this.store.dispatch(new fromStartActions.({ id: 'start-form', parameters: form }));
   }
 }
