@@ -1,26 +1,17 @@
-<h5>Inputs:</h5>
-<pre>
-{{inputs$ | async | json}}
-</pre>
-
-<form (formGroup)="startForm" (ngSubmit)="onSubmit(startForm.value)" class="compact"
-  enctype="application/x-www-form-urlencoded">
-
-  <div class="form-group row">
-    <label for="vcfDropdown" class="col-sm-3 col-form-label">*Input VCF</label>
-    <div class="col-sm-4">
-      <p-dropdown [options]="inputs$ | async"
-        [formControl]="startForm.controls['input']"
-        placeholder="Select Input VCF"
-        id="vcfDropdown">
-      </p-dropdown>
-      <small class="form-text text-danger"
-        *ngIf="!startForm.controls['input'].valid&&startForm.controls['input'].dirty">
-        Input VCF is required.
-      </small>
+<h3>Start Process</h3>
+<form class="form" [formGroup]="startForm" (ngSubmit)="onSubmit()">
+  <section class="form-block">
+    <label>Inputs, Alleles, and Algorithms</label>
+    <div class="form-group">
+      <label for="inputVcf">Input VCF</label>
+      <div class="select">
+        <select id="inputVcf" name="inputVcf" formControlName="input">
+          <option value="Default">Please select input VCF file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
     </div>
-    <div class="col-sm-5 col-form-help">
-      <p>VCF Input file</p>
-    </div>
-  </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="startForm.invalid">Add</button>
+  </section>
 </form>

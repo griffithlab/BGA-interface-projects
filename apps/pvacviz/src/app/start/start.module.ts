@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ClarityModule } from '@clr/angular';
-import { StartRoutingModule } from './start-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+import { ClarityModule } from '@clr/angular';
+
+import { StartRoutingModule } from './start-routing.module';
 import { StartEffects } from './effects/start.effects';
 import { reducers } from './reducers';
 
@@ -13,6 +16,8 @@ import { StartPageComponent } from './containers/start-page/start-page.component
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     ClarityModule,
     StartRoutingModule,
     /**
