@@ -19,12 +19,16 @@ import {
 
 import { File, Files } from '../../core/models/file.model';
 import { InputService } from '../../core/services/inputs.service';
+import { ProcessService } from '../../core/services/process.service';
 import {
   StartActionTypes,
   StartActions,
   LoadInputs,
   LoadInputsSuccess,
-  LoadInputsFail
+  LoadInputsFail,
+  StartProcess,
+  StartProcessSuccess,
+  StartProcessFail
 } from '../actions/start.actions';
 
 /**
@@ -43,12 +47,13 @@ export class StartEffects {
   constructor(
     private actions$: Actions,
     private inputs: InputService,
+    private processes: ProcessService
   ) { }
 
   @Effect()
   search$: Observable<Action> = this.actions$.pipe(
     ofType<LoadInputs>(StartActionTypes.LoadInputs),
-    switchMap(query => {
+    switchMap(action => {
       return this.inputs
         .query()
         .pipe(
@@ -58,4 +63,16 @@ export class StartEffects {
     })
   );
 
+  @Effect()
+  start$: Observable<Action> = this.actions$.pipe(
+    ofType<StartProcess>(StartActionTypes.StartProcess),
+    switchMap(action => {
+      return this.processes
+        .start(action.payload)
+        .pipe(
+          map((files: Files) => new LoadInputsSuccess(files)),
+          catchError(err => of(new LoadInputsFail(err)))
+        );
+    })
+  );
 }
