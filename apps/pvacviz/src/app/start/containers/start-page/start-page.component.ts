@@ -13,7 +13,8 @@ import { Store, select } from '@ngrx/store';
 import { File, Files } from '../../../core/models/file.model';
 import { InputService } from '../../../core/services/inputs.service';
 
-import * as fromStartActions from '../../actions/inputs.actions';
+import * as fromInputsActions from '../../actions/inputs.actions';
+import * as fromStartActions from '../../actions/start.actions';
 import * as fromStart from '../../reducers';
 
 @Component({
@@ -83,12 +84,12 @@ export class StartPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new fromStartActions.LoadInputs());
+    this.store.dispatch(new fromInputsActions.LoadInputs());
   }
 
   onSubmit(startParameters): void {
     console.log('startForm onSubmit() called; Parameters:');
     console.log(startParameters);
-    // this.store.dispatch(new fromStartActions.({ id: 'start-form', parameters: form }));
+    this.store.dispatch(new fromStartActions.StartProcess(startParameters));
   }
 }

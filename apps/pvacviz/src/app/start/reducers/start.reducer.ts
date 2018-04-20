@@ -11,10 +11,9 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State {
+export interface State extends ApiStartResponse {
   loading: boolean;
   loaded: boolean;
-  response?: ApiStartResponse;
   error?: string;
 }
 
@@ -26,7 +25,9 @@ export interface State {
 export const initialState: State = {
   loading: false,
   loaded: false,
-  response: null,
+  code: null,
+  message: null,
+  processid: null,
   error: null
 };
 
@@ -44,7 +45,9 @@ export function reducer(state = initialState, action: StartActions): State {
         ...state,
         loading: false,
         loaded: true,
-        response: action.payload
+        code: action.payload.code,
+        message: action.payload.message,
+        processid: action.payload.processid
       }
 
     case StartActionTypes.StartProcessFail:

@@ -39,7 +39,7 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
  */
 
 @Injectable()
-export class InputsEffects {
+export class StartEffects {
   constructor(
     private actions$: Actions,
     private processes: ProcessService
