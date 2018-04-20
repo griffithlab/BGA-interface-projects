@@ -7,7 +7,7 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 @Injectable()
 export class ProcessService {
-  private API_PATH = 'http://localhost:8080/api/v1';
+  private API_PATH = 'http://localhost:4200/api/v1';
 
   constructor(private http: HttpClient) { }
 
