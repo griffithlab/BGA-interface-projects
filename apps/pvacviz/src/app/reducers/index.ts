@@ -65,6 +65,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
 /**
  * App Layout Reducers
  */
+// TODO: these should probably be moved to /core/reducers/layout.reducers
 export const getLayoutState = createFeatureSelector<fromLayout.State>('layout');
 
 export const getCollapsed = createSelector(
