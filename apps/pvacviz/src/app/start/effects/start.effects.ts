@@ -30,6 +30,7 @@ import {
   StartProcessSuccess,
   StartProcessFail
 } from '../actions/start.actions';
+import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -70,8 +71,8 @@ export class StartEffects {
       return this.processes
         .start(action.payload)
         .pipe(
-          map((files: Files) => new LoadInputsSuccess(files)),
-          catchError(err => of(new LoadInputsFail(err)))
+          map((response: ApiStartResponse) => new StartProcessSuccess(response.processid)),
+          catchError(err => of(new StartProcessFail(err)))
         );
     })
   );
