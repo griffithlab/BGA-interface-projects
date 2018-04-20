@@ -8,7 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ClarityModule } from '@clr/angular';
 
 import { StartRoutingModule } from './start-routing.module';
-import { StartEffects } from './effects/start.effects';
+import { InputsEffects } from './effects/inputs.effects';
 import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
@@ -36,7 +36,7 @@ import { StartPageComponent } from './containers/start-page/start-page.component
      * All Effects will only be instantiated once regardless of
      * whether they are registered once or multiple times.
      */
-    EffectsModule.forFeature([StartEffects])
+    EffectsModule.forFeature([InputsEffects])
   ],
   declarations: [StartPageComponent]
 })

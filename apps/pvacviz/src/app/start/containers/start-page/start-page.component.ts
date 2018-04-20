@@ -13,7 +13,7 @@ import { Store, select } from '@ngrx/store';
 import { File, Files } from '../../../core/models/file.model';
 import { InputService } from '../../../core/services/inputs.service';
 
-import * as fromStartActions from '../../actions/start.actions';
+import * as fromStartActions from '../../actions/inputs.actions';
 import * as fromStart from '../../reducers';
 
 @Component({

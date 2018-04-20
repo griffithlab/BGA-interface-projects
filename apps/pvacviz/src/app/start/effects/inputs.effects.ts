@@ -29,7 +29,7 @@ import {
   StartProcess,
   StartProcessSuccess,
   StartProcessFail
-} from '../actions/start.actions';
+} from '../actions/inputs.actions';
 import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 /**
@@ -44,7 +44,7 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
  */
 
 @Injectable()
-export class StartEffects {
+export class InputsEffects {
   constructor(
     private actions$: Actions,
     private inputs: InputService,

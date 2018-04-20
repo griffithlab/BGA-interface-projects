@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { File, Files } from '../../core/models/file.model';
-import { StartActions, StartActionTypes, StartProcessSuccess } from '../actions/start.actions';
+import { StartActions, StartActionTypes, StartProcessSuccess } from '../actions/inputs.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling

@@ -1,9 +1,9 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromStart from './start.reducer';
+import * as fromInputs from './inputs.reducer';
 import * as fromRoot from '../../reducers';
 
 export interface StartState {
-  inputs: fromStart.State;
+  inputs: fromInputs.State;
 }
 
 export interface State extends fromRoot.State {
@@ -11,7 +11,7 @@ export interface State extends fromRoot.State {
 }
 
 export const reducers = {
-  inputs: fromStart.reducer
+  inputs: fromInputs.reducer
 }
 
 
@@ -62,4 +62,4 @@ export const getInputsState = createSelector(
 export const {
   selectEntities: getInputs,
   selectAll: getAllInputs,
-} = fromStart.adapter.getSelectors(getInputsState);
+} = fromInputs.adapter.getSelectors(getInputsState);
