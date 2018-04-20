@@ -71,7 +71,7 @@ export class StartEffects {
       return this.processes
         .start(action.payload)
         .pipe(
-          map((response: ApiStartResponse) => new StartProcessSuccess(response.processid)),
+          map((response: ApiStartResponse) => new StartProcessSuccess(response)),
           catchError(err => of(new StartProcessFail(err)))
         );
     })

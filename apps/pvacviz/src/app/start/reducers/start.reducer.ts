@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { File, Files } from '../../core/models/file.model';
-import { StartActions, StartActionTypes } from '../actions/start.actions';
+import { StartActions, StartActionTypes, StartProcessSuccess } from '../actions/start.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -64,6 +64,27 @@ export function reducer(state = initialState, action: StartActions): State {
       };
 
     case StartActionTypes.LoadInputsFail:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: action.payload
+      }
+
+    case StartActionTypes.StartProcess:
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case StartActionTypes.StartProcessSuccess:
+      return {
+        ...state,
+        loading: false,
+        loaded: true
+      }
+
+    case StartActionTypes.StartProcessFail:
       return {
         ...state,
         loading: false,

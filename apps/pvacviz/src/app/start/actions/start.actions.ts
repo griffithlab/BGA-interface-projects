@@ -46,7 +46,7 @@ export class StartProcess implements Action {
 export class StartProcessSuccess implements Action {
   readonly type = StartActionTypes.StartProcessSuccess;
 
-  constructor(public payload: number) { }
+  constructor(public payload: ApiStartResponse) { }
 }
 
 export class StartProcessFail implements Action {
@@ -54,8 +54,15 @@ export class StartProcessFail implements Action {
 
   constructor(public payload: any) { }
 }
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
-export type StartActions = LoadInputs | LoadInputsSuccess | LoadInputsFail;
+export type StartActions =
+  LoadInputs
+  | LoadInputsSuccess
+  | LoadInputsFail
+  | StartProcess
+  | StartProcessSuccess
+  | StartProcessFail;
