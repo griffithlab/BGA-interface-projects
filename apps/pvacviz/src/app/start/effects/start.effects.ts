@@ -17,16 +17,14 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { File, Files } from '../../core/models/file.model';
-import { InputService } from '../../core/services/inputs.service';
 import { ProcessService } from '../../core/services/process.service';
 import {
-  InputsActionTypes,
-  InputsActions,
-  LoadInputs,
-  LoadInputsSuccess,
-  LoadInputsFail
-} from '../actions/inputs.actions';
+  StartActionTypes,
+  StartActions,
+  StartProcess,
+  StartProcessSuccess,
+  StartProcessFail
+} from '../actions/start.actions';
 import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 /**
@@ -44,19 +42,18 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
 export class InputsEffects {
   constructor(
     private actions$: Actions,
-    private inputs: InputService,
     private processes: ProcessService
   ) { }
 
   @Effect()
-  search$: Observable<Action> = this.actions$.pipe(
-    ofType<LoadInputs>(InputsActionTypes.LoadInputs),
+  start$: Observable<Action> = this.actions$.pipe(
+    ofType<StartProcess>(StartActionTypes.StartProcess),
     switchMap(action => {
-      return this.inputs
-        .query()
+      return this.processes
+        .start(action.payload)
         .pipe(
-          map((files: Files) => new LoadInputsSuccess(files)),
-          catchError(err => of(new LoadInputsFail(err)))
+          map((response: ApiStartResponse) => new StartProcessSuccess(response)),
+          catchError(err => of(new StartProcessFail(err)))
         );
     })
   );

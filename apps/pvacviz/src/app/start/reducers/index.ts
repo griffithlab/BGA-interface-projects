@@ -1,17 +1,20 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromInputs from './inputs.reducer';
+import * as fromStart from './start.reducer';
 import * as fromRoot from '../../reducers';
 
 export interface StartState {
   inputs: fromInputs.State;
+  request: fromStart.State;
 }
 
 export interface State extends fromRoot.State {
-  inputs: StartState;
+  start: StartState;
 }
 
 export const reducers = {
-  inputs: fromInputs.reducer
+  inputs: fromInputs.reducer,
+  request: fromStart.reducer
 }
 
 
@@ -49,6 +52,11 @@ export const getStartState = createFeatureSelector<StartState>('start');
 export const getInputsState = createSelector(
   getStartState,
   state => state.inputs
+);
+
+export const getRequestState = createSelector(
+  getStartState,
+  state => state.request
 );
 
 /**

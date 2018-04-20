@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { File, Files } from '../../core/models/file.model';
-import { StartActions, StartActionTypes, StartProcessSuccess } from '../actions/inputs.actions';
+import { InputsActions, InputsActionTypes } from '../actions/inputs.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -40,16 +40,16 @@ export const initialState: State = adapter.getInitialState({
   error: ''
 });
 
-export function reducer(state = initialState, action: StartActions): State {
+export function reducer(state = initialState, action: InputsActions): State {
   switch (action.type) {
 
-    case StartActionTypes.LoadInputs:
+    case InputsActionTypes.LoadInputs:
       return {
         ...state,
         loading: true,
       };
 
-    case StartActionTypes.LoadInputsSuccess:
+    case InputsActionTypes.LoadInputsSuccess:
       return {
         /**
          * The addMany function provided by the created adapter
@@ -63,28 +63,7 @@ export function reducer(state = initialState, action: StartActions): State {
         loaded: true
       };
 
-    case StartActionTypes.LoadInputsFail:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.payload
-      }
-
-    case StartActionTypes.StartProcess:
-      return {
-        ...state,
-        loading: true,
-      }
-
-    case StartActionTypes.StartProcessSuccess:
-      return {
-        ...state,
-        loading: false,
-        loaded: true
-      }
-
-    case StartActionTypes.StartProcessFail:
+    case InputsActionTypes.LoadInputsFail:
       return {
         ...state,
         loading: false,
