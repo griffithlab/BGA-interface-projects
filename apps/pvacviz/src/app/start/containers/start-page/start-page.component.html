@@ -216,8 +216,18 @@
     </div>
 
     <div class="form-group">
+      <label for="iedb_install_dir">IEDB Install Directory</label>
+      <input type="text" id="iedb_install_dir" formControlName="iedb_install_dir" size="64">
+    </div>
+
+    <div class="form-group">
       <label for="keep_tmp_files">Top Result per Mutation</label>
       <clr-checkbox formControlName="keep_tmp_files"></clr-checkbox>
+    </div>
+
+    <div class="form-group">
+      <label for="force">Bypass duplicate process check</label>
+      <clr-checkbox formControlName="force"></clr-checkbox>
     </div>
 
     <button class="btn btn-primary" type="submit" [disabled]="startForm.invalid">Submit Process</button>
