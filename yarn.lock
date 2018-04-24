@@ -20,12 +20,28 @@
     rxjs "^5.5.6"
     source-map "^0.5.6"
 
+"@angular-devkit/core@0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.4.7.tgz#c918d200d35eabe20660feb0b4f9bb145b016dba"
+  dependencies:
+    ajv "~5.5.1"
+    chokidar "^1.7.0"
+    rxjs "^5.5.8"
+    source-map "^0.5.6"
+
 "@angular-devkit/schematics@0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.3.2.tgz#09a2268fad61f4f956f42db87913b8748c512a78"
   dependencies:
     "@ngtools/json-schema" "^1.1.0"
     rxjs "^5.5.6"
+
+"@angular-devkit/schematics@0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.4.7.tgz#671eda6102bf80e580727f6979a6f30715872f73"
+  dependencies:
+    "@ngtools/json-schema" "^1.1.0"
+    rxjs "^5.5.8"
 
 "@angular/animations@^5.2.9":
   version "5.2.9"
@@ -153,19 +169,21 @@
   dependencies:
     tslib "^1.7.1"
 
-"@clr/angular@^0.11.9":
-  version "0.11.9"
-  resolved "https://registry.yarnpkg.com/@clr/angular/-/angular-0.11.9.tgz#8185c64ad19268a9dae0976d30f794bcf21d83b5"
+"@clr/angular@^0.11.14":
+  version "0.11.14"
+  resolved "https://registry.yarnpkg.com/@clr/angular/-/angular-0.11.14.tgz#650d2a84732603418d058e0a9e6ab9b084358ff3"
   dependencies:
+    "@angular-devkit/core" "0.4.7"
+    "@angular-devkit/schematics" "0.4.7"
     tslib "^1.7.1"
 
-"@clr/icons@^0.11.9":
-  version "0.11.9"
-  resolved "https://registry.yarnpkg.com/@clr/icons/-/icons-0.11.9.tgz#9b96ac8703e2252ed6b8484226d98427e8c7d437"
+"@clr/icons@^0.11.14":
+  version "0.11.14"
+  resolved "https://registry.yarnpkg.com/@clr/icons/-/icons-0.11.14.tgz#0f339cf2bb61696c6c33ab9304b3b20e0a898d3f"
 
-"@clr/ui@^0.11.9":
-  version "0.11.9"
-  resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-0.11.9.tgz#7dd3ba4b8585c75dbf4bb125b3c2362fd58b50c5"
+"@clr/ui@^0.11.14":
+  version "0.11.14"
+  resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-0.11.14.tgz#7a71233267e02d868974c0efa7a705ecc85cc761"
 
 "@ngrx/effects@^5.2.0":
   version "5.2.0"
@@ -5732,6 +5750,12 @@ run-queue@^1.0.0, run-queue@^1.0.3:
 rxjs@^5.5.6:
   version "5.5.7"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.7.tgz#afb3d1642b069b2fbf203903d6501d1acb4cda27"
+  dependencies:
+    symbol-observable "1.0.1"
+
+rxjs@^5.5.8:
+  version "5.5.10"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
   dependencies:
     symbol-observable "1.0.1"
 
