@@ -71,6 +71,26 @@ export function reducer(state = initialState, action: ManageActions): State {
         error: action.payload
       }
 
+    case ManageActionTypes.LoadDetail:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ManageActionTypes.LoadDetailSuccess:
+      return {
+        ...adapter.upsertOne({ id: action.payload.id, changes: action.payload }, state),
+        loading: false,
+        loaded: true
+      };
+
+    case ManageActionTypes.LoadDetailFail:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: action.payload
+      }
     default:
       return state;
   }

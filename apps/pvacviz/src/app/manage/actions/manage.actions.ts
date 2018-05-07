@@ -36,9 +36,28 @@ export class LoadFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class LoadDetail implements Action {
+  readonly type = ManageActionTypes.LoadDetail;
+
+  constructor() { }
+}
+
+export class LoadDetailSuccess implements Action {
+  readonly type = ManageActionTypes.LoadDetailSuccess;
+
+  constructor(public payload: Process) { }
+}
+
+export class LoadDetailFail implements Action {
+  readonly type = ManageActionTypes.LoadDetailFail;
+
+  constructor(public payload: any) { }
+}
 
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
-export type ManageActions = Load | LoadSuccess | LoadFail;
+export type ManageActions =
+  Load | LoadSuccess | LoadFail
+  | LoadDetail | LoadDetailSuccess | LoadDetailFail;
