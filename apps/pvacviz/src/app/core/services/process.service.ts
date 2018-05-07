@@ -25,12 +25,7 @@ export class ProcessService {
     }
 
     return this.http.post(`${this.API_PATH}/staging`, processParameters, httpOptions)
-      .map(parseResponse);
-
-    function parseResponse(res: Response): ApiStartResponse {
-      console.log(res);
-      return JSON.parse(res['_body']) as ApiStartResponse;
-    }
+      .map((res) => res as ApiStartResponse);
   }
 
   // archive(id: number): Observable<string> {
