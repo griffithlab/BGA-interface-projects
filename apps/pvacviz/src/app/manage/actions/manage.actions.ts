@@ -39,7 +39,7 @@ export class LoadFail implements Action {
 export class LoadDetail implements Action {
   readonly type = ManageActionTypes.LoadDetail;
 
-  constructor() { }
+  constructor(public payload: number) { }
 }
 
 export class LoadDetailSuccess implements Action {

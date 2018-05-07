@@ -24,7 +24,10 @@ import {
   ManageActions,
   Load,
   LoadSuccess,
-  LoadFail
+  LoadFail,
+  LoadDetail,
+  LoadDetailSuccess,
+  LoadDetailFail
 } from '../actions/manage.actions';
 
 /**
@@ -46,7 +49,7 @@ export class ProcessEffects {
   ) { }
 
   @Effect()
-  search$: Observable<Action> = this.actions$.pipe(
+  query$: Observable<Action> = this.actions$.pipe(
     ofType<Load>(ManageActionTypes.Load),
     switchMap(query => {
       return this.processes
@@ -57,5 +60,19 @@ export class ProcessEffects {
         );
     })
   );
+
+  @Effect()
+  get$: Observable<Action> = this.actions$.pipe(
+    ofType<LoadDetail>(ManageActionTypes.Load),
+    map(action => action.payload),
+    switchMap(processId => {
+      return this.processes
+        .get(processId)
+        .pipe(
+          map((process: Process) => new LoadDetailSuccess(process)),
+          catchError(err => of(new LoadFail(err)))
+        )
+    })
+  )
 
 }
