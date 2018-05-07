@@ -17,6 +17,12 @@ export class ProcessService {
       .pipe(map(processes => processes.result || []));
   }
 
+  get(id): Observable<Process> {
+    return this.http
+      .get<{ result: Process }>(`${this.API_PATH}/processes/${id}`)
+      .pipe(map(process => process.result || null));
+  }
+
   start(processParameters: any): Observable<ApiStartResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
