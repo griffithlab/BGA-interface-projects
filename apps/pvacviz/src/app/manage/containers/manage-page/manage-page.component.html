@@ -9,9 +9,8 @@
   <clr-dg-row *ngFor="let process of processes$ | async">
     <clr-dg-cell>{{process.id}}</clr-dg-cell>
     <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
-    <clr-dg-cell>{{process.running ? 'Running' : status == 1 ? 'Complete' : 'Stopped' }}</clr-dg-cell>
+    <clr-dg-cell>{{process.running ? 'Running' : status == 1 ? 'Completed' : 'Stopped' }}</clr-dg-cell>
     <clr-dg-cell>{{process.attached}}</clr-dg-cell>
-    <clr-dg-cell>{{process.running}}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer></clr-dg-footer>
