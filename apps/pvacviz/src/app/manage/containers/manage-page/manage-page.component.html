@@ -2,15 +2,17 @@
 <clr-datagrid>
   <clr-dg-column>ID</clr-dg-column>
   <clr-dg-column>Sample Name</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
   <clr-dg-column>Attached</clr-dg-column>
   <clr-dg-column>Running</clr-dg-column>
 
   <clr-dg-row *ngFor="let process of processes$ | async">
     <clr-dg-cell>{{process.id}}</clr-dg-cell>
     <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
+    <clr-dg-cell>{{process.running ? 'Running' : status == 1 ? 'Complete' : 'Stopped' }}</clr-dg-cell>
     <clr-dg-cell>{{process.attached}}</clr-dg-cell>
     <clr-dg-cell>{{process.running}}</clr-dg-cell>
   </clr-dg-row>
 
-  <clr-dg-footer>Paging goes here?</clr-dg-footer>
+  <clr-dg-footer></clr-dg-footer>
 </clr-datagrid>
