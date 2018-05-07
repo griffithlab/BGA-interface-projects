@@ -11,7 +11,7 @@
       <label for="inputVcf">Input VCF</label>
       <div class="select">
         <select id="inputVcf" name="inputVcf" formControlName="input">
-          <ng-container [ngSwitch]="(input$ | async)?.length > 0" >
+          <ng-container [ngSwitch]="(inputs$ | async)?.length > 0" >
             <ng-container *ngSwitchCase="true" >
               <option value="null">Please select input VCF file</option>
             </ng-container>
@@ -21,7 +21,7 @@
           </ng-container>
           <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
         </select>
-        <small *ngIf="(input$ | async)?.length < 1" class="text-warning">Place files in input directory, usually ~/pVAC-Seq/input.</small>
+        <small *ngIf="(inputs$ | async)?.length < 1" class="text-warning">Please place files in input directory, usually ~/pVAC-Seq/input.</small>
       </div>
     </div>
 
