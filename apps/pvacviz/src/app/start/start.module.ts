@@ -42,6 +42,8 @@ import { StartPageComponent } from './containers/start-page/start-page.component
       StartEffects
     ])
   ],
-  declarations: [StartPageComponent]
+  declarations: [
+    StartPageComponent
+  ]
 })
 export class StartModule { }
