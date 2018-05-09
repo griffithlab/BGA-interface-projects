@@ -63,14 +63,14 @@ export class ProcessEffects {
 
   @Effect()
   get$: Observable<Action> = this.actions$.pipe(
-    ofType<LoadDetail>(ManageActionTypes.Load),
+    ofType<LoadDetail>(ManageActionTypes.LoadDetail),
     map(action => action.payload),
     switchMap(processId => {
       return this.processes
         .get(processId)
         .pipe(
           map((process: Process) => new LoadDetailSuccess(process)),
-          catchError(err => of(new LoadFail(err)))
+          catchError(err => of(new LoadDetailFail(err)))
         )
     })
   )
