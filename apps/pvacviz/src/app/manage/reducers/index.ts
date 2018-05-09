@@ -1,6 +1,9 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import * as fromNgrxRouter from '@ngrx/router-store';
+
 import * as fromManage from './manage.reducer';
 import * as fromRoot from '../../reducers';
+import { RouterStateUrl } from '../../core/models/router.model';
 
 export interface ManageState {
   processes: fromManage.State;
@@ -32,6 +35,7 @@ export const reducers = {
  */
 
 export const getRouterState = createFeatureSelector<fromNgrxRouter.RouterReducerState<RouterStateUrl>>('router');
+
 /**
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
