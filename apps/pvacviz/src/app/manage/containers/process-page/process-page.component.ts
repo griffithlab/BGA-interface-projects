@@ -20,7 +20,7 @@ export class ProcessPageComponent implements OnInit {
 
   constructor(private store: Store<fromProcesses.State>) {
     // TODO: integrate router and get id from state params
-    // this.process$ = store.pipe(select(fromProcesses.getProcess(processId)));
+    this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
   }
 
   ngOnInit() {

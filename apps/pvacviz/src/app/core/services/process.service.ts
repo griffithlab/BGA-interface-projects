@@ -19,8 +19,8 @@ export class ProcessService {
 
   get(id): Observable<Process> {
     return this.http
-      .get<{ result: Process }>(`${this.API_PATH}/processes/${id}`)
-      .pipe(map(process => process.result || null));
+      .get<Process>(`${this.API_PATH}/processes/${id}`)
+      .pipe(map(process => process || null));
   }
 
   start(processParameters: any): Observable<ApiStartResponse> {

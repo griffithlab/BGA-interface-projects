@@ -82,7 +82,9 @@ export class ProcessEffects {
       return this.processes
         .get(processId)
         .pipe(
-          map((process: Process) => new LoadDetailSuccess(process)),
+          map((process: Process) => {
+            return new LoadDetailSuccess(process)
+          }),
           catchError(err => of(new LoadDetailFail(err)))
         )
     })

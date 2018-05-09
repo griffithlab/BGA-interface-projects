@@ -68,3 +68,14 @@ export const {
   selectEntities: getProcesses,
   selectAll: getAllProcesses,
 } = fromManage.adapter.getSelectors(getProcessEntitiesState);
+
+export const getRouteProcessId = createSelector(
+  getRouterState,
+  router => router.state.params.processId
+)
+
+export const getSelectedProcess = createSelector(
+  getProcesses,
+  getRouteProcessId,
+  (processes, processId) => { return processes[processId]; }
+);
