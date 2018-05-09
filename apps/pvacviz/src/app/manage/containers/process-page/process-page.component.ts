@@ -24,7 +24,7 @@ export class ProcessPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.store.dispatch(new processes.LoadDetail(processId));
+    this.store.dispatch(new processes.LoadDetail());
   }
 
 }

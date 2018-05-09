@@ -15,6 +15,7 @@ import {
   skip,
   takeUntil,
   catchError,
+  withLatestFrom
 } from 'rxjs/operators';
 
 import { Process } from '../../core/models/process.model';
@@ -29,6 +30,10 @@ import {
   LoadDetailSuccess,
   LoadDetailFail
 } from '../actions/manage.actions';
+
+import * as fromRoot from '../../reducers';
+import { Store, select } from '@ngrx/store';
+import { getRouterState } from '../reducers';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -46,6 +51,7 @@ export class ProcessEffects {
   constructor(
     private actions$: Actions,
     private processes: ProcessService,
+    private store: Store<fromRoot.State>
   ) { }
 
   @Effect()
@@ -64,7 +70,8 @@ export class ProcessEffects {
   @Effect()
   get$: Observable<Action> = this.actions$.pipe(
     ofType<LoadDetail>(ManageActionTypes.LoadDetail),
-    map(action => action.payload),
+    withLatestFrom(
+      this.store.select(getRouterState)),
     switchMap(processId => {
       return this.processes
         .get(processId)
