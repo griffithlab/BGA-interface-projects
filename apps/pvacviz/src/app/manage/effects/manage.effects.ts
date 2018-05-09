@@ -15,6 +15,7 @@ import {
   skip,
   takeUntil,
   catchError,
+  tap,
   withLatestFrom
 } from 'rxjs/operators';
 
@@ -71,7 +72,12 @@ export class ProcessEffects {
   get$: Observable<Action> = this.actions$.pipe(
     ofType<LoadDetail>(ManageActionTypes.LoadDetail),
     withLatestFrom(
-      this.store.select(getRouterState)),
+      this.store.select(getRouterState),
+      (action, router) => {
+        return router.state.params.processId
+      }
+    ),
+    tap(id => console.log('processId: ' + id)),
     switchMap(processId => {
       return this.processes
         .get(processId)
