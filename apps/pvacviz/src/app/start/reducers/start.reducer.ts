@@ -16,7 +16,6 @@ export interface State extends ApiStartResponse {
   submitting: boolean;
   submitted: boolean;
   error: boolean;
-  errorMessage?: string;
 }
 
 /**
@@ -27,11 +26,10 @@ export interface State extends ApiStartResponse {
 export const initialState: State = {
   submitting: false,
   submitted: false,
-  code: null,
+  status: null,
   message: null,
   processid: null,
   error: false,
-  errorMessage: null
 };
 
 export function reducer(state = initialState, action: StartActions): State {
