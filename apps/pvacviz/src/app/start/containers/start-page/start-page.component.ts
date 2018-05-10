@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 
 import { Observable } from 'rxjs/Rx';
+import { map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 
@@ -25,6 +26,11 @@ import * as fromStart from '../../reducers';
 
 export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
+  postSubmitting$: Observable<boolean>;
+  postSubmitted$: Observable<boolean>;
+  postMessage$: Observable<string>;
+  postError$: Observable<boolean>;
+
   netChopMethodOptions;
   topScoreMetricOptions;
   startForm: FormGroup;
@@ -34,6 +40,10 @@ export class StartPageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
+    this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
+    this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
+    this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
 
     this.netChopMethodOptions = [
       { label: 'C term 3.0', value: 'cterm' },
