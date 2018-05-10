@@ -5,7 +5,7 @@ import * as fromRoot from '../../reducers';
 
 export interface StartState {
   inputs: fromInputs.State;
-  request: fromStart.State;
+  post: fromStart.State;
 }
 
 export interface State extends fromRoot.State {
@@ -14,9 +14,8 @@ export interface State extends fromRoot.State {
 
 export const reducers = {
   inputs: fromInputs.reducer,
-  request: fromStart.reducer
+  post: fromStart.reducer
 }
-
 
 /**
  * A selector function is a map function factory. We pass it parameters and it
@@ -38,6 +37,7 @@ export const reducers = {
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
+
 export const getStartState = createFeatureSelector<StartState>('start');
 
 /**
@@ -49,14 +49,15 @@ export const getStartState = createFeatureSelector<StartState>('start');
  * only recompute when arguments change. The created selectors can also be composed
  * together to select different pieces of state.
  */
+
 export const getInputsState = createSelector(
   getStartState,
   state => state.inputs
 );
 
-export const getRequestState = createSelector(
+export const getPostState = createSelector(
   getStartState,
-  state => state.request
+  state => state.post
 );
 
 /**
@@ -67,6 +68,7 @@ export const getRequestState = createSelector(
  * the total number of records. This reduces boilerplate
  * in selecting records from the entity state.
  */
+
 export const {
   selectEntities: getInputs,
   selectAll: getAllInputs,

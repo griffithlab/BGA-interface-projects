@@ -11,10 +11,12 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
+// TODO maybe just move this into the parent interface instead of extending?
 export interface State extends ApiStartResponse {
-  loading: boolean;
-  loaded: boolean;
-  error?: string;
+  submitting: boolean;
+  submitted: boolean;
+  error: boolean;
+  errorMessage?: string;
 }
 
 /**
@@ -23,12 +25,13 @@ export interface State extends ApiStartResponse {
  * additional properties can also be defined.
  */
 export const initialState: State = {
-  loading: false,
-  loaded: false,
+  submitting: false,
+  submitted: false,
   code: null,
   message: null,
   processid: null,
-  error: null
+  error: false,
+  errorMessage: null
 };
 
 export function reducer(state = initialState, action: StartActions): State {
@@ -37,15 +40,15 @@ export function reducer(state = initialState, action: StartActions): State {
     case StartActionTypes.StartProcess:
       return {
         ...state,
-        loading: true,
+        submitting: true,
       }
 
     case StartActionTypes.StartProcessSuccess:
       return {
         ...state,
-        loading: false,
-        loaded: true,
-        code: action.payload.code,
+        submitting: false,
+        submitted: true,
+        status: action.payload.status,
         message: action.payload.message,
         processid: action.payload.processid
       }
@@ -53,9 +56,11 @@ export function reducer(state = initialState, action: StartActions): State {
     case StartActionTypes.StartProcessFail:
       return {
         ...state,
-        loading: false,
-        loaded: false,
-        error: action.payload
+        submitting: false,
+        submitted: true,
+        error: true,
+        status: action.payload.status,
+        message: action.payload.message
       }
 
     default:

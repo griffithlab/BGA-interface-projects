@@ -1,7 +1,7 @@
 import { File } from './file.model';
 
 export interface ApiStartResponse {
-  code: number;
+  status: number;
   message: string;
   processid: number;
 }
