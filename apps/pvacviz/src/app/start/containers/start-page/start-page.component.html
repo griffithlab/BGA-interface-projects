@@ -3,12 +3,12 @@
   <section class="form-block">
     <label>Inputs, Alleles, and Algorithms</label>
     <div class="form-group">
-      <label for="samplename">Sample Name</label>
+      <label for="samplename" class="required">Sample Name</label>
       <input type="text" id="samplename" formControlName="samplename" size="32">
     </div>
 
     <div class="form-group">
-      <label for="inputVcf">Input VCF</label>
+      <label for="inputVcf" class="required">Input VCF</label>
       <div class="select">
         <select id="inputVcf" name="inputVcf" formControlName="input">
           <ng-container [ngSwitch]="(inputs$ | async)?.length > 0" >
@@ -26,12 +26,12 @@
     </div>
 
     <div class="form-group">
-      <label for="alleles">Alleles</label>
+      <label for="alleles" class="required">Alleles</label>
       <textarea id="alleles" formControlName="alleles" rows="2"></textarea>
     </div>
 
     <div class="form-group">
-      <label for="prediction_algorithms">Prediction Algorithms</label>
+      <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
       <textarea id="prediction_algorithms" formControlName="prediction_algorithms" rows="2"></textarea>
     </div>
   </section>
@@ -39,12 +39,12 @@
   <section class="form-block">
     <label>Algorithm Parameter Defaults</label>
     <div class="form-group">
-      <label for="epitope_lengths">Epitope Lengths</label>
+      <label for="epitope_lengths" class="required">Epitope Lengths</label>
       <input type="text" id="epitope_lengths" formControlName="epitope_lengths" size="8">
     </div>
 
     <div class="form-group">
-      <label for="epitope_lengths">Peptide Sequence Length</label>
+      <label for="epitope_lengths" class="required">Peptide Sequence Length</label>
       <input type="text" id="peptide_sequence_length" formControlName="peptide_sequence_length" size="8">
     </div>
 
@@ -240,14 +240,16 @@
 
     <button class="btn btn-primary" type="submit" [disabled]="startForm.invalid">
       <!-- default play icon -->
-      <clr-icon shape="play" size="16" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
+      <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
       <!-- spinner while submitting -->
       <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
       <!-- successful submit -->
-      <clr-icon shape="check-circle" size="16" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
+      <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
       <!-- submit error -->
-      <clr-icon shape="exclamation-circle" size="16" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
+      <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
       Submit Process
     </button>
+    <span>{{postMessage$ | async}}</span>
+    <p *ngIf="startForm.dirty && startForm.invalid">Submit disabled - please ensure that all required fields are specified.</p>
   </section>
 </form>

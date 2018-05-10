@@ -53,7 +53,7 @@ export class StartEffects {
         .start(action.payload)
         .pipe(
           map((response: ApiStartResponse) => new StartProcessSuccess(response)),
-          catchError(err => of(new StartProcessFail(err)))
+          catchError(err => of(new StartProcessFail(err.error)))
         );
     })
   );
