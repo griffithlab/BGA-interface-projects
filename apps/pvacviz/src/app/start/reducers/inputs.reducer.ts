@@ -13,7 +13,8 @@ import { InputsActions, InputsActionTypes } from '../actions/inputs.actions';
 export interface State extends EntityState<File> {
   loading: boolean;
   loaded: boolean;
-  error: string;
+  error: boolean;
+  errorMessage?: string;
 }
 
 /**
@@ -37,7 +38,8 @@ export const adapter: EntityAdapter<File> = createEntityAdapter<File>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  error: ''
+  error: false,
+  errorMessage: null
 });
 
 export function reducer(state = initialState, action: InputsActions): State {
@@ -60,7 +62,8 @@ export function reducer(state = initialState, action: InputsActions): State {
          */
         ...adapter.addMany(action.payload, state),
         loading: false,
-        loaded: true
+        loaded: true,
+        error: false
       };
 
     case InputsActionTypes.LoadInputsFail:
@@ -68,7 +71,8 @@ export function reducer(state = initialState, action: InputsActions): State {
         ...state,
         loading: false,
         loaded: false,
-        error: action.payload
+        error: false,
+        errorMessage: action.payload.message
       }
 
     default:
