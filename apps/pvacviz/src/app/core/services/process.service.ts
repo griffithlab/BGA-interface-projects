@@ -1,22 +1,43 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { Process } from '../../manage/models/process.model';
+import { Process } from '../../core/models/process.model';
+import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 @Injectable()
 export class ProcessService {
-  private API_PATH = 'http://localhost:8080/api/v1/processes';
+  private API_PATH = 'http://localhost:4200/api/v1';
 
   constructor(private http: HttpClient) { }
 
   query(): Observable<Process[]> {
     return this.http
-      .get<{ result: Process[] }>(`${this.API_PATH}`)
+      .get<{ result: Process[] }>(`${this.API_PATH}/processes`)
       .pipe(map(processes => processes.result || []));
   }
 
-  // retrieveBook(volumeId: string): Observable<Book> {
-  //   return this.http.get<Book>(`${this.API_PATH}/${volumeId}`);
+  get(id): Observable<Process> {
+    return this.http
+      .get<Process>(`${this.API_PATH}/processes/${id}`)
+      .pipe(map(process => process || null));
+  }
+
+  start(processParameters: any): Observable<ApiStartResponse> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    return this.http.post(`${this.API_PATH}/staging`, processParameters, httpOptions)
+      .map((res) => res as ApiStartResponse);
+  }
+
+  // archive(id: number): Observable<string> {
+  //   return this.http.get(`${this.api}/archive/${id}`)
+  //     .map((response: Response) => {
+  //       return response.statusText;
+  //     });
   // }
 }

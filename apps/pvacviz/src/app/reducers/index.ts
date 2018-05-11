@@ -23,7 +23,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromLayout from '../core/reducers/layout.reducers';
 
 import { environment } from '../../environments/environment';
-import { RouterStateUrl } from '../shared/utilities';
+import { RouterStateUrl } from '../core/models/router.model';
 
 // console.log all actions
 export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
@@ -65,6 +65,7 @@ export const metaReducers: MetaReducer<State>[] = !environment.production
 /**
  * App Layout Reducers
  */
+// TODO: these should probably be moved to /core/reducers/layout.reducers
 export const getLayoutState = createFeatureSelector<fromLayout.State>('layout');
 
 export const getCollapsed = createSelector(

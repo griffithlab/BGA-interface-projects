@@ -1,4 +1,4 @@
-import { reducer, initialState } from './processes.reducer';
+import { reducer, initialState } from './manage.reducer';
 
 describe('Processes Reducer', () => {
   describe('unknown action', () => {

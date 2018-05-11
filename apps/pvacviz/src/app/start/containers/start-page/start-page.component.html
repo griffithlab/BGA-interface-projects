@@ -1,3 +1,290 @@
-<p>
-  start-page works!
-</p>
+<h3>Start Process</h3>
+<form class="form compact" [formGroup]="startForm" (ngSubmit)="onSubmit(startForm.value)">
+  <section class="form-block">
+    <label>Inputs, Alleles, and Algorithms</label>
+    <div class="form-group">
+      <label for="samplename" class="required">Sample Name</label>
+      <input type="text" id="samplename" formControlName="samplename" size="32">
+    </div>
+
+    <div class="form-group">
+      <label for="inputVcf" class="required">Input VCF</label>
+      <div class="select">
+        <select id="inputVcf" name="inputVcf" formControlName="input">
+          <ng-container [ngSwitch]="(inputs$ | async)?.length > 0">
+            <ng-container *ngSwitchCase="true">
+              <option value="null">Please select input VCF file</option>
+            </ng-container>
+            <ng-container *ngSwitchCase="false">
+              <option value="null">No files found in input directory.</option>
+            </ng-container>
+          </ng-container>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+        <small *ngIf="(inputs$ | async)?.length < 1" class="text-warning">Please place files in input directory, usually ~/pVAC-Seq/input.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="alleles" class="required">Alleles</label>
+      <textarea id="alleles" formControlName="alleles" rows="2"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
+      <textarea id="prediction_algorithms" formControlName="prediction_algorithms" rows="2"></textarea>
+    </div>
+  </section>
+
+  <section class="form-block">
+    <label>Algorithm Parameter Defaults</label>
+    <div class="form-group">
+      <label for="epitope_lengths" class="required">Epitope Lengths</label>
+      <input type="text" id="epitope_lengths" formControlName="epitope_lengths" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="epitope_lengths" class="required">Peptide Sequence Length</label>
+      <input type="text" id="peptide_sequence_length" formControlName="peptide_sequence_length" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="gene_expn_file">Gene Expression File</label>
+      <div class="select">
+        <select id="gene_expn_file" name="gene_expn_file" formControlName="gene_expn_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="gene_expn_file">Transcript Expression File</label>
+      <div class="select">
+        <select id="transcript_expn_file" name="transcript_expn_file" formControlName="transcript_expn_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="normal_snvs_coverage_file">Normal SNVs Coverage File</label>
+      <div class="select">
+        <select id="normal_snvs_coverage_file" name="normal_snvs_coverage_file" formControlName="normal_snvs_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="normal_indels_coverage_file">Normal Indels Coverage File</label>
+      <div class="select">
+        <select id="normal_indels_coverage_file" name="normal_indels_coverage_file" formControlName="normal_indels_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tdna_snvs_coverage_file">TDNA SNVs Coverage File</label>
+      <div class="select">
+        <select id="tdna_snvs_coverage_file" name="tdna_snvs_coverage_file" formControlName="tdna_snvs_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tdna_indels_coverage_file">TDNA Indels Coverage File</label>
+      <div class="select">
+        <select id="tdna_indels_coverage_file" name="tdna_indels_coverage_file" formControlName="tdna_indels_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="trna_snvs_coverage_file">TRNA SNVs Coverage File</label>
+      <div class="select">
+        <select id="trna_snvs_coverage_file" name="trna_snvs_coverage_file" formControlName="trna_snvs_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="trna_indels_coverage_file">TRNA Indels Coverage File</label>
+      <div class="select">
+        <select id="trna_indels_coverage_file" name="trna_indels_coverage_file" formControlName="trna_indels_coverage_file">
+          <option value="null">Please select a file</option>
+          <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="trna_indels_coverage_file">Netchop Method</label>
+      <div class="select">
+        <select id="trna_indels_coverage_file" name="trna_indels_coverage_file" formControlName="trna_indels_coverage_file">
+          <option value="null">Please select a method</option>
+          <option *ngFor="let method of netChopMethodOptions" [value]="method.value">{{method.label}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="net_chop_threshold">Netchop Prediction Threshold</label>
+      <input type="text" id="net_chop_threshold" formControlName="net_chop_threshold" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="netmhc_stab">NetMHC Stabpan</label>
+      <clr-checkbox formControlName="netmhc_stab"></clr-checkbox>
+    </div>
+
+    <div class="form-group">
+      <label for="top_result_per_mutation">Top Result per Mutation</label>
+      <clr-checkbox formControlName="top_result_per_mutation"></clr-checkbox>
+    </div>
+
+    <div class="form-group">
+      <label for="top_score_metric">Top Score Metric</label>
+      <div class="select">
+        <select id="top_score_metric" name="top_score_metric" formControlName="top_score_metric">
+          <option value="null">Please select a method</option>
+          <option *ngFor="let metric of topScoreMetricOptions" [value]="metric.value">{{metric.label}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="binding_threshold">Netchop Prediction Threshold</label>
+      <input type="text" id="binding_threshold" formControlName="binding_threshold" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="minimum_fold_change">Minimum Fold Change</label>
+      <input type="text" id="minimum_fold_change" formControlName="minimum_fold_change" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="expn_val">Expression Value</label>
+      <input type="text" id="expn_val" formControlName="expn_val" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="normal_cov">Normal Coverage Cutoff</label>
+      <input type="text" id="normal_cov" formControlName="normal_cov" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="tdna_cov">TDNA Coverage Cutoff</label>
+      <input type="text" id="tdna_cov" formControlName="tdna_cov" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="trna_cov">TRNA Coverage Cutoff</label>
+      <input type="text" id="trna_cov" formControlName="trna_cov" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="normal_vaf">Normal VAF Cutoff</label>
+      <input type="text" id="normal_vaf" formControlName="normal_vaf" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="tdna_vaf">TDNA VAF Cutoff</label>
+      <input type="text" id="tdna_vaf" formControlName="tdna_vaf" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="trna_vaf">TRNA VAF Cutoff</label>
+      <input type="text" id="trna_vaf" formControlName="trna_vaf" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="fasta_size">FASTA Size</label>
+      <input type="text" id="fasta_size" formControlName="fasta_size" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="iedb_retries">IEDB Retries</label>
+      <input type="text" id="iedb_retries" formControlName="iedb_retries" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="downstream_sequence_length">Downstream Sequence Length</label>
+      <input type="text" id="downstream_sequence_length" formControlName="downstream_sequence_length" size="8">
+    </div>
+
+    <div class="form-group">
+      <label for="iedb_install_dir">IEDB Install Directory</label>
+      <input type="text" id="iedb_install_dir" formControlName="iedb_install_dir" size="64">
+    </div>
+
+    <div class="form-group">
+      <label for="keep_tmp_files">Top Result per Mutation</label>
+      <clr-checkbox formControlName="keep_tmp_files"></clr-checkbox>
+    </div>
+
+    <div class="form-group">
+      <label for="force">Bypass duplicate process check</label>
+      <clr-checkbox formControlName="force"></clr-checkbox>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <button class="btn btn-block" [ngClass]="{'btn-primary': (postError$ | async) == false, 'btn-warning': (postError$ | async) == true}" type="submit" [disabled]="startForm.invalid">
+          <!-- default play icon -->
+          <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
+          <!-- spinner while submitting -->
+          <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
+          <!-- successful submit -->
+          <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
+          <!-- submit error -->
+          <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
+          Submit Process
+        </button>
+      </div>
+      <div class="col-sm-9">
+        <!-- form incomplete -->
+        <clr-alert [clrAlertType]="'warning'"
+                   [clrAlertClosable]="false"
+                   *ngIf="startForm.dirty && startForm.invalid">
+          <div class="alert-item">
+            <span class="alert-text">
+              To submit, please ensure that all required fields are properly specified.
+            </span>
+          </div>
+        </clr-alert>
+
+        <!-- submit error -->
+        <clr-alert [clrAlertType]="'danger'"
+                   [clrAlertClosable]="false"
+                   *ngIf="(postError$ | async) === true">
+          <div class="alert-item">
+            <span class="alert-text">
+              {{postMessage$ | async}}
+            </span>
+          </div>
+        </clr-alert>
+
+        <!-- submit success -->
+        <clr-alert [clrAlertType]="'success'"
+                   [clrAlertClosable]="false"
+                   *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
+          <div class="alert-item">
+            <span class="alert-text">
+              Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.
+            </span>
+          </div>
+        </clr-alert>
+      </div>
+    </div>
+  </section>
+</form>

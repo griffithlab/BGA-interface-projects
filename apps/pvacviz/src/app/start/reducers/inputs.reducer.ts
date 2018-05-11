@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Process } from '../models/process.model';
-import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
+import { File, Files } from '../../core/models/file.model';
+import { InputsActions, InputsActionTypes } from '../actions/inputs.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -10,10 +10,11 @@ import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State extends EntityState<Process> {
+export interface State extends EntityState<File> {
   loading: boolean;
   loaded: boolean;
-  error: string;
+  error: boolean;
+  errorMessage?: string;
 }
 
 /**
@@ -24,8 +25,8 @@ export interface State extends EntityState<Process> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const adapter: EntityAdapter<Process> = createEntityAdapter<Process>({
-  selectId: (process: Process) => process.id,
+export const adapter: EntityAdapter<File> = createEntityAdapter<File>({
+  selectId: (file: File) => file.fileID,
   sortComparer: false,
 });
 
@@ -37,19 +38,20 @@ export const adapter: EntityAdapter<Process> = createEntityAdapter<Process>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  error: ''
+  error: false,
+  errorMessage: null
 });
 
-export function reducer(state = initialState, action: ProcessActions): State {
+export function reducer(state = initialState, action: InputsActions): State {
   switch (action.type) {
 
-    case ProcessActionTypes.Load:
+    case InputsActionTypes.LoadInputs:
       return {
         ...state,
         loading: true,
       };
 
-    case ProcessActionTypes.LoadSuccess:
+    case InputsActionTypes.LoadInputsSuccess:
       return {
         /**
          * The addMany function provided by the created adapter
@@ -60,15 +62,17 @@ export function reducer(state = initialState, action: ProcessActions): State {
          */
         ...adapter.addMany(action.payload, state),
         loading: false,
-        loaded: true
+        loaded: true,
+        error: false
       };
 
-    case ProcessActionTypes.LoadFail:
+    case InputsActionTypes.LoadInputsFail:
       return {
         ...state,
         loading: false,
         loaded: false,
-        error: action.payload
+        error: false,
+        errorMessage: action.payload.message
       }
 
     default:

@@ -17,15 +17,17 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { Process } from '../models/process.model';
+import { File, Files } from '../../core/models/file.model';
+import { InputService } from '../../core/services/inputs.service';
 import { ProcessService } from '../../core/services/process.service';
 import {
-  ProcessActionTypes,
-  ProcessActions,
-  Load,
-  LoadSuccess,
-  LoadFail
-} from '../actions/process.actions';
+  InputsActionTypes,
+  InputsActions,
+  LoadInputs,
+  LoadInputsSuccess,
+  LoadInputsFail
+} from '../actions/inputs.actions';
+import { ApiStartResponse } from '../../core/models/api-responses.model';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -39,24 +41,23 @@ import {
  */
 
 @Injectable()
-export class ProcessEffects {
+export class InputsEffects {
   constructor(
     private actions$: Actions,
-    private processes: ProcessService,
+    private inputs: InputService,
+    private processes: ProcessService
   ) { }
 
   @Effect()
   search$: Observable<Action> = this.actions$.pipe(
-    ofType<Load>(ProcessActionTypes.Load),
-    switchMap(query => {
-      return this.processes
+    ofType<LoadInputs>(InputsActionTypes.LoadInputs),
+    switchMap(action => {
+      return this.inputs
         .query()
         .pipe(
-          map((processes: Process[]) => new LoadSuccess(processes)),
-          catchError(err => of(new LoadFail(err)))
+          map((files: Files) => new LoadInputsSuccess(files)),
+          catchError(err => of(new LoadInputsFail(err)))
         );
     })
   );
-
 }
-

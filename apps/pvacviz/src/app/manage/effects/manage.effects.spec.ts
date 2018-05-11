@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs/Observable';
 
-import { ProcessEffects } from './process.effects';
+import { ProcessEffects } from './manage.effects';
 
 describe('ProcessesService', () => {
   let actions$: Observable<any>;

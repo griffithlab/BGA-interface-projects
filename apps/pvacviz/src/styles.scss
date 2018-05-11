@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+// You can add global styles to this file, and also import other style files
+
+// table cells with action buttons look better w/o padding
+.datagrid-cell {
+  &.row-actions {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+}

@@ -1,8 +1,11 @@
 export interface File {
+  readonly fileID: number;
+  readonly type: string;
   readonly description: string;
   readonly display_name: string;
-  readonly fileID: number;
   readonly url: string;
   readonly rows?: number;
   readonly size?: number;
 }
+
+export interface Files extends Array<File> { };

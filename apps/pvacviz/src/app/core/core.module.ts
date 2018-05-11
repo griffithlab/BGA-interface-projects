@@ -6,6 +6,7 @@ import { LayoutComponent } from './containers/layout/layout.component';
 import { NotFoundComponent } from './containers/not-found/not-found.component';
 
 import { ProcessService } from './services/process.service';
+import { InputService } from './services/inputs.service';
 
 export const COMPONENTS = [
   LayoutComponent,
@@ -18,7 +19,10 @@ export const COMPONENTS = [
     RouterModule,
     ClarityModule
   ],
-  providers: [ProcessService],
+  providers: [
+    ProcessService,
+    InputService
+  ],
   declarations: COMPONENTS,
   exports: COMPONENTS
 })

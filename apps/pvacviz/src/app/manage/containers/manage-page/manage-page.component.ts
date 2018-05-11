@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Process } from '../../models/process.model';
+import { Process } from '../../../core/models/process.model';
 import { Observable } from 'rxjs/Observable';
 
-import * as processes from '../../actions/process.actions';
+import * as processes from '../../actions/manage.actions';
 import * as fromProcesses from '../../reducers';
 
 @Component({

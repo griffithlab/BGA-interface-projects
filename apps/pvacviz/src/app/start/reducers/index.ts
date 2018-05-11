@@ -1,22 +1,21 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromNgrxRouter from '@ngrx/router-store';
-
-import * as fromManage from './manage.reducer';
+import * as fromInputs from './inputs.reducer';
+import * as fromStart from './start.reducer';
 import * as fromRoot from '../../reducers';
-import { RouterStateUrl } from '../../core/models/router.model';
 
-export interface ManageState {
-  processes: fromManage.State;
+export interface StartState {
+  inputs: fromInputs.State;
+  post: fromStart.State;
 }
 
 export interface State extends fromRoot.State {
-  processes: ManageState;
+  start: StartState;
 }
 
 export const reducers = {
-  processes: fromManage.reducer
+  inputs: fromInputs.reducer,
+  post: fromStart.reducer
 }
-
 
 /**
  * A selector function is a map function factory. We pass it parameters and it
@@ -34,13 +33,12 @@ export const reducers = {
  * ```
  */
 
-export const getRouterState = createFeatureSelector<fromNgrxRouter.RouterReducerState<RouterStateUrl>>('router');
-
 /**
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
-export const getManageState = createFeatureSelector<ManageState>('processes');
+
+export const getStartState = createFeatureSelector<StartState>('start');
 
 /**
  * Every reducer module exports selector functions, however child reducers
@@ -51,9 +49,15 @@ export const getManageState = createFeatureSelector<ManageState>('processes');
  * only recompute when arguments change. The created selectors can also be composed
  * together to select different pieces of state.
  */
-export const getProcessEntitiesState = createSelector(
-  getManageState,
-  state => state.processes
+
+export const getInputsState = createSelector(
+  getStartState,
+  state => state.inputs
+);
+
+export const getPostState = createSelector(
+  getStartState,
+  state => state.post
 );
 
 /**
@@ -64,18 +68,8 @@ export const getProcessEntitiesState = createSelector(
  * the total number of records. This reduces boilerplate
  * in selecting records from the entity state.
  */
+
 export const {
-  selectEntities: getProcesses,
-  selectAll: getAllProcesses,
-} = fromManage.adapter.getSelectors(getProcessEntitiesState);
-
-export const getRouteProcessId = createSelector(
-  getRouterState,
-  router => router.state.params.processId
-)
-
-export const getSelectedProcess = createSelector(
-  getProcesses,
-  getRouteProcessId,
-  (processes, processId) => { return processes[processId]; }
-);
+  selectEntities: getInputs,
+  selectAll: getAllInputs,
+} = fromInputs.adapter.getSelectors(getInputsState);

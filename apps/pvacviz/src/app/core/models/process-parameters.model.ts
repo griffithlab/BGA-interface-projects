@@ -1,0 +1,34 @@
+export interface ProcessParameters {
+  'input': number;
+  'samplename': string;
+  'alleles': string;
+  'prediction_algorithms': string;
+  'epitope_lengths': string;
+  'peptide_sequence_length': string;
+  'gene_expn_file': number;
+  'transcript_expn_file': number,
+  'normal_snvs_coverage_file': number;
+  'normal_indels_coverage_file': number;
+  'tdna_snvs_coverage_file': number;
+  'tdna_indels_coverage_file': number;
+  'trna_snvs_coverage_file': number;
+  'trna_indels_coverage_file': number;
+  'net_chop_method': string;
+  'net_chop_threshold': string;
+  'netmhc_stab': string;
+  'top_result_per_mutation': string;
+  'top_score_metric': string;
+  'binding_threshold': string;
+  'minimum_fold_change': string;
+  'expn_val': string;
+  'normal_cov': string;
+  'tdna_cov': string;
+  'trna_cov': string;
+  'normal_vaf': string;
+  'tdna_vaf': string;
+  'trna_vaf': string;
+  'fasta_size': string;
+  'iedb_retries': string;
+  'downstream_sequence_length': string;
+  'keep_tmp_files': string;
+};

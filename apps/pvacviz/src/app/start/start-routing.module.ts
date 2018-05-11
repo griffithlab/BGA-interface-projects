@@ -3,7 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { StartPageComponent } from './containers/start-page/start-page.component';
 
 const routes: Routes = [
-  { path: '', component: StartPageComponent },
+  {
+    path: '',
+    component: StartPageComponent,
+  },
 ];
 
 @NgModule({
