@@ -30,6 +30,7 @@ export class StartPageComponent implements OnInit {
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;
   postError$: Observable<boolean>;
+  newProcessId$: Observable<number>;
 
   netChopMethodOptions;
   topScoreMetricOptions;
@@ -44,6 +45,7 @@ export class StartPageComponent implements OnInit {
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
     this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
+    this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
     this.netChopMethodOptions = [
       { label: 'C term 3.0', value: 'cterm' },
@@ -100,8 +102,6 @@ export class StartPageComponent implements OnInit {
   }
 
   onSubmit(startParameters): void {
-    console.log('startForm onSubmit() called; Parameters:');
-    console.log(startParameters);
     this.store.dispatch(new fromStartActions.StartProcess(startParameters));
   }
 }

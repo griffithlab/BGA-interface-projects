@@ -11,11 +11,11 @@
       <label for="inputVcf" class="required">Input VCF</label>
       <div class="select">
         <select id="inputVcf" name="inputVcf" formControlName="input">
-          <ng-container [ngSwitch]="(inputs$ | async)?.length > 0" >
-            <ng-container *ngSwitchCase="true" >
+          <ng-container [ngSwitch]="(inputs$ | async)?.length > 0">
+            <ng-container *ngSwitchCase="true">
               <option value="null">Please select input VCF file</option>
             </ng-container>
-            <ng-container *ngSwitchCase="false" >
+            <ng-container *ngSwitchCase="false">
               <option value="null">No files found in input directory.</option>
             </ng-container>
           </ng-container>
@@ -237,19 +237,54 @@
       <label for="force">Bypass duplicate process check</label>
       <clr-checkbox formControlName="force"></clr-checkbox>
     </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <button class="btn btn-block" [ngClass]="{'btn-primary': (postError$ | async) == false, 'btn-warning': (postError$ | async) == true}" type="submit" [disabled]="startForm.invalid">
+          <!-- default play icon -->
+          <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
+          <!-- spinner while submitting -->
+          <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
+          <!-- successful submit -->
+          <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
+          <!-- submit error -->
+          <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
+          Submit Process
+        </button>
+      </div>
+      <div class="col-sm-9">
+        <!-- form incomplete -->
+        <clr-alert [clrAlertType]="'warning'"
+                   [clrAlertClosable]="false"
+                   *ngIf="startForm.dirty && startForm.invalid">
+          <div class="alert-item">
+            <span class="alert-text">
+              To submit, please ensure that all required fields are properly specified.
+            </span>
+          </div>
+        </clr-alert>
 
-    <button class="btn btn-primary" type="submit" [disabled]="startForm.invalid">
-      <!-- default play icon -->
-      <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
-      <!-- spinner while submitting -->
-      <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
-      <!-- successful submit -->
-      <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
-      <!-- submit error -->
-      <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
-      Submit Process
-    </button>
-    <span>{{postMessage$ | async}}</span>
-    <p *ngIf="startForm.dirty && startForm.invalid">Submit disabled - please ensure that all required fields are specified.</p>
+        <!-- submit error -->
+        <clr-alert [clrAlertType]="'danger'"
+                   [clrAlertClosable]="false"
+                   *ngIf="(postError$ | async) === true">
+          <div class="alert-item">
+            <span class="alert-text">
+              {{postMessage$ | async}}
+            </span>
+          </div>
+        </clr-alert>
+
+        <!-- submit success -->
+        <clr-alert [clrAlertType]="'success'"
+                   [clrAlertClosable]="false"
+                   *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
+          <div class="alert-item">
+            <span class="alert-text">
+              Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.
+            </span>
+          </div>
+        </clr-alert>
+      </div>
+    </div>
   </section>
 </form>
