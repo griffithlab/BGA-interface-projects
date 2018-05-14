@@ -79,3 +79,8 @@ export const getSelectedProcess = createSelector(
   getRouteProcessId,
   (processes, processId) => { return processes[processId]; }
 );
+
+export const getSelectedProcessLog = createSelector(
+  getSelectedProcess,
+  (process) => { return Boolean(process) ? process.log : undefined; }
+);
