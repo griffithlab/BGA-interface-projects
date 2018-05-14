@@ -6,10 +6,10 @@
         Log
       </div>
       <div class="card-block">
-        <div class="card-text">
-          <pre style="white-space: pre-wrap" >
-            {{ (processLog$ | async) | json }}
-          </pre>
+        <div class="card-text log">
+          <p *ngFor="let line of processLog$ | async">
+            {{ line }}
+          </p>
         </div>
       </div>
       <div class="card-footer">
