@@ -1,4 +1,5 @@
-<h1>Process Page</h1>
+<h1 class="page-title">Process {{(process$ | async)?.parameters.samplename}}</h1>
+
 
 <pre>
 {{ (process$ | async) | json }}

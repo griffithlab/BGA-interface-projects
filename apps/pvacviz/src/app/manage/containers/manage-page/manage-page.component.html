@@ -1,4 +1,4 @@
-<h2>Processes</h2>
+<h2 class="page-title">Processes</h2>
 <clr-datagrid>
   <clr-dg-column>ID</clr-dg-column>
   <clr-dg-column>Sample Name</clr-dg-column>
@@ -9,7 +9,11 @@
   <clr-dg-row *ngFor="let process of processes$ | async">
     <clr-dg-cell>{{process.id}}</clr-dg-cell>
     <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
-    <clr-dg-cell>{{process.running ? 'Running' : status == 1 ? 'Completed' : 'Stopped' }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span [ngClass]="{'text-primary': process.running === true, 'text-danger': process.running === false && process.status !== 1, 'text-success': process.running === false && process.status === 1 }">
+        {{process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped' }}
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell>{{process.attached}}</clr-dg-cell>
     <clr-dg-cell class="row-actions">
       <a routerLink ="{{process.id}}" role="button" class="btn btn-sm btn-link">Details</a>
