@@ -42,4 +42,15 @@ export class ProcessPageComponent implements OnInit {
     this.store.dispatch(new processes.LoadDetail());
   }
 
+  reload() {
+    this.store.dispatch(new processes.LoadDetail());
+  }
+
+  archive() {
+    this.store.dispatch(new processes.Archive());
+  }
+
+  restart() {
+    console.log('restart process');
+  }
 }

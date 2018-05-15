@@ -29,7 +29,10 @@ import {
   LoadFail,
   LoadDetail,
   LoadDetailSuccess,
-  LoadDetailFail
+  LoadDetailFail,
+  Archive,
+  ArchiveSuccess,
+  ArchiveFail
 } from '../actions/manage.actions';
 
 import * as fromRoot from '../../reducers';
@@ -77,7 +80,6 @@ export class ProcessEffects {
         return router.state.params.processId
       }
     ),
-    tap(id => console.log('processId: ' + id)),
     switchMap(processId => {
       return this.processes
         .get(processId)
@@ -90,4 +92,24 @@ export class ProcessEffects {
     })
   )
 
+  @Effect()
+  archive$: Observable<Action> = this.actions$.pipe(
+    ofType<Archive>(ManageActionTypes.Archive),
+    withLatestFrom(
+      this.store.select(getRouterState),
+      (action, router) => {
+        return router.state.params.processId
+      }
+    ),
+    switchMap(processId => {
+      return this.processes
+        .archive(processId)
+        .pipe(
+          map((message: string) => {
+            return new ArchiveSuccess(message)
+          }),
+          catchError(err => of(new ArchiveFail(err)))
+        )
+    })
+  )
 }

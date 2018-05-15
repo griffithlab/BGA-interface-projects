@@ -1,4 +1,12 @@
-<h3>Start Process</h3>
+<div class="page-header">
+  <div class="row">
+    <div class="col-xs-8">
+      <h3 class="page-title">
+        Start Process
+      </h3>
+    </div>
+  </div>
+</div>
 <form class="form compact" [formGroup]="startForm" (ngSubmit)="onSubmit(startForm.value)">
   <section class="form-block">
     <label>Inputs, Alleles, and Algorithms</label>
@@ -254,8 +262,8 @@
       <div class="col-sm-9">
         <!-- form incomplete -->
         <clr-alert [clrAlertType]="'warning'"
-                   [clrAlertClosable]="false"
-                   *ngIf="startForm.dirty && startForm.invalid">
+          [clrAlertClosable]="false"
+          *ngIf="startForm.dirty && startForm.invalid">
           <div class="alert-item">
             <span class="alert-text">
               To submit, please ensure that all required fields are properly specified.
@@ -265,8 +273,8 @@
 
         <!-- submit error -->
         <clr-alert [clrAlertType]="'danger'"
-                   [clrAlertClosable]="false"
-                   *ngIf="(postError$ | async) === true">
+          [clrAlertClosable]="false"
+          *ngIf="(postError$ | async) === true">
           <div class="alert-item">
             <span class="alert-text">
               {{postMessage$ | async}}
@@ -276,8 +284,8 @@
 
         <!-- submit success -->
         <clr-alert [clrAlertType]="'success'"
-                   [clrAlertClosable]="false"
-                   *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
+          [clrAlertClosable]="false"
+          *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
           <div class="alert-item">
             <span class="alert-text">
               Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.

@@ -7,22 +7,52 @@
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
-      <button class="btn btn-sm">
+      <button class="btn btn-sm" (click)="reload()">
         Reload
       </button>
-      <button class="btn btn-sm">
+      <button class="btn btn-sm" (click)="archive()">
         Archive
       </button>
-      <button class="btn btn-sm">
+      <button class="btn btn-sm" (click)="restart()">
         Restart
       </button>
     </div>
   </div>
 </div>
-<div class="status-bar" [ngClass]="status$ | async | lowercase">
+<div class="status-bar">
   <div class="row">
-    <div class="col-xs-4">
-      <span class="p4 status">{{(status$ | async)}}</span>
+    <div class="col-xs-12">
+      <!-- Running -->
+      <clr-alert [clrAlertType]="'info'"
+        [clrAlertClosable]="false"
+        *ngIf="(status$ | async) === 'Running'">
+        <div class="alert-item">
+          <span class="alert-text">
+            Runnning
+          </span>
+        </div>
+      </clr-alert>
+      <!-- Completed -->
+      <clr-alert [clrAlertType]="'success'"
+        [clrAlertClosable]="false"
+        *ngIf="(status$ | async) === 'Completed'">
+        <div class="alert-item">
+          <span class="alert-text">
+            Completed
+          </span>
+        </div>
+      </clr-alert>
+      <!-- Stopped -->
+      <clr-alert [clrAlertType]="'danger'"
+        [clrAlertClosable]="false"
+        *ngIf="(status$ | async) === 'Stopped'">
+        <div class="alert-item">
+          <span class="alert-text">
+            {{(process$ | async)?.last_message}}
+          </span>
+        </div>
+      </clr-alert>
+
     </div>
   </div>
 </div>
@@ -86,7 +116,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-6" >
+          <div class="col-xs-6">
             <p class="p4 param-label">Epitope Lengths</p>
             <p class="p3 param-value">
               <span *ngFor="let length of epitope_lengths$ | async; let last = last">
@@ -95,7 +125,7 @@
             </p>
           </div>
 
-          <div class="col-xs-6" >
+          <div class="col-xs-6">
             <p class="p4 param-label">Peptide Seq. Len.</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.peptide_sequence_length}}
@@ -104,13 +134,13 @@
         </div>
 
         <div class="row" *ngIf="!!(parameters$ | async)?.net_chop_method">
-          <div class="col-xs-6" >
+          <div class="col-xs-6">
             <p class="p4 param-label">Netchop Method</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.net_chop_method}}
             </p>
           </div>
-          <div class="col-xs-6" >
+          <div class="col-xs-6">
             <p class="p4 param-label">Threshold</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.net_chop_threshold}}
@@ -119,7 +149,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">NetMHC Stabpan</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.netmhc_stab}}
@@ -128,7 +158,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Top Result per Mutation</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.top_result_per_mutation}}
@@ -137,7 +167,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Top Score Metric</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.top_score_metric}}
@@ -146,7 +176,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Minimum Fold Change</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.minimum_fold_change}}
@@ -155,7 +185,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Expression Value</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.expn_val}}
@@ -164,7 +194,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Normal Coverage Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.normal_cov}}
@@ -173,7 +203,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">TDNA Coverage Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.tdna_cov}}
@@ -182,7 +212,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">TRNA Coverage Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.trna_cov}}
@@ -191,7 +221,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Normal VAF Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.normal_vaf}}
@@ -200,7 +230,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">TDNA VAF Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.tdna_vaf}}
@@ -209,7 +239,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">TRNA VAF Cutoff</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.trna_vaf}}
@@ -218,7 +248,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">FASTA Size</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.fasta_size}}
@@ -227,7 +257,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">IEDB Retries</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.iedb_retries}}
@@ -236,7 +266,7 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12" >
+          <div class="col-xs-12">
             <p class="p4 param-label">Keep Temp. Files</p>
             <p class="p3 param-value">
               {{(parameters$ | async)?.keep_tmp_files}}

@@ -9,6 +9,10 @@ export enum ManageActionTypes {
   LoadDetail = '[Manage] Load Process Detail',
   LoadDetailSuccess = '[Manage] Load Process Detail Success',
   LoadDetailFail = '[Manage] Load Process Detail Fail',
+
+  Archive = '[Manage] Archive Process',
+  ArchiveSuccess = '[Manage] Archive Process Success',
+  ArchiveFail = '[Manage] Archive Process Fail'
 }
 
 /**
@@ -54,10 +58,29 @@ export class LoadDetailFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class Archive implements Action {
+  readonly type = ManageActionTypes.Archive;
+
+  constructor() { }
+}
+
+export class ArchiveSuccess implements Action {
+  readonly type = ManageActionTypes.ArchiveSuccess;
+
+  constructor(public payload: any) { }
+}
+
+export class ArchiveFail implements Action {
+  readonly type = ManageActionTypes.ArchiveFail;
+
+  constructor(public payload: any) { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
 export type ManageActions =
   Load | LoadSuccess | LoadFail
-  | LoadDetail | LoadDetailSuccess | LoadDetailFail;
+  | LoadDetail | LoadDetailSuccess | LoadDetailFail
+  | Archive | ArchiveSuccess | ArchiveFail;
