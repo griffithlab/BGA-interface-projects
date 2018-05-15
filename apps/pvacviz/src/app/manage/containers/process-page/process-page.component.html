@@ -18,7 +18,13 @@
       </button>
     </div>
   </div>
-
+</div>
+<div class="status-bar" [ngClass]="status$ | async | lowercase">
+  <div class="row">
+    <div class="col-xs-4">
+      <span class="p4 status">{{(status$ | async)}}</span>
+    </div>
+  </div>
 </div>
 <div class="row">
   <div class="col-xs-4">
@@ -260,7 +266,3 @@
     </div>
   </div>
 </div>
-
-<pre>
-{{ (parameters$ | async) | json }}
-</pre>

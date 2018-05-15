@@ -19,6 +19,7 @@ import * as fromProcesses from '../../reducers';
 export class ProcessPageComponent implements OnInit {
 
   process$: Observable<Process>;
+  status$: Observable<string>;
   log$: Observable<string[]>;
   parameters$: Observable<Parameters>;
   alleles$: Observable<string[]>;
@@ -27,6 +28,9 @@ export class ProcessPageComponent implements OnInit {
 
   constructor(private store: Store<fromProcesses.State>) {
     this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
+    this.status$ = this.process$.pipe(filter(val => !!val), map((process) => {
+      return process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped';
+    }));
     this.parameters$ = this.process$.pipe(filter(val => !!val), map(process => process.parameters));
     this.log$ = this.process$.pipe(filter(val => !!val), map(process => process.log));
     this.alleles$ = this.parameters$.pipe(filter(val => !!val), map(params => params.alleles));

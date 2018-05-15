@@ -1,3 +1,42 @@
+$running: #A3EDF6;
+$stopped: #FFB38F;
+$completed: #C7E59C;
+
+.status-bar {
+  margin-left: -24px;
+  margin-right: -24px;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  &.running {
+    background-color: $running;
+    border-bottom: 1px solid darken($running, 25%);
+
+    .status {
+      color: darken($running, 50%);
+    }
+  }
+
+  &.stopped {
+    background-color: $stopped;
+    border-bottom: 1px solid darken($stopped, 25%);
+
+    .status {
+      color: darken($stopped, 50%);
+    }
+  }
+
+  &.completed {
+    background-color: $completed;
+    border-bottom: 1px solid darken($completed, 25%);
+
+    .status {
+      color: darken($completed, 50%);
+    }
+  }
+
+}
+
 .log {
   p {
     font-family: Consolas, Monaco, Courier, monospace;
@@ -15,6 +54,7 @@
   }
 
   .param-value {
-    margin-top: -.25rem;
+    margin-top: -.2rem;
+    line-height: .8rem;
   }
 }
