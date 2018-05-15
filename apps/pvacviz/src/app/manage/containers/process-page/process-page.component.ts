@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Process } from '../../../core/models/process.model';
+import { Parameters } from '../../../core/models/parameters.model';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
@@ -18,13 +19,15 @@ import * as fromProcesses from '../../reducers';
 export class ProcessPageComponent implements OnInit {
 
   process$: Observable<Process>;
-  processLog$: Observable<string[]>;
-  logLastUpdated$: Observable<string>;
+  log$: Observable<string[]>;
+  parameters$: Observable<Parameters>;
+  alleles$: Observable<any>;
 
   constructor(private store: Store<fromProcesses.State>) {
-    // TODO: integrate router and get id from state params
     this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
-    this.processLog$ = store.pipe(select(fromProcesses.getSelectedProcessLog));
+    this.log$ = store.pipe(select(fromProcesses.getSelectedProcessLog));
+    this.parameters$ = store.pipe(select(fromProcesses.getSelectedProcessParameters));
+    this.alleles$ = this.parameters$.map(params => params.alleles);
   }
 
   ngOnInit() {

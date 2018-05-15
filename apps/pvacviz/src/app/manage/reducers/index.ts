@@ -84,3 +84,8 @@ export const getSelectedProcessLog = createSelector(
   getSelectedProcess,
   (process) => { return Boolean(process) ? process.log : undefined; }
 );
+
+export const getSelectedProcessParameters = createSelector(
+  getSelectedProcess,
+  (process) => { return Boolean(process) ? process.parameters : undefined; }
+);
