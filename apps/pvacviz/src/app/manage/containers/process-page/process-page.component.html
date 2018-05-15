@@ -1,9 +1,49 @@
-<h1 class="page-title">Process {{(process$ | async)?.parameters.samplename}}</h1>
+<div class="page-header">
+  <div class="row">
+    <div class="col-xs-8">
+      <h3 class="page-title">
+        <span class="page-type">Process</span>
+        <span class="page-entity">{{(process$ | async)?.parameters.samplename}}</span>
+        <span class="p5">&nbsp;&nbsp;Updated a few seconds ago</span>
+      </h3>
+    </div>
+    <div class="col-xs-4 text-right page-buttons">
+      <button class="btn btn-sm">
+        Reload
+      </button>
+      <button class="btn btn-sm">
+        Archive
+      </button>
+      <button class="btn btn-sm">
+        Restart
+      </button>
+    </div>
+  </div>
+
+</div>
 <div class="row">
-  <div class="col-sm-9">
+  <div class="col-xs-4">
     <div class="card">
       <div class="card-header">
-        Log
+        <div class="row">
+          <div class="col-xs-6">
+            Parameters
+          </div>
+        </div>
+      </div>
+      <div class="card-block">
+        Parameters table
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-xs-6">
+            Log
+          </div>
+        </div>
       </div>
       <div class="card-block">
         <div class="card-text log">
@@ -11,10 +51,6 @@
             {{ line }}
           </p>
         </div>
-      </div>
-      <div class="card-footer">
-        <button class="btn btn-sm btn-link">Footer Action 1</button>
-        <button class="btn btn-sm btn-link">Footer Action 2</button>
       </div>
     </div>
   </div>

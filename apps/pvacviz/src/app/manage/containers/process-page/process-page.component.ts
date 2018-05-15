@@ -18,7 +18,9 @@ import * as fromProcesses from '../../reducers';
 export class ProcessPageComponent implements OnInit {
 
   process$: Observable<Process>;
-  processLog$: Observable<string[]>
+  processLog$: Observable<string[]>;
+  logLastUpdated$: Observable<string>;
+
   constructor(private store: Store<fromProcesses.State>) {
     // TODO: integrate router and get id from state params
     this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
