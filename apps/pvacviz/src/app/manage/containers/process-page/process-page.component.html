@@ -36,7 +36,7 @@
           Alleles
         </p>
         <p class="p3">
-          <span *ngFor="let allele of alleles$ | async; let l = last">
+          <span *ngFor="let allele of alleles$ | async; let last = last">
             {{allele}}{{last ? '':', '}}
           </span>
         </p>
