@@ -25,9 +25,9 @@ export class ProcessPageComponent implements OnInit {
 
   constructor(private store: Store<fromProcesses.State>) {
     this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
-    this.log$ = store.pipe(select(fromProcesses.getSelectedProcessLog));
-    this.parameters$ = store.pipe(select(fromProcesses.getSelectedProcessParameters));
-    this.alleles$ = this.parameters$.map(params => params.alleles);
+    this.parameters$ = this.process$.pipe(filter(val => !!val), map(process => process.parameters));
+    this.log$ = this.process$.pipe(filter(val => !!val), map(process => process.log));
+    this.alleles$ = this.parameters$.pipe(filter(val => !!val), map(params => params.alleles));
   }
 
   ngOnInit() {

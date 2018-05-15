@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="card-block">
+      <div class="card-block parameters">
         <p class="p4" >
           Alleles
         </p>
@@ -52,9 +52,9 @@
           </div>
         </div>
       </div>
-      <div class="card-block">
-        <div class="card-text log">
-          <p *ngFor="let line of Log$ | async">
+      <div class="card-block log">
+        <div class="card-text">
+          <p *ngFor="let line of log$ | async">
             {{ line }}
           </p>
         </div>
