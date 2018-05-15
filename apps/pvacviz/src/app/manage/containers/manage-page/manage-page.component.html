@@ -6,7 +6,7 @@
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
-      <button class="btn btn-sm">
+      <button class="btn btn-sm" (click)="reload()">
         Reload
       </button>
     </div>
@@ -23,7 +23,7 @@
     <clr-dg-cell>{{process.id}}</clr-dg-cell>
     <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
     <clr-dg-cell>
-      <span [ngClass]="{'text-primary': process.running === true, 'text-danger': process.running === false && process.status !== 1, 'text-success': process.running === false && process.status === 1 }">
+      <span class="label" [ngClass]="{'label-info': process.running === true, 'label-danger': process.running === false && process.status !== 1, 'label-success': process.running === false && process.status === 1 }">
         {{process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped' }}
       </span>
     </clr-dg-cell>
