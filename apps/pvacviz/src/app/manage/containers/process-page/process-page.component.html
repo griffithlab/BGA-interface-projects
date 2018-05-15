@@ -4,7 +4,6 @@
       <h3 class="page-title">
         <span class="page-type">Process</span>
         <span class="page-entity">{{(parameters$ | async)?.samplename}}</span>
-        <span class="p5">&nbsp;&nbsp;Updated a few seconds ago</span>
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
@@ -32,14 +31,212 @@
         </div>
       </div>
       <div class="card-block parameters">
-        <p class="p4" >
-          Alleles
-        </p>
-        <p class="p3">
-          <span *ngFor="let allele of alleles$ | async; let last = last">
-            {{allele}}{{last ? '':', '}}
-          </span>
-        </p>
+        <div class="row">
+          <div class="col-xs-12">
+            <p class="p4 param-label">
+              Sample Name
+            </p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.samplename}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p class="p4 param-label">
+              Input
+            </p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.input}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p class="p4 param-label">
+              Alleles
+            </p>
+            <p class="p3 param-value">
+              <span *ngFor="let allele of alleles$ | async; let last = last">
+              {{allele}}{{last ? '':', '}}
+            </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <p class="p4 param-label">
+              Prediction Algorithms
+            </p>
+            <p class="p3 param-value">
+              <span *ngFor="let algorithm of prediction_algorithms$ | async; let last = last">
+              {{algorithm}}{{last ? '':', '}}
+            </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6" >
+            <p class="p4 param-label">Epitope Lengths</p>
+            <p class="p3 param-value">
+              <span *ngFor="let length of epitope_lengths$ | async; let last = last">
+                {{length}}{{last ? '':', '}}
+              </span>
+            </p>
+          </div>
+
+          <div class="col-xs-6" >
+            <p class="p4 param-label">Peptide Seq. Len.</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.peptide_sequence_length}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!!(parameters$ | async)?.net_chop_method">
+          <div class="col-xs-6" >
+            <p class="p4 param-label">Netchop Method</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.net_chop_method}}
+            </p>
+          </div>
+          <div class="col-xs-6" >
+            <p class="p4 param-label">Threshold</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.net_chop_threshold}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">NetMHC Stabpan</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.netmhc_stab}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Top Result per Mutation</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.top_result_per_mutation}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Top Score Metric</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.top_score_metric}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Minimum Fold Change</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.minimum_fold_change}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Expression Value</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.expn_val}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Normal Coverage Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.normal_cov}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">TDNA Coverage Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.tdna_cov}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">TRNA Coverage Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.trna_cov}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Normal VAF Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.normal_vaf}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">TDNA VAF Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.tdna_vaf}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">TRNA VAF Cutoff</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.trna_vaf}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">FASTA Size</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.fasta_size}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">IEDB Retries</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.iedb_retries}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12" >
+            <p class="p4 param-label">Keep Temp. Files</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.keep_tmp_files}}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -49,6 +246,7 @@
         <div class="row">
           <div class="col-xs-6">
             Log
+            <span class="p5">&nbsp;&nbsp;Updated {{ (process$ | async)?.log_updated_at | amFromUnix | amTimeAgo }}</span>
           </div>
         </div>
       </div>

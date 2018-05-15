@@ -21,13 +21,17 @@ export class ProcessPageComponent implements OnInit {
   process$: Observable<Process>;
   log$: Observable<string[]>;
   parameters$: Observable<Parameters>;
-  alleles$: Observable<any>;
+  alleles$: Observable<string[]>;
+  epitope_lengths$: Observable<number[]>;
+  prediction_algorithms$: Observable<string[]>;
 
   constructor(private store: Store<fromProcesses.State>) {
     this.process$ = store.pipe(select(fromProcesses.getSelectedProcess));
     this.parameters$ = this.process$.pipe(filter(val => !!val), map(process => process.parameters));
     this.log$ = this.process$.pipe(filter(val => !!val), map(process => process.log));
     this.alleles$ = this.parameters$.pipe(filter(val => !!val), map(params => params.alleles));
+    this.epitope_lengths$ = this.parameters$.pipe(filter(val => !!val), map(params => params.epitope_lengths));
+    this.prediction_algorithms$ = this.parameters$.pipe(filter(val => !!val), map(params => params.prediction_algorithms));
   }
 
   ngOnInit() {
