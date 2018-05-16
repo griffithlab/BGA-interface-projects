@@ -11,6 +11,7 @@ import { reducers } from './reducers';
 
 import { ManagePageComponent } from './containers/manage-page/manage-page.component';
 import { ProcessPageComponent } from './containers/process-page/process-page.component';
+import { ProcessTableComponent } from './components/process-table/process-table.component';
 
 @NgModule({
   imports: [
@@ -36,6 +37,6 @@ import { ProcessPageComponent } from './containers/process-page/process-page.com
      */
     EffectsModule.forFeature([ProcessEffects])
   ],
-  declarations: [ManagePageComponent, ProcessPageComponent]
+  declarations: [ManagePageComponent, ProcessPageComponent, ProcessTableComponent]
 })
 export class ManageModule { }

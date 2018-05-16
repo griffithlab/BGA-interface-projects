@@ -15,32 +15,7 @@
 <div class="page-content">
   <div class="row">
     <div class="col-xs-12">
-      <clr-datagrid class="processes-table">
-        <clr-dg-column [clrDgField]="'process.id'">ID</clr-dg-column>
-        <clr-dg-column>Status</clr-dg-column>
-        <clr-dg-column [clrDgField]="'process.parameters.samplename'">Sample Name</clr-dg-column>
-        <clr-dg-column>Input File</clr-dg-column>
-        <clr-dg-column>Attached</clr-dg-column>
-        <clr-dg-column>&nbsp;</clr-dg-column>
-
-        <clr-dg-row *clrDgItems="let process of processes$ | async">
-          <clr-dg-cell>{{process.id}}</clr-dg-cell>
-          <clr-dg-cell>
-            <span class="label" [ngClass]="{'label-info': process.running === true, 'label-danger': process.running === false && process.status !== 1, 'label-success': process.running === false && process.status === 1 }">
-              {{process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped' }}
-            </span>
-          </clr-dg-cell>
-          <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
-          <clr-dg-cell>{{process.parameters.input.split('/').slice(-2).join('/')}}</clr-dg-cell>
-          <clr-dg-cell>{{process.attached}}</clr-dg-cell>
-          <clr-dg-cell class="row-actions">
-            <a (click)="archive(process.id)" role="button" class="btn btn-sm">Archive</a>
-            <a routerLink="{{process.id}}" role="button" class="btn btn-sm">Details</a>
-          </clr-dg-cell>
-        </clr-dg-row>
-
-        <clr-dg-footer></clr-dg-footer>
-      </clr-datagrid>
+      <pvz-process-table [processes]="processes$ | async"></pvz-process-table>
     </div>
   </div>
 </div>
