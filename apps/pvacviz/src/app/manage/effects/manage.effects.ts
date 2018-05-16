@@ -91,6 +91,7 @@ export class ProcessEffects {
         )
     })
   )
+
   // if action payload contains a processId, it is used
   // otherwise the router state processId is used.
   @Effect()
@@ -102,8 +103,8 @@ export class ProcessEffects {
         return [action.payload, router.state.params.processId]
       }
     ),
-    switchMap((payloadId, routeId) => {
-      const processId = payloadId ? payloadId : routeId;
+    switchMap((payloadProcessId, routeProcessId) => {
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
       return this.processes
         .archive(processId)
         .pipe(

@@ -10,9 +10,6 @@
       <button class="btn btn-sm" (click)="reload()">
         Reload
       </button>
-      <button class="btn btn-sm" (click)="archive()">
-        Archive
-      </button>
       <button class="btn btn-sm" (click)="restart()">
         Restart
       </button>
@@ -28,7 +25,7 @@
         *ngIf="(status$ | async) === 'Running'">
         <div class="alert-item">
           <span class="alert-text">
-            Runnning
+            <strong>Runnning:</strong> {{(process$ | async)?.last_message}}
           </span>
         </div>
       </clr-alert>
@@ -38,7 +35,7 @@
         *ngIf="(status$ | async) === 'Completed'">
         <div class="alert-item">
           <span class="alert-text">
-            Completed
+            <strong>Completed:</strong> {{(process$ | async)?.last_message}}
           </span>
         </div>
       </clr-alert>
@@ -48,7 +45,7 @@
         *ngIf="(status$ | async) === 'Stopped'">
         <div class="alert-item">
           <span class="alert-text">
-            {{(process$ | async)?.last_message}}
+            <strong>Stopped:</strong> {{(process$ | async)?.last_message}}
           </span>
         </div>
       </clr-alert>

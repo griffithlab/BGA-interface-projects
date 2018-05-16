@@ -61,7 +61,7 @@ export class LoadDetailFail implements Action {
 export class Archive implements Action {
   readonly type = ManageActionTypes.Archive;
 
-  constructor() { }
+  constructor(public payload?: number) { }
 }
 
 export class ArchiveSuccess implements Action {
