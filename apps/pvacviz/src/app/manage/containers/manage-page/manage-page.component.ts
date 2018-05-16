@@ -18,9 +18,20 @@ import * as fromProcesses from '../../reducers';
 export class ManagePageComponent implements OnInit {
 
   processes$: Observable<Process[]>;
+  inputFiles$: Observable<string[]>;
 
   constructor(private store: Store<fromProcesses.State>) {
     this.processes$ = store.pipe(select(fromProcesses.getAllProcesses));
+    this.inputFiles$ = this.processes$.pipe(filter(val => !!val), map(
+      (processes) => {
+        return processes.map((process) => {
+          return process.parameters.input
+            .split('/')
+            .slice(-2)
+            .join('/');
+        })
+      }
+    ))
   }
 
   ngOnInit() {

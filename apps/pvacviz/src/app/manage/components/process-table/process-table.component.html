@@ -1,9 +1,9 @@
 <clr-datagrid class="processes-table">
-  <clr-dg-column [clrDgField]="'id'">ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'id'" [clrDgSortOrder]="ascSort">ID</clr-dg-column>
   <clr-dg-column>Status</clr-dg-column>
   <clr-dg-column [clrDgField]="'parameters.samplename'">Sample Name</clr-dg-column>
-  <clr-dg-column>Input File</clr-dg-column>
-  <clr-dg-column>Attached</clr-dg-column>
+  <clr-dg-column [clrDgField]="'parameters.input'">Input File</clr-dg-column>
+  <clr-dg-column [clrDgField]="'attached'">Attached</clr-dg-column>
   <clr-dg-column>&nbsp;</clr-dg-column>
 
   <clr-dg-row *clrDgItems="let process of processes">
@@ -11,7 +11,7 @@
     <clr-dg-cell>
       <span class="label" [ngClass]="{'label-info': process.running === true, 'label-danger': process.running === false && process.status !== 1, 'label-success': process.running === false && process.status === 1 }">
               {{process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped' }}
-            </span>
+      </span>
     </clr-dg-cell>
     <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
     <clr-dg-cell>{{process.parameters.input.split('/').slice(-2).join('/')}}</clr-dg-cell>
@@ -20,6 +20,32 @@
       <a (click)="archive(process.id)" role="button" class="btn btn-sm">Archive</a>
       <a routerLink="{{process.id}}" role="button" class="btn btn-sm">Details</a>
     </clr-dg-cell>
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="onEdit(user)">Edit</button>
+      <button class="action-item" (click)="onDelete(user)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-row-detail *clrIfExpanded>
+      <table class="table table-compact">
+        <tbody>
+          <tr>
+            <td class="right">Alleles</td>
+            <td class="left">
+              <span *ngFor="let allele of process.parameters.alleles; let last = last">
+                {{allele}}{{last ? '':', '}}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class="right">Prediction Algorithms</td>
+            <td class="right">
+              <span *ngFor="let algorithm of process.parameters.prediction_algorithms; let last = last">
+                {{algorithm}}{{last ? '':', '}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </clr-dg-row-detail>
   </clr-dg-row>
 
   <clr-dg-footer></clr-dg-footer>

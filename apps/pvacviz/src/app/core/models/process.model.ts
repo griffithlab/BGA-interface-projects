@@ -15,4 +15,7 @@ export interface Process {
   readonly running: boolean;
   readonly status: number;
   readonly url: string;
+
+  // computed attributes
+  statusString?: string;
 }
