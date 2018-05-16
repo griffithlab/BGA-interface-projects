@@ -1,0 +1,27 @@
+@import '~pvz-variables.scss';
+
+.status-bar {
+  margin-top: 18px;
+}
+
+.log {
+  p {
+    font-family: Consolas, Monaco, Courier, monospace;
+    font-size: 12px;
+    line-height: .75rem;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.parameters {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .param-value {
+    margin-top: -.2rem;
+    line-height: .8rem;
+  }
+}

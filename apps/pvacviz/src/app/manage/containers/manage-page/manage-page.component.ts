@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 
 import { Process } from '../../../core/models/process.model';
 import { Observable } from 'rxjs/Observable';
+import { filter, map } from 'rxjs/operators';
 
 import * as processes from '../../actions/manage.actions';
 import * as fromProcesses from '../../reducers';
@@ -13,6 +14,7 @@ import * as fromProcesses from '../../reducers';
   styleUrls: ['./manage-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class ManagePageComponent implements OnInit {
 
   processes$: Observable<Process[]>;
@@ -25,4 +27,11 @@ export class ManagePageComponent implements OnInit {
     this.store.dispatch(new processes.Load());
   }
 
+  reload() {
+    this.store.dispatch(new processes.Load());
+  }
+
+  archive(id) {
+    this.store.dispatch(new processes.Archive(id));
+  }
 }

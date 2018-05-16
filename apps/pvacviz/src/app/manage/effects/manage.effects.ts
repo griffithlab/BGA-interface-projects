@@ -29,7 +29,10 @@ import {
   LoadFail,
   LoadDetail,
   LoadDetailSuccess,
-  LoadDetailFail
+  LoadDetailFail,
+  Archive,
+  ArchiveSuccess,
+  ArchiveFail
 } from '../actions/manage.actions';
 
 import * as fromRoot from '../../reducers';
@@ -77,7 +80,6 @@ export class ProcessEffects {
         return router.state.params.processId
       }
     ),
-    tap(id => console.log('processId: ' + id)),
     switchMap(processId => {
       return this.processes
         .get(processId)
@@ -90,4 +92,27 @@ export class ProcessEffects {
     })
   )
 
+  // if action payload contains a processId, it is used
+  // otherwise the router state processId is used.
+  @Effect()
+  archive$: Observable<Action> = this.actions$.pipe(
+    ofType<Archive>(ManageActionTypes.Archive),
+    withLatestFrom(
+      this.store.select(getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((payloadProcessId, routeProcessId) => {
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+      return this.processes
+        .archive(processId)
+        .pipe(
+          map((message: string) => {
+            return new ArchiveSuccess(message)
+          }),
+          catchError(err => of(new ArchiveFail(err)))
+        )
+    })
+  )
 }

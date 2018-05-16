@@ -23,6 +23,12 @@ export class ProcessService {
       .pipe(map(process => process || null));
   }
 
+  archive(id): Observable<string> {
+    return this.http
+      .get<string>(`${this.API_PATH}/archive/${id}`)
+      .pipe(map(message => message || null));
+  }
+
   start(processParameters: any): Observable<ApiStartResponse> {
     const httpOptions = {
       headers: new HttpHeaders({

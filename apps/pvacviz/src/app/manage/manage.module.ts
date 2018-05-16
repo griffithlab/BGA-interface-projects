@@ -4,6 +4,8 @@ import { ClarityModule } from '@clr/angular';
 import { ManageRoutingModule } from './manage-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { MomentModule } from 'ngx-moment';
+
 import { ProcessEffects } from './effects/manage.effects';
 import { reducers } from './reducers';
 
@@ -14,6 +16,7 @@ import { ProcessPageComponent } from './containers/process-page/process-page.com
   imports: [
     CommonModule,
     ClarityModule,
+    MomentModule,
     ManageRoutingModule,
     /**
      * StoreModule.forFeature is used for composing state
