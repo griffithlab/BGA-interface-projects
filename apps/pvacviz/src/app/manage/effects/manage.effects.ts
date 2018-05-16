@@ -91,17 +91,19 @@ export class ProcessEffects {
         )
     })
   )
-
+  // if action payload contains a processId, it is used
+  // otherwise the router state processId is used.
   @Effect()
   archive$: Observable<Action> = this.actions$.pipe(
     ofType<Archive>(ManageActionTypes.Archive),
     withLatestFrom(
       this.store.select(getRouterState),
       (action, router) => {
-        return router.state.params.processId
+        return [action.payload, router.state.params.processId]
       }
     ),
-    switchMap(processId => {
+    switchMap((payloadId, routeId) => {
+      const processId = payloadId ? payloadId : routeId;
       return this.processes
         .archive(processId)
         .pipe(
