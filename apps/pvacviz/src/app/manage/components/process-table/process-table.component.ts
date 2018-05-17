@@ -7,7 +7,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Process } from '../../../core/models/process.model';
-import { SortOrder } from '@clr/angular';
+import { SortOrder, ClrDatagridComparatorInterface } from '@clr/angular';
 
 @Component({
   selector: 'pvz-process-table',
@@ -20,6 +20,8 @@ export class ProcessTableComponent implements OnInit {
 
   ascSort;
   descSort;
+
+  private idComparator = new IdComparator();
 
   constructor() {
     this.ascSort = SortOrder.Asc;
@@ -39,4 +41,10 @@ export class ProcessTableComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
   }
 
+}
+
+class IdComparator implements ClrDatagridComparatorInterface<Process> {
+  compare(a: Process, b: Process) {
+    return a.id - b.id;
+  }
 }
