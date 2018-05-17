@@ -6,6 +6,8 @@ export enum ManageActionTypes {
   LoadSuccess = '[Manage] Load Processes Success',
   LoadFail = '[Manage] Load Processes Fail',
 
+  Remove = '[Manage] Remove Process',
+
   LoadDetail = '[Manage] Load Process Detail',
   LoadDetailSuccess = '[Manage] Load Process Detail Success',
   LoadDetailFail = '[Manage] Load Process Detail Fail',
@@ -40,6 +42,12 @@ export class LoadFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class Remove implements Action {
+  readonly type = ManageActionTypes.Remove;
+
+  constructor(public payload: number) { }
+}
+
 export class LoadDetail implements Action {
   readonly type = ManageActionTypes.LoadDetail;
 
@@ -67,7 +75,7 @@ export class Archive implements Action {
 export class ArchiveSuccess implements Action {
   readonly type = ManageActionTypes.ArchiveSuccess;
 
-  constructor(public payload: any) { }
+  constructor(public payload: { id: number, message: any }) { }
 }
 
 export class ArchiveFail implements Action {
@@ -81,6 +89,6 @@ export class ArchiveFail implements Action {
  * so that reducers can easily compose action types
  */
 export type ManageActions =
-  Load | LoadSuccess | LoadFail
+  Load | LoadSuccess | LoadFail | Remove
   | LoadDetail | LoadDetailSuccess | LoadDetailFail
   | Archive | ArchiveSuccess | ArchiveFail;

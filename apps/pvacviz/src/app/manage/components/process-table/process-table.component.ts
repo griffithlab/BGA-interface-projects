@@ -6,8 +6,18 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { Process } from '../../../core/models/process.model';
+
 import { SortOrder, ClrDatagridComparatorInterface } from '@clr/angular';
+
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { filter, map } from 'rxjs/operators';
+
+import { Process } from '../../../core/models/process.model';
+import { Parameters } from '../../../core/models/parameters.model';
+
+import * as processes from '../../actions/manage.actions';
+import * as fromProcesses from '../../reducers';
 
 @Component({
   selector: 'pvz-process-table',
@@ -23,7 +33,7 @@ export class ProcessTableComponent implements OnInit {
 
   private idComparator = new IdComparator();
 
-  constructor() {
+  constructor(private store: Store<fromProcesses.State>) {
     this.ascSort = SortOrder.Asc;
     this.descSort = SortOrder.Desc;
 
@@ -39,6 +49,10 @@ export class ProcessTableComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+  }
+
+  onArchive(processId) {
+    this.store.dispatch(new processes.Archive(processId));
   }
 
 }
