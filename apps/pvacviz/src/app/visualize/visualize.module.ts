@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 // import { VisualizeEffects } from './effects/visualize.effects';
 import { VisualizePageComponent } from './containers/visualize-page/visualize-page.component';
+import { BokehVisualizationComponent } from './components/bokeh-visualization/bokeh-visualization.component';
 
 // import { reducers } from './reducers';
 
@@ -32,6 +33,6 @@ import { VisualizePageComponent } from './containers/visualize-page/visualize-pa
      */
     // EffectsModule.forFeature([ProcessEffects])
   ],
-  declarations: [VisualizePageComponent]
+  declarations: [VisualizePageComponent, BokehVisualizationComponent]
 })
 export class VisualizeModule { }

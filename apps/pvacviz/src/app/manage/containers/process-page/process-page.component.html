@@ -7,12 +7,6 @@
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
-      <button class="btn btn-sm" (click)="reload()">
-        Reload
-      </button>
-      <button class="btn btn-sm" (click)="restart()">
-        Restart
-      </button>
     </div>
   </div>
 </div>
@@ -20,9 +14,7 @@
   <div class="row">
     <div class="col-xs-12">
       <!-- Running -->
-      <clr-alert [clrAlertType]="'info'"
-        [clrAlertClosable]="false"
-        *ngIf="(status$ | async) === 'Running'">
+      <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Running'">
         <div class="alert-item">
           <span class="alert-text">
             <strong>Runnning:</strong> {{(process$ | async)?.last_message}}
@@ -30,9 +22,7 @@
         </div>
       </clr-alert>
       <!-- Completed -->
-      <clr-alert [clrAlertType]="'success'"
-        [clrAlertClosable]="false"
-        *ngIf="(status$ | async) === 'Completed'">
+      <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Completed'">
         <div class="alert-item">
           <span class="alert-text">
             <strong>Completed:</strong> {{(process$ | async)?.last_message}}
@@ -40,9 +30,7 @@
         </div>
       </clr-alert>
       <!-- Stopped -->
-      <clr-alert [clrAlertType]="'danger'"
-        [clrAlertClosable]="false"
-        *ngIf="(status$ | async) === 'Stopped'">
+      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Stopped'">
         <div class="alert-item">
           <span class="alert-text">
             <strong>Stopped:</strong> {{(process$ | async)?.last_message}}
@@ -60,6 +48,11 @@
         <div class="row">
           <div class="col-xs-6">
             Parameters
+          </div>
+          <div class="col-xs-6 card-header-buttons">
+            <button class="btn btn-sm" (click)="restart()">
+              Restart
+            </button>
           </div>
         </div>
       </div>
@@ -277,17 +270,70 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-8">
             Log
             <span class="p5">&nbsp;&nbsp;Updated {{ (process$ | async)?.log_updated_at | amFromUnix | amTimeAgo }}</span>
           </div>
+          <div class="col-xs-4 card-header-buttons">
+            <button class="btn btn-sm" (click)="reload()">
+              Reload
+            </button>
+          </div>
         </div>
       </div>
-      <div class="card-block log">
+      <div class="card-block log preformatted-sm">
         <div class="card-text">
-          <p *ngFor="let line of log$ | async">
+          <span *ngFor="let line of log$ | async; let last = last" class="soft-break">
             {{ line }}
-          </p>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-xs-6">
+            pVACseq Command
+          </div>
+        </div>
+      </div>
+      <div class="card-block command preformatted-sm">
+        <div class="card-text">
+          <span>{{ (process$ | async)?.command }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-xs-12">
+            Results
+            <span class="p5">&nbsp;&nbsp;Output directory:&nbsp;~/pVACseq/{{ (process$ | async)?.output}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-block files">
+        <div class="card-text">
+          <table class="table table-compact table-noborder file-table">
+            <thead>
+              <tr>
+                <th class="left">&nbsp;</th>
+                <th class="left">Description</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let file of (process$ | async)?.files">
+                <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
+                <td class="left">{{file.description}}</td>
+                <td class="right">
+                  <a routerLink="" role="button" class="btn btn-sm btn-link">Visualize</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

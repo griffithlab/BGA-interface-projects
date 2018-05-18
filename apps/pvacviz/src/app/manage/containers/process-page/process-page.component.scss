@@ -4,13 +4,21 @@
   margin-top: 18px;
 }
 
-.log {
-  p {
-    font-family: Consolas, Monaco, Courier, monospace;
-    font-size: 12px;
-    line-height: .75rem;
+.preformatted-sm {
+  font-family: Consolas, Monaco, Courier, monospace;
+  font-size: 12px;
+  line-height: .75rem;
+
+  .soft-break {
+    display: block;
+  }
+
+}
+
+.card-header-buttons {
+  text-align: right;
+  .btn {
     margin: 0;
-    padding: 0;
   }
 }
 
@@ -21,7 +29,35 @@
   }
 
   .param-value {
-    margin-top: -.2rem;
     line-height: .8rem;
+    margin-top: -.2rem;
+  }
+}
+
+.files {
+  .card-text {
+    margin-bottom: -.25rem;
+    margin-left: -.75rem;
+    margin-right: -.75rem;
+    margin-top: -.5rem;
+
+    .file-table {
+      margin-top: 0;
+
+      th {
+        background-color: #EFEFEF;
+      }
+
+      tr {
+        td:first-child {
+          padding-left: .75rem;
+        }
+
+        td:last-child {
+          padding-right: .75rem;
+        }
+
+      }
+    }
   }
 }

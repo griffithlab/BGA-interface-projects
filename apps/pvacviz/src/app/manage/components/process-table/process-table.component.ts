@@ -31,7 +31,7 @@ export class ProcessTableComponent implements OnInit {
   ascSort;
   descSort;
 
-  private idComparator = new IdComparator();
+  idComparator = new IdComparator();
 
   constructor(private store: Store<fromProcesses.State>) {
     this.ascSort = SortOrder.Asc;
