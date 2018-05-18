@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Store, select } from '@ngrx/store';
+
+import { Observable } from 'rxjs/Observable';
+
+import * as fromProcesses from '../../reducers';
 
 @Component({
   selector: 'pvz-bokeh-visualization',
@@ -7,22 +12,14 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./bokeh-visualization.component.scss']
 })
 export class BokehVisualizationComponent implements OnInit {
-  visualizeURL: string;
-  processId: number;
-  fileId: number;
+  processId$: Observable<number>;
+  fileId$: Observable<number>;
 
-  constructor() {
-    this.bokehUrl = config.bokehUrl();
-    this.processId = route.snapshot.parent.parent.params['processId'];
-    this.fileId = route.snapshot.parent.params['fileId'];
-
+  constructor(private store: Store<fromProcesses.State>) {
+    this.processId$ = store.pipe(select(fromProcesses.getRouteProcessId));
+    this.fileId$ = store.pipe(select(fromProcesses.getRouteFileId));
   }
 
-  ngOnInit() {
-    this.visualizeURL = this.domSanitizer
-      .bypassSecurityTrustResourceUrl(
-        this.bokehUrl + '/processes/' +
-        this.processId + '/results/' + this.fileId + '/visualize');
-  }
+  ngOnInit() { }
 
 }
