@@ -26,11 +26,11 @@ export class BokehVisualizationComponent implements OnInit {
     this.fileId$ = store.pipe(select(fromProcesses.getRouteFileId));
     this.visualizeUrl$ = this.processId$.pipe(
       withLatestFrom(this.fileId$),
-      combineLatest(this.processId$, this.fileId$),
       switchMap(
-        (processId, fileId) => {
-          return this.bokehUrl() + '/processes/' +
+        ([processId, fileId]) => {
+          const visualizeUrl = this.bokehUrl() + '/processes/' +
             processId + '/results/' + fileId + '/visualize';
+          return visualizeUrl;
         }));
   }
   ngOnInit() { }
