@@ -3,7 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
-import { combineLatest, switchMap } from 'rxjs/operators';
+import { combineLatest, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
 import * as fromProcesses from '../../reducers';
@@ -24,17 +24,16 @@ export class BokehVisualizationComponent implements OnInit {
   ) {
     this.processId$ = store.pipe(select(fromProcesses.getRouteProcessId));
     this.fileId$ = store.pipe(select(fromProcesses.getRouteFileId));
+    this.visualizeUrl$ = this.processId$.pipe(
+      withLatestFrom(this.fileId$),
+      combineLatest(this.processId$, this.fileId$),
+      switchMap(
+        (processId, fileId) => {
+          return this.bokehUrl() + '/processes/' +
+            processId + '/results/' + fileId + '/visualize';
+        }));
   }
-  ngOnInit() {
-    this.visualizeUrl$ = Observable.combineLatest(
-      this.processId$,
-      this.fileId$
-    ).switchMap(
-      function(processId, fileId) {
-        return this.bokehUrl() + '/processes/' +
-          processId + '/results/' + fileId + '/visualize';
-      });
-  }
+  ngOnInit() { }
 
   private server = {
     protocol: 'http://',
