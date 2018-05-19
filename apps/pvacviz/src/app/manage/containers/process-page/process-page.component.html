@@ -329,7 +329,7 @@
                 <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
                 <td class="left">{{file.description}}</td>
                 <td class="right">
-                  <a routerLink="" role="button" class="btn btn-sm btn-link">Visualize</a>
+                  <a [routerLink]="['/visualize/process', (process$ | async).id, 'results', file.fileID]" role="button" class="btn btn-sm btn-link">Visualize</a>
                 </td>
               </tr>
             </tbody>

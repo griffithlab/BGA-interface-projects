@@ -4,7 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { Process } from '../../../core/models/process.model';
 import { Parameters } from '../../../core/models/parameters.model';
 import { Observable } from 'rxjs/Observable';
-import { filter, map } from 'rxjs/operators';
+
+import { combineLatest, filter, map } from 'rxjs/operators';
 
 import * as processes from '../../actions/manage.actions';
 import * as fromProcesses from '../../reducers';
