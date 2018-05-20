@@ -3,6 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 import { combineLatest, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
@@ -28,10 +29,13 @@ export class BokehVisualizationComponent implements OnInit {
       withLatestFrom(this.fileId$),
       switchMap(
         ([processId, fileId]) => {
+          console.log('processId: ' + processId + '; fileId: ' + fileId);
           const visualizeUrl = this.bokehUrl() + '/processes/' +
             processId + '/results/' + fileId + '/visualize';
-          return visualizeUrl;
-        }));
+          return Observable.of(visualizeUrl);
+        }
+      )
+    );
   }
   ngOnInit() { }
 
