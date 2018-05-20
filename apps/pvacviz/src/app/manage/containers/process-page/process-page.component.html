@@ -265,6 +265,20 @@
         </div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-xs-6">
+            pVACseq Command
+          </div>
+        </div>
+      </div>
+      <div class="card-block command preformatted-sm">
+        <div class="card-text">
+          <span>{{ (process$ | async)?.command }}</span>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col-sm-8">
     <div class="card">
@@ -290,20 +304,6 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-xs-6">
-            pVACseq Command
-          </div>
-        </div>
-      </div>
-      <div class="card-block command preformatted-sm">
-        <div class="card-text">
-          <span>{{ (process$ | async)?.command }}</span>
-        </div>
-      </div>
-    </div>
 
     <div class="card">
       <div class="card-header">
@@ -329,7 +329,9 @@
                 <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
                 <td class="left">{{file.description}}</td>
                 <td class="right">
-                  <a [routerLink]="['/visualize/process', (process$ | async).id, 'results', file.fileID]" role="button" class="btn btn-sm btn-link">Visualize</a>
+                  <a [routerLink]="['/visualize/process', (process$ | async).id, 'results', file.fileID]"
+                    role="button"
+                    class="btn btn-sm btn-link">Visualize</a>
                 </td>
               </tr>
             </tbody>

@@ -1,0 +1,13 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-xs-8">
+      <h3 class="page-title">
+        <span class="page-type">Process</span>
+        <span class="page-entity">{{(parameters$ | async)?.samplename}}</span>
+      </h3>
+    </div>
+    <div class="col-xs-4 text-right page-buttons">
+    </div>
+  </div>
+</div>
+<pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization>

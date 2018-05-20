@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { VisualizePageComponent } from './containers/visualize-page/visualize-page.component';
-import { BokehVisualizationComponent } from './components/bokeh-visualization/bokeh-visualization.component';
+import { VisualizeFileComponent } from './containers/visualize-file/visualize-file.component';
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'process/:processId/results/:fileId',
-    component: BokehVisualizationComponent
+    component: VisualizeFileComponent
   }
 
 ];
