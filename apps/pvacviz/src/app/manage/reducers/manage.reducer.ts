@@ -1,5 +1,8 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+
+import 'rxjs/add/observable/of';
+
 import { Process } from '../../core/models/process.model';
 import { ManageActions, ManageActionTypes } from '../actions/manage.actions';
 
@@ -70,6 +73,9 @@ export function reducer(state = initialState, action: ManageActions): State {
         loaded: false,
         error: action.payload
       }
+
+    case ManageActionTypes.Remove:
+      return adapter.removeOne(action.payload, state);
 
     case ManageActionTypes.LoadDetail:
       return {

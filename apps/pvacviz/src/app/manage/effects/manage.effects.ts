@@ -27,6 +27,7 @@ import {
   Load,
   LoadSuccess,
   LoadFail,
+  Remove,
   LoadDetail,
   LoadDetailSuccess,
   LoadDetailFail,
@@ -103,16 +104,33 @@ export class ProcessEffects {
         return [action.payload, router.state.params.processId]
       }
     ),
-    switchMap((payloadProcessId, routeProcessId) => {
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
       const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+
       return this.processes
         .archive(processId)
         .pipe(
           map((message: string) => {
-            return new ArchiveSuccess(message)
+            return new ArchiveSuccess({ id: processId, message: message })
           }),
           catchError(err => of(new ArchiveFail(err)))
         )
     })
-  )
+  );
+
+  // TODO see if this is the idiomatic way of chaining actions after a successful call.
+  // I have a feeling that effects requiring a subsequent refresh should dispatch the
+  // action themselves (e.g. archive$ effect). See:
+  // https://github.com/ngrx/platform/issues/468
+  // https://stackoverflow.com/questions/47554267/dispatch-multiple-action-from-one-effect
+  @Effect()
+  requery$: Observable<Action> = this.actions$.pipe(
+    ofType<ArchiveSuccess>(ManageActionTypes.ArchiveSuccess),
+    switchMap((action) => {
+      return Observable.of(new Remove(action.payload.id))
+    })
+  );
+
 }

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-12">
+    <clr-datagrid class="processes-table">
+
+      <clr-dg-column  [clrDgSortBy]="idComparator" [clrDgSortOrder]="ascSort">
+        ID
+      </clr-dg-column>
+
+      <clr-dg-column>Status</clr-dg-column>
+      <clr-dg-column [clrDgField]="'parameters.samplename'">Sample Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'parameters.input'">Input File</clr-dg-column>
+      <!-- <clr-dg-column >Alleles</clr-dg-column> -->
+      <!-- <clr-dg-column >Algorithms</clr-dg-column> -->
+      <clr-dg-column>&nbsp;</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let process of processes">
+        <clr-dg-cell class="col-id">
+          <span class="label" [ngClass]="{'label-info': process.attached === true}">{{process.id}}</span>
+        </clr-dg-cell>
+
+        <clr-dg-cell class="col-status">
+          <span class="label" [ngClass]="{'label-warning': process.running === true, 'label-danger': process.running === false && process.status !== 1, 'label-success': process.running === false && process.status === 1 }">
+              {{process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped' }}
+      </span>
+        </clr-dg-cell>
+
+        <clr-dg-cell>{{process.parameters.samplename}}</clr-dg-cell>
+
+        <clr-dg-cell>{{process.parameters.input.split('/').slice(-2).join('/')}}</clr-dg-cell>
+
+        <!-- <clr-dg-cell [style.width.%]="25"><span *ngFor="let allele of process.parameters.alleles; let last = last">{{allele}}{{last ? '':', '}}</span></clr-dg-cell> -->
+        <!-- <clr-dg-cell [style.width.%]="25"><span *ngFor="let algorithm of process.parameters.prediction_algorithms; let last = last">{{algorithm}}{{last ? '':', '}}</span></clr-dg-cell> -->
+        <clr-dg-cell class="row-actions">
+          <a routerLink="{{process.id}}" role="button" class="btn btn-sm btn-link">Details</a>
+        </clr-dg-cell>
+
+        <clr-dg-action-overflow>
+          <button class="action-item" (click)="onArchive(process.id)">Archive</button>
+        </clr-dg-action-overflow>
+      </clr-dg-row>
+
+      <clr-dg-footer></clr-dg-footer>
+    </clr-datagrid>
+  </div>
+</div>
