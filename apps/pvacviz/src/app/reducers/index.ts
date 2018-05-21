@@ -20,7 +20,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
  * the state of the reducer plus any selector functions. The `* as`
  * notation packages up all of the exports into a single object.
  */
-import * as fromLayout from '../core/reducers/layout.reducers';
+import * as fromLayout from '../core/reducers/layout.reducer';
 
 import { environment } from '../../environments/environment';
 import { RouterStateUrl } from '../core/models/router.model';
