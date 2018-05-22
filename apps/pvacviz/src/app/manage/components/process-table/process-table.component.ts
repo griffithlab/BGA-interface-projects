@@ -16,7 +16,7 @@ import { filter, map } from 'rxjs/operators';
 import { Process } from '../../../core/models/process.model';
 import { Parameters } from '../../../core/models/parameters.model';
 
-import * as processes from '../../actions/manage.actions';
+import * as processes from '../../../core/actions/process.actions';
 import * as fromProcesses from '../../reducers';
 
 @Component({
