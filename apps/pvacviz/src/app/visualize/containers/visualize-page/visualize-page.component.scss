@@ -1,0 +1,27 @@
+.files {
+  .card-text {
+    margin-bottom: -.25rem;
+    margin-left: -.75rem;
+    margin-right: -.75rem;
+    margin-top: -.5rem;
+
+    .card-table-flush {
+      margin-top: 0;
+
+      th {
+        background-color: #EFEFEF;
+      }
+
+      tr {
+        td:first-child {
+          padding-left: .75rem;
+        }
+
+        td:last-child {
+          padding-right: .75rem;
+        }
+
+      }
+    }
+  }
+}
