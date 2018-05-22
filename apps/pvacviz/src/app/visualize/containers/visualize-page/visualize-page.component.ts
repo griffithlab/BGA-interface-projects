@@ -20,8 +20,10 @@ export class VisualizePageComponent implements OnInit {
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithResults$ = this.processes$
-      .map((process) => {
-        return process;
+      .map((processes) => {
+        return processes.map((process) => {
+          return process;
+        })
       })
   }
 
