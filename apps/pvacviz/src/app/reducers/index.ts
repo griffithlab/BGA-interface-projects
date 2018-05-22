@@ -20,7 +20,6 @@ import { storeFreeze } from 'ngrx-store-freeze';
  * the state of the reducer plus any selector functions. The `* as`
  * notation packages up all of the exports into a single object.
  */
-import * as fromLayout from '../core/reducers/layout.reducer';
 
 import { environment } from '../../environments/environment';
 import { RouterStateUrl } from '../core/models/router.model';
@@ -39,7 +38,6 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface State {
-  layout: fromLayout.State;
   router: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
@@ -49,7 +47,6 @@ export interface State {
  * and the current or initial state and return a new immutable state.
  */
 export const reducers: ActionReducerMap<State> = {
-  layout: fromLayout.reducer,
   router: fromRouter.routerReducer,
 };
 
@@ -61,14 +58,3 @@ export const reducers: ActionReducerMap<State> = {
 export const metaReducers: MetaReducer<State>[] = !environment.production
   ? [logger, storeFreeze]
   : [];
-
-/**
- * App Layout Reducers
- */
-// TODO: these should probably be moved to /core/reducers/layout.reducers
-export const getLayoutState = createFeatureSelector<fromLayout.State>('layout');
-
-export const getCollapsed = createSelector(
-  getLayoutState,
-  fromLayout.getCollapsed
-);

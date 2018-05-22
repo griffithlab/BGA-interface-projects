@@ -7,6 +7,7 @@ export interface CoreState {
 }
 
 export interface State extends fromRoot.State {
+  //TODO this should be reducers or an object, not an interface.
   core: CoreState;
 }
 
@@ -30,9 +31,14 @@ export const reducers = {
  * ```
  */
 
-/**
+/**LayoutActions
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getLayoutState = createFeatureSelector<CoreState>('layout');
+export const getCoreState = createFeatureSelector<CoreState>('core');
+
+export const getCollapsed = createSelector(
+  getCoreState,
+  core => core.layout.collapsed
+);

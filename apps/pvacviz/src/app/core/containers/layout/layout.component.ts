@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import * as fromRoot from '../../../reducers';
+import * as fromCore from '../../reducers';
 import * as layout from '../../actions/layout.actions';
 
 @Component({
@@ -15,12 +15,12 @@ export class LayoutComponent {
   collapsible: boolean = true;
   collapsed$: Observable<boolean>;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromCore.State>) {
     /**
      * Selectors can be layoutlied with the `select` operator which passes the state
      * tree to the provided selector
      */
-    this.collapsed$ = this.store.pipe(select(fromRoot.getCollapsed));
+    this.collapsed$ = this.store.pipe(select(fromCore.getCollapsed));
   }
 
   collapseChange($event) {
