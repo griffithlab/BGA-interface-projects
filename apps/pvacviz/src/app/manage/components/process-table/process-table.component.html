@@ -35,7 +35,11 @@
         </clr-dg-cell>
 
         <clr-dg-action-overflow>
-          <button class="action-item" (click)="onArchive(process.id)">Archive</button>
+          <button class="action-item" (click)="onArchive(process.id)"
+          [disabled]="process.running === true">Archive</button>
+          <button class="action-item" (click)="onStop(process.id)"
+          [disabled]="process.running === false">Stop</button>
+          <button class="action-item" (click)="onRestart(process.id)">Restart</button>
         </clr-dg-action-overflow>
       </clr-dg-row>
 
