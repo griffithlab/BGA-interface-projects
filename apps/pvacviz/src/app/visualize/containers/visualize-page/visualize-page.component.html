@@ -12,7 +12,7 @@
 <div class="page-content" >
   <div class="row" >
     <div class="col-xs-12" >
-      <div class="card" *ngFor="let process of (processesWithResults$ | async)">
+      <div class="card" *ngFor="let process of (processesWithVisualizableFiles$ | async)">
         <div class="card-header">
           <div class="row">
             <div class="col-xs-12">
@@ -63,4 +63,4 @@
     </div>
   </div>
 </div>
-<pre>{{(processes$ | async) | json}}</pre>
+<!-- <pre>{{(processesWithVisualizableFiles$ | async) | json}}</pre> -->

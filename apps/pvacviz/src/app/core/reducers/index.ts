@@ -3,6 +3,8 @@ import * as fromRoot from '../../reducers';
 import * as fromLayout from './layout.reducer';
 import * as fromProcesses from './processes.reducer';
 
+import { map, filter } from 'lodash-es';
+
 export interface CoreState {
   layout: fromLayout.State;
   processes: fromProcesses.State;
@@ -82,3 +84,19 @@ export const getSelectedProcess = createSelector(
   getRouteProcessId,
   (processes, processId) => { return processes[processId]; }
 );
+
+export const getProcessesWithVisualizableFiles = createSelector(
+  getAllProcesses,
+  (processes) => {
+    return map(processes)
+      .filter((proc) => {
+        const vizFiles = filter(proc.files, (file) => {
+          return (file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv'));
+        });
+        return vizFiles.length > 0;
+        // console.log('proc!');
+        // return filter(proc.files, (file) => {
+        //   return (file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv' ));
+        // }) > 0;
+      });
+  })
