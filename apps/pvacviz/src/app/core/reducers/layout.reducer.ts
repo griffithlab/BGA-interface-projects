@@ -27,5 +27,3 @@ export function reducer(
       return state;
   }
 }
-
-export const getCollapsed = (state: State) => state.collapsed;

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import * as _ from 'lodash';
+import { map, filter, first } from 'lodash-es';
 
 import { ApiInputResponse } from '../../core/models/api-responses.model';
 import { File } from '../../core/models/file.model';
@@ -19,8 +19,8 @@ export class InputService {
       .map(parseResponse);
 
     function parseResponse(res: Response): ApiInputResponse {
-      return _.map(res, f => f as File)
-        .filter(f => _.first(f.display_name) !== '.'); // filter out invisible files
+      return map(res, f => f as File)
+        .filter(f => first(f.display_name) !== '.'); // filter out invisible files
     }
   }
 }

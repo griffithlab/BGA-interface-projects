@@ -12,7 +12,55 @@
 <div class="page-content" >
   <div class="row" >
     <div class="col-xs-12" >
-      <!-- <pre>{{(processes$ | async) | json}}</pre> -->
+      <div class="card" *ngFor="let process of (processesWithVisualizableFiles$ | async)">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-xs-12">
+              {{process.parameters.samplename}}
+              <span class="p5">&nbsp;&nbsp;Output directory:&nbsp;~/pVACseq/{{ process.parameters.output}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-block files">
+          <div class="card-text">
+            <table class="table table-compact table-noborder file-table">
+              <thead>
+                <tr>
+                  <th class="left">&nbsp;</th>
+                  <th class="left">Description</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container [ngSwitch]="process.files.length > 0">
+                  <ng-container *ngSwitchCase="true" >
+                    <ng-container *ngFor="let file of process.files">
+                      <tr *ngIf="(file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv' ))">
+                        <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
+                        <td class="left">{{file.description}}</td>
+                        <td class="right">
+                          <button [routerLink]="['/visualize/process', process.id, 'results', file.fileID]"
+                            [disabled]="!(file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv' ))"
+                            class="btn btn-sm btn-link">Visualize</button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="false" >
+                    <tr>
+                      <td colspan="3">
+                        Process produced no files.
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
+<!-- <pre>{{(processesWithVisualizableFiles$ | async) | json}}</pre> -->
