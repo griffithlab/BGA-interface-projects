@@ -1,18 +1,20 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as fromLayout from './layout.reducer';
+import * as fromProcesses from './processes.reducer';
 
 export interface CoreState {
   layout: fromLayout.State;
+  processes: fromProcesses.State;
 }
 
 export interface State extends fromRoot.State {
-  //TODO this should be reducers or an object, not an interface.
   core: CoreState;
 }
 
 export const reducers = {
-  layout: fromLayout.reducer
+  layout: fromLayout.reducer,
+  processes: fromProcesses.reducer
 }
 
 /**
@@ -41,4 +43,42 @@ export const getCoreState = createFeatureSelector<CoreState>('core');
 export const getCollapsed = createSelector(
   getCoreState,
   core => core.layout.collapsed
+);
+
+/**
+ * Every reducer module exports selector functions, however child reducers
+ * have no knowledge of the overall state tree. To make them usable, we
+ * need to make new selectors that wrap them.
+ *
+ * The createSelector function creates very efficient selectors that are memoized and
+ * only recompute when arguments change. The created selectors can also be composed
+ * together to select different pieces of state.
+ */
+export const getProcessesState = createSelector(
+  getCoreState,
+  core => core.processes
+);
+
+/**
+ * Adapters created with @ngrx/entity generate
+ * commonly used selector functions including
+ * getting all ids in the record set, a dictionary
+ * of the records by id, an array of records and
+ * the total number of records. This reduces boilerplate
+ * in selecting records from the entity state.
+ */
+export const {
+  selectEntities: getProcesses,
+  selectAll: getAllProcesses,
+} = fromProcesses.adapter.getSelectors(getProcessesState);
+
+export const getRouteProcessId = createSelector(
+  fromRoot.getRouterState,
+  router => router.state.params.processId
+)
+
+export const getSelectedProcess = createSelector(
+  getProcesses,
+  getRouteProcessId,
+  (processes, processId) => { return processes[processId]; }
 );
