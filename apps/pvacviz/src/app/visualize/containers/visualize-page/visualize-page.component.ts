@@ -15,9 +15,14 @@ import * as fromCore from '../../../core/reducers';
 })
 export class VisualizePageComponent implements OnInit {
   processes$: Observable<Process[]>;
+  processesWithResults$: Observable<Process[]>
 
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
+    this.processesWithResults$ = this.processes$
+      .map((process) => {
+        return process;
+      })
   }
 
   ngOnInit() {
