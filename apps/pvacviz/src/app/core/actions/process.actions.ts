@@ -14,7 +14,15 @@ export enum ProcessActionTypes {
 
   Archive = '[Processes] Archive Process',
   ArchiveSuccess = '[Processes] Archive Process Success',
-  ArchiveFail = '[Processes] Archive Process Fail'
+  ArchiveFail = '[Processes] Archive Process Fail',
+
+  Restart = '[Processes] Restart Process',
+  RestartSuccess = '[Processes] Restart Process Success',
+  RestartFail = '[Processes] Restart Process Fail',
+
+  Stop = '[Processes] Stop Process',
+  StopSuccess = '[Processes] Stop Success',
+  StopFail = '[Processes] Stop Fail'
 }
 
 /**
@@ -84,6 +92,43 @@ export class ArchiveFail implements Action {
   constructor(public payload: any) { }
 }
 
+
+export class Restart implements Action {
+  readonly type = ProcessActionTypes.Restart;
+
+  constructor(public payload?: number) { }
+}
+
+export class RestartSuccess implements Action {
+  readonly type = ProcessActionTypes.RestartSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class RestartFail implements Action {
+  readonly type = ProcessActionTypes.RestartFail;
+
+  constructor(public payload: any) { }
+}
+
+export class Stop implements Action {
+  readonly type = ProcessActionTypes.Stop;
+
+  constructor(public payload?: number) { }
+}
+
+export class StopSuccess implements Action {
+  readonly type = ProcessActionTypes.StopSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class StopFail implements Action {
+  readonly type = ProcessActionTypes.StopFail;
+
+  constructor(public payload: any) { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -91,4 +136,6 @@ export class ArchiveFail implements Action {
 export type ProcessActions =
   Load | LoadSuccess | LoadFail | Remove
   | LoadDetail | LoadDetailSuccess | LoadDetailFail
-  | Archive | ArchiveSuccess | ArchiveFail;
+  | Archive | ArchiveSuccess | ArchiveFail
+  | Restart | RestartSuccess | RestartFail
+  | Stop | StopSuccess | StopFail;
