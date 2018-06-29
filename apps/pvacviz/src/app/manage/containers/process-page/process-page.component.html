@@ -149,6 +149,15 @@
 
         <div class="row">
           <div class="col-xs-12">
+            <p class="p4 param-label">Binding Threshold</p>
+            <p class="p3 param-value">
+              {{(parameters$ | async)?.binding_threshold}}
+            </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
             <p class="p4 param-label">Allele Specific Cutoffs</p>
             <p class="p3 param-value">
             {{(parameters$ | async)?.allele_specific_cutoffs}}
