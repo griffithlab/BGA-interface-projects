@@ -5,14 +5,6 @@ export interface ProcessParameters {
   'prediction_algorithms': string;
   'epitope_lengths': string;
   'peptide_sequence_length': string;
-  'gene_expn_file': number;
-  'transcript_expn_file': number,
-  'normal_snvs_coverage_file': number;
-  'normal_indels_coverage_file': number;
-  'tdna_snvs_coverage_file': number;
-  'tdna_indels_coverage_file': number;
-  'trna_snvs_coverage_file': number;
-  'trna_indels_coverage_file': number;
   'net_chop_method': string;
   'net_chop_threshold': string;
   'netmhc_stab': string;

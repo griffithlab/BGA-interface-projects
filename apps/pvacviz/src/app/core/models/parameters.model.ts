@@ -8,7 +8,6 @@ export interface Parameters {
   readonly prediction_algorithms: Array<string>;
 
   // optional
-  readonly additional_input_file_list?: Array<string>;
   readonly binding_threshold?: number;
   readonly downstream_sequence_length?: number;
   readonly epitope_lengths?: Array<number>;
