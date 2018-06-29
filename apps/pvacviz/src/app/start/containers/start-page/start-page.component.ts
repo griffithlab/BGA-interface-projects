@@ -67,7 +67,6 @@ export class StartPageComponent implements OnInit {
       'net_chop_method': ['', []],
       'net_chop_threshold': [0.5, []],
       'netmhc_stab': [false, []],
-      'top_result_per_mutation': [false, []],
       'top_score_metric': ['median', []],
       'binding_threshold': [500, []],
       'minimum_fold_change': [0, []],

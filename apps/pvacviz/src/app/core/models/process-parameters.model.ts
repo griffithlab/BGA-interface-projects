@@ -8,7 +8,6 @@ export interface ProcessParameters {
   'net_chop_method': string;
   'net_chop_threshold': string;
   'netmhc_stab': string;
-  'top_result_per_mutation': string;
   'top_score_metric': string;
   'binding_threshold': string;
   'minimum_fold_change': string;
