@@ -10,6 +10,7 @@ export interface ProcessParameters {
   'netmhc_stab': string;
   'top_score_metric': string;
   'binding_threshold': string;
+  'allele_specific_cutoffs': string;
   'minimum_fold_change': string;
   'expn_val': string;
   'normal_cov': string;

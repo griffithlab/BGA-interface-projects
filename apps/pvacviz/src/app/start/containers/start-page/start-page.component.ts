@@ -69,6 +69,7 @@ export class StartPageComponent implements OnInit {
       'netmhc_stab': [false, []],
       'top_score_metric': ['median', []],
       'binding_threshold': [500, []],
+      'allele_specific_cutoffs': [false, []],
       'minimum_fold_change': [0, []],
       'expn_val': [1, []],
       'normal_cov': [5, []],
