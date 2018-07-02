@@ -8,7 +8,6 @@ export interface Parameters {
   readonly prediction_algorithms: Array<string>;
 
   // optional
-  readonly additional_input_file_list?: Array<string>;
   readonly binding_threshold?: number;
   readonly downstream_sequence_length?: number;
   readonly epitope_lengths?: Array<number>;
@@ -17,6 +16,7 @@ export interface Parameters {
   readonly iedb_install_dir?: string;
   readonly iedb_retries?: number;
   readonly keep_tmp_files?: boolean;
+  readonly allele_specific_cutoffs?: boolean;
   readonly minimum_fold_change?: number;
   readonly net_chop_method?: string;
   readonly netchop_threshold?: number;
@@ -27,7 +27,6 @@ export interface Parameters {
   readonly peptide_sequence_length?: number;
   readonly tdna_cov?: number;
   readonly tdna_vaf?: number;
-  readonly top_result_per_mutation?: boolean;
   readonly top_score_metric?: string;
   readonly trna_cov?: number;
   readonly trna_vaf?: number;
