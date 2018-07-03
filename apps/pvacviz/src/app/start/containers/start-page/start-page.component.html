@@ -102,11 +102,11 @@
 
     <div class="form-group row">
       <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="trna_indels_coverage_file">NetChop Method</label>
+        <label for="net_chop_method">NetChop Method</label>
       </div>
       <div class="col-xs-12 col-sm-4">
         <div class="select">
-          <select id="trna_indels_coverage_file" name="trna_indels_coverage_file" formControlName="trna_indels_coverage_file">
+          <select id="net_chop_method" name="net_chop_method" formControlName="net_chop_method">
             <option value="null">Please select a method</option>
             <option *ngFor="let method of netChopMethodOptions" [value]="method.value">{{method.label}}</option>
           </select>
