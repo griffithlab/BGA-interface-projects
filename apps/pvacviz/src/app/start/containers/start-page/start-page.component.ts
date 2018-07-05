@@ -64,7 +64,7 @@ export class StartPageComponent implements OnInit {
       'prediction_algorithms': ['NNalign,NetMHC,NetMHCIIpan,NetMHCcons,NetMHCpan,PickPocket,SMM,SMMPMBEC,SMMalign', [Validators.required]],
       'epitope_lengths': ['10', [Validators.required]],
       'peptide_sequence_length': [21, [Validators.required]],
-      'net_chop_method': [null, []],
+      'net_chop_method': ['', []],
       'net_chop_threshold': [0.5, []],
       'netmhc_stab': [false, []],
       'top_score_metric': ['median', []],
