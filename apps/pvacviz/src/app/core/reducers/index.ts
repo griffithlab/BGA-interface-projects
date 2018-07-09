@@ -2,12 +2,14 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as fromLayout from './layout.reducer';
 import * as fromProcesses from './processes.reducer';
+import * as fromDropbox from './dropbox.reducer';
 
 import { map, filter } from 'lodash-es';
 
 export interface CoreState {
   layout: fromLayout.State;
   processes: fromProcesses.State;
+  dropbox: fromDropbox.State;
 }
 
 export interface State extends fromRoot.State {
@@ -16,7 +18,8 @@ export interface State extends fromRoot.State {
 
 export const reducers = {
   layout: fromLayout.reducer,
-  processes: fromProcesses.reducer
+  processes: fromProcesses.reducer,
+  dropbox: fromDropbox.reducer
 }
 
 /**
@@ -61,6 +64,11 @@ export const getProcessesState = createSelector(
   core => core.processes
 );
 
+export const getDropboxState = createSelector(
+  getCoreState,
+  core => core.dropbox
+);
+
 /**
  * Adapters created with @ngrx/entity generate
  * commonly used selector functions including
@@ -73,6 +81,11 @@ export const {
   selectEntities: getProcesses,
   selectAll: getAllProcesses,
 } = fromProcesses.adapter.getSelectors(getProcessesState);
+
+export const {
+  selectEntities: getDropboxFiles,
+  selectAll: getAllDropboxFiles,
+} = fromDropbox.adapter.getSelectors(getDropboxState);
 
 export const getRouteProcessId = createSelector(
   fromRoot.getRouterState,
