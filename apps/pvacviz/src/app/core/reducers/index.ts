@@ -104,7 +104,7 @@ export const getProcessesWithVisualizableFiles = createSelector(
     return map(processes)
       .filter((proc) => {
         const vizFiles = filter(proc.files, (file) => {
-          return (file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv'));
+          return isVisualizable(file.display_name);
         });
         return vizFiles.length > 0;
         // console.log('proc!');
@@ -113,3 +113,15 @@ export const getProcessesWithVisualizableFiles = createSelector(
         // }) > 0;
       });
   })
+
+export const getDropboxVisualizableFiles = createSelector(
+  getDropboxFiles,
+  (files) => {
+    return map(files)
+      .filter(file => isVisualizable(file.display_name));
+  }
+)
+
+function isVisualizable(display_name) {
+  return (display_name.includes('final\.tsv') || display_name.includes('combined\.parsed\.tsv'));
+}

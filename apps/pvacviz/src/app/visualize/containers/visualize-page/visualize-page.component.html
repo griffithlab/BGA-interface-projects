@@ -64,8 +64,11 @@
     <div class="col-xs-6" >
       <span *ngFor="let file of (dropboxFiles$ | async)">
         <pre>
-          {{ file | json }}
+          {{file | json }}
         </pre>
+        <button [routerLink]="['/visualize/process', '-1', 'results', file.fileID]"
+          class="btn btn-sm btn-link">Visualize</button>
+        <p></p>
       </span>
     </div>
   </div>
