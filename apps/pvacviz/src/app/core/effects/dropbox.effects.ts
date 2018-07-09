@@ -41,18 +41,17 @@ import { ApiDropboxResponse } from '../../core/models/api-responses.model';
  */
 
 @Injectable()
-export class DropboxsEffects {
+export class DropboxEffects {
   constructor(
     private actions$: Actions,
-    private dropboxs: DropboxService,
-    private processes: ProcessService
+    private dropbox: DropboxService,
   ) { }
 
   @Effect()
   search$: Observable<Action> = this.actions$.pipe(
     ofType<Load>(DropboxActionTypes.Load),
     switchMap(action => {
-      return this.dropboxs
+      return this.dropbox
         .query()
         .pipe(
           map((files: Files) => new LoadSuccess(files)),

@@ -17,12 +17,12 @@ import * as fromCore from '../../../core/reducers';
 export class VisualizePageComponent implements OnInit {
   processes$: Observable<Process[]>;
   processesWithVisualizableFiles$: Observable<Process[]>;
-  dropbox$: Observable<File[]>;
+  dropboxFiles$: Observable<File[]>;
 
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
-    this.dropbox$ = store.pipe(select(fromCore.getAllDropboxFiles));
+    this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
   }
 
   ngOnInit() {
