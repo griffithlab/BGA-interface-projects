@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import { filter, map } from 'rxjs/operators';
 
 import { File } from '../../../core/models/file.model';
 import { Process } from '../../../core/models/process.model';
