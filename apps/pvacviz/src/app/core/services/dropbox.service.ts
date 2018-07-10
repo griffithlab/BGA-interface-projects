@@ -18,9 +18,16 @@ export class DropboxService {
     return this.http.get(`${this.API_PATH}/dropbox`)
       .map(parseResponse);
 
-    function parseResponse(res: Response): ApiDropboxResponse {
-      return map(res, f => f as File)
-        .filter(f => first(f.display_name) !== '.'); // filter out invisible files
-    }
   }
+}
+
+function parseResponse(res: Response): ApiDropboxResponse {
+  return map(res, (f) => {
+    f.display_name = f.display_name
+      .split('/')
+      .slice(-1)
+      .join('/');
+    return f as File;
+  })
+    .filter(f => first(f.display_name) !== '.'); // filter out invisible files
 }
