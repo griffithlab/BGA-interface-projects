@@ -5,17 +5,20 @@ import 'rxjs/add/operator/map';
 
 import { map, filter, first } from 'lodash-es';
 
+import { ConfigService } from './config.service';
 import { ApiInputResponse } from '../../core/models/api-responses.model';
 import { File } from '../../core/models/file.model';
 
 @Injectable()
 export class InputService {
-  private API_PATH = 'http://localhost:4200/api/v1';
+  private inputPath: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private conf: ConfigService) {
+    this.inputPath = conf.apiUrl() + '/input';
+  }
 
   query(): Observable<ApiInputResponse> {
-    return this.http.get(`${this.API_PATH}/input`)
+    return this.http.get(this.inputPath)
       .map(parseResponse);
 
     function parseResponse(res: Response): ApiInputResponse {
