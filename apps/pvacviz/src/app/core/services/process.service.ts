@@ -9,7 +9,6 @@ import { ConfigService } from './config.service';
 
 @Injectable()
 export class ProcessService {
-  private API_PATH = 'http://localhost:4200/api/v1';
   private processesPath: string;
   private archivePath: string;
   private stagingPath: string;

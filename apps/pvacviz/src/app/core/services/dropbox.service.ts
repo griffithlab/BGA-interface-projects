@@ -8,14 +8,19 @@ import { map, filter, first } from 'lodash-es';
 import { ApiDropboxResponse } from '../../core/models/api-responses.model';
 import { File } from '../../core/models/file.model';
 
+import { ConfigService } from './config.service';
+
 @Injectable()
 export class DropboxService {
   private API_PATH = 'http://localhost:4200/api/v1';
+  private dropboxPath: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, conf: ConfigService) {
+    this.dropboxPath = conf.apiUrl() + '/dropbox';
+  }
 
   query(): Observable<ApiDropboxResponse> {
-    return this.http.get(`${this.API_PATH}/dropbox`)
+    return this.http.get(this.dropboxPath)
       .map(parseResponse);
 
   }
