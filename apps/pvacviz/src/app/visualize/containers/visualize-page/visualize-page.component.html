@@ -74,12 +74,10 @@
     <div class="col-xs-6">
       <ng-container [ngSwitch]="(dropboxFiles$ | async)?.length > 0">
         <p *ngSwitchCase="true" >
-          Listed below are all visualizable files found in ~/pVACseq/Dropbox/.
-          Files?: {{(dropboxFiles$ | async)?.length > 0}}
-          Length: {{(dropboxFiles$ | async)?.length }}
+          Listed below are all visualizable files found in ~/pVACseq/Dropbox/
         </p>
         <p *ngSwitchDefault>
-          No visualizable files found in ~/pVACseq/Dropbox/.
+          No visualizable files found in ~/pVACseq/Dropbox/
         </p>
       </ng-container>
       <div class="card" *ngIf="(dropboxFiles$ | async)?.length > 0">

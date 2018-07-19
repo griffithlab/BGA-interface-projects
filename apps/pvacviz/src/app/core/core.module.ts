@@ -10,6 +10,7 @@ import { ClarityModule } from '@clr/angular';
 import { LayoutComponent } from './containers/layout/layout.component';
 import { NotFoundComponent } from './containers/not-found/not-found.component';
 
+import { ConfigService } from './services/config.service';
 import { ProcessService } from './services/process.service';
 import { InputService } from './services/inputs.service';
 import { DropboxService } from './services/dropbox.service';
@@ -33,6 +34,7 @@ export const COMPONENTS = [
     EffectsModule.forFeature([ProcessEffects, DropboxEffects])
   ],
   providers: [
+    ConfigService,
     ProcessService,
     InputService,
     DropboxService
