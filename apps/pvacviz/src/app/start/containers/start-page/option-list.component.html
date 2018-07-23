@@ -1,4 +1,18 @@
-<option value="TEST">TEST</option>
+<ng-template #directory let-files="files">
+  <!-- iterate through files array -->
+  <ng-container *ngFor="let file of files">
+    <!-- check if file or directory -->
+    <ng-container [ngSwitch]="file.type" >
+      <!-- if file, show an option -->
+      <ng-container *ngSwitchCase="true" >
+        
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+
+
 <!-- <ng-container [ngSwitch]="node.type === 'file'"> -->
 <!-- <ng-container *ngSwitchCase="true"> -->
 <!-- <option value="node.fileID">{{parent + '/' + node.display_name}}</option> -->
@@ -11,9 +25,24 @@
 <!-- </ng-container> -->
 <!-- </ng-container> -->
 
-<!-- <div>{{node.name}}</div> -->
-<!-- <ul> -->
-<!-- <li *ngFor="let node of node.children"> -->
-<!-- <tree-node  [node]="node"></tree-node> -->
-<!-- </li> -->
-<!-- </ul> -->
+<!-- example recursive template -->
+
+<aside class="tree-view" >
+  <ul>
+    <!-- 1: define template -->
+    <ng-template #recursiveList let-list>
+      <li *ngFor="let item of list">
+        {{ item.name }}
+        <ul *ngIf="item.children" >
+          <!-- 2: check for child items and if any render the template again -->
+          <ng-container *ngTemplateOutlet="recursiveList; context: {$implicit: item.children }">
+          </ng-container>
+        </ul>
+      </li>
+    </ng-template>
+    <!-- using ng-container and ngTemplateOutlet to render the defined template -->
+    <ng-container *ngTemplateOutlet="recursiveList: context: {$implicit: processes }"></ng-container>
+  </ul>
+</aside>
+
+
