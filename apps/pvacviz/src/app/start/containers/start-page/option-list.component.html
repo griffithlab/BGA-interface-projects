@@ -4,9 +4,14 @@
     <!-- check if file or directory -->
     <ng-container [ngSwitch]="file.type" >
       <!-- if file, show an option -->
-      <ng-container *ngSwitchCase="true" >
+      <ng-container *ngSwitchCase="file" >
         
       </ng-container>
+      <!-- if directory, set file, parent and call #directory template -->
+      <ng-container *ngSwitchCase="directory" >
+        
+      </ng-container>
+
     </ng-container>
   </ng-container>
 </ng-template>
