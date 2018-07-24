@@ -339,7 +339,7 @@
                 <td class="left">{{file.description}}</td>
                 <td class="right">
                   <button [routerLink]="['/visualize/process', (process$ | async).id, 'results', file.fileID]"
-                    [disabled]="!(file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv' ))"
+                    [disabled]="file.is_visualizable === false"
                     class="btn btn-sm btn-link">Visualize</button>
                 </td>
               </tr>
