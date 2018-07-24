@@ -17,7 +17,7 @@
       <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Running'">
         <div class="alert-item">
           <span class="alert-text">
-            <strong>Runnning:</strong> {{(process$ | async)?.last_message}}
+            <strong>Running:</strong> {{(process$ | async)?.last_message}}
           </span>
         </div>
       </clr-alert>
