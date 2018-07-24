@@ -33,12 +33,17 @@
             <ng-container [ngSwitch]="(inputs$ | async)?.length > 0">
               <ng-container *ngSwitchCase="true">
                 <option value="null">Please select input VCF file</option>
+                <optgroup option-list
+                  [files]="inputs$ | async"
+                  [parent]="'~/pVAC-Seq/input/'"
+                  label="~/pVAC-Seq/input/">
+                </optgroup>
+                <!-- <option *ngFor="let node in (input$ | async)">{{ node.display_name }}}}</option> -->
               </ng-container>
               <ng-container *ngSwitchCase="false">
                 <option value="null">No files found in input directory.</option>
               </ng-container>
             </ng-container>
-            <option *ngFor="let file of inputs$ | async" [value]="file.fileID">{{file.display_name}}</option>
           </select>
           <small *ngIf="(inputs$ | async)?.length < 1" class="text-warning">Please place files in input directory, usually ~/pVAC-Seq/input.</small>
         </div>

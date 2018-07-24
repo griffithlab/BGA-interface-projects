@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, forwardRef, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -23,7 +23,6 @@ import * as fromStart from '../../reducers';
   templateUrl: './start-page.component.html',
   styleUrls: ['./start-page.component.scss']
 })
-
 export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
   postSubmitting$: Observable<boolean>;

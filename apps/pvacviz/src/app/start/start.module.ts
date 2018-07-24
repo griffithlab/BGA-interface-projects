@@ -13,6 +13,7 @@ import { StartEffects } from './effects/start.effects';
 import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
+import { OptionList } from './containers/start-page/option-list.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { StartPageComponent } from './containers/start-page/start-page.component
     ])
   ],
   declarations: [
-    StartPageComponent
-  ]
+    StartPageComponent,
+    OptionList
+  ],
 })
 export class StartModule { }
