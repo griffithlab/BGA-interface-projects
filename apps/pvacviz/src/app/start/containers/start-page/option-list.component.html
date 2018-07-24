@@ -1,35 +1,19 @@
 <ng-template #directory let-files>
-  {{'#directory template called.' | console}}
   <!-- iterate through files array -->
   <ng-container *ngFor="let node of files">
-    {{'node:' | console}}
-    {{ node | json | console }}}}
     <!-- check if file or directory -->
     <ng-container [ngSwitch]="node.type" >
       <!-- if file, show an option -->
       <ng-container *ngSwitchCase="'file'" >
-        <option value="node.fileID">&nbsp;{{node.display_name}}</option> 
+        <option value="{{node.fileID}}">&nbsp;{{node.display_name}}</option> 
       </ng-container>
       <!-- if directory, set file, parent and call #directory template -->
       <ng-container *ngSwitchCase="'directory'" >
-        <option disabled>{{node.display_name}}</option> 
-        <ng-container *ngTemplateOutlet="directory; context: {$implicit: node.contents}"></ng-container>
+        <option disabled>{{parent + node.display_name}}</option> 
+        <ng-container *ngTemplateOutlet="directory; context: {$implicit: node.contents, parent: parent + node.display_name + '/'}"></ng-container>
       </ng-container>
     </ng-container>
   </ng-container>
 </ng-template>
-<ng-container *ngTemplateOutlet="directory; context: {$implicit: files}"></ng-container>
-
-
-<!-- <ng-container [ngSwitch]="node.type === 'file'"> -->
-<!-- <ng-container *ngSwitchCase="true"> -->
-<!-- <option value="node.fileID">{{parent + '/' + node.display_name}}</option> -->
-<!-- </ng-container> -->
-<!-- <ng-container *ngSwitchCase="true"> -->
-<!-- <option disabled>{{parent + '/' + node.display_name}}</option> -->
-<!-- <ng-container *ngFor="let node of node.children"> -->
-<!-- <option option-node [node]="node" parent="{{ parent + '/' + node.display_name }}"></option> -->
-<!-- </ng-container> -->
-<!-- </ng-container> -->
-<!-- </ng-container> -->
+<ng-container *ngTemplateOutlet="directory; context: {$implicit: files, parent:parent}"></ng-container>
 
