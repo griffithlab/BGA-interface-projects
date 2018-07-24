@@ -73,9 +73,9 @@
         <div class="card-block files">
           <div class="card-text">
             <table class="table table-compact table-noborder file-table">
-              <ng-template #dropboxFiles let-files>
+              <ng-template #dropboxFiles let-files let-parent="parent">
                 <ng-container *ngFor="let node of files">
-                  {{ 'node:' | console }} {{ node | json | console }}
+                  {{ 'node:' + parent | console }} {{ node | json | console }}
                   <ng-container [ngSwitch]="node.type">
                     <ng-container *ngSwitchCase="'directory'">
                       <tr class="directory">
@@ -100,7 +100,7 @@
                   </ng-container>
                 </ng-container>
               </ng-template>
-              <ng-container *ngTemplateOutlet="dropboxFiles; context: {$implicit: (dropboxFiles$ | async), parent:'~/pVAC-Seq/input/'}"></ng-container>
+              <ng-container *ngTemplateOutlet="dropboxFiles; context: { $implicit: (dropboxFiles$ | async), parent: '~/pVAC-Seq/input/' }"></ng-container>
             </table>
           </div>
         </div>
