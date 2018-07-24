@@ -6,6 +6,8 @@ import { Component, Input, forwardRef } from '@angular/core';
 })
 
 export class OptionList {
-  @Input() files: object;
+  @Input() files;
   @Input() parent: string;
+  constructor() {
+  }
 }

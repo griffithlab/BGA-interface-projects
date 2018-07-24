@@ -34,8 +34,8 @@
               <ng-container *ngSwitchCase="true">
                 <option value="null">Please select input VCF file</option>
                 <optgroup option-list
-                  [files]="(input$ | async)"
-                  [parent]="'~/pVAR-Seq/input/'"
+                  [files]="inputs$ | async"
+                  [parent]="'~/pVAC-Seq/input/'"
                   label="~/pVAC-Seq/input/">
                 </optgroup>
                 <!-- <option *ngFor="let node in (input$ | async)">{{ node.display_name }}}}</option> -->
