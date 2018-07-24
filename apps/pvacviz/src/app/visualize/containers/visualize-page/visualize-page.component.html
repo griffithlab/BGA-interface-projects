@@ -79,7 +79,7 @@
                   <ng-container [ngSwitch]="node.type">
                     <ng-container *ngSwitchCase="'directory'">
                       <tr class="directory">
-                        <td colspan="2">{{ parent + node.display_name + '/' }}</td>
+                        <td colspan="3">{{ parent + node.display_name + '/' }}</td>
                       </tr>
                       <tr>
                         <th class="left">Filename</th>
@@ -100,14 +100,12 @@
                   </ng-container>
                 </ng-container>
               </ng-template>
-              <ng-container *ngTemplateOutlet="dropboxFiles; context: { $implicit: (dropboxFiles$ | async), parent: '~/pVAC-Seq/input/' }"></ng-container>
+              <ng-container *ngTemplateOutlet="dropboxFiles; context: { $implicit: (dropboxFiles$ | async), parent: '~/pVAC-Seq/dropbox/' }"></ng-container>
             </table>
           </div>
         </div>
 
       </div>
-      <p>Dropbox Files:</p>
-      <pre style="min-height: 800px;">{{ (dropboxFiles$ | async) | json }}</pre>
     </div>
   </div>
 </div>

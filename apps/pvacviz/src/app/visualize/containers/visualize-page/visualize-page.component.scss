@@ -8,8 +8,18 @@
     .file-table {
       margin-bottom: 0;
       margin-top: 0;
+
       th {
         background-color: #EFEFEF;
+      }
+
+      tr.directory td {
+        border-top: 1px solid #ddd;
+        padding: 20px 12px;
+        text-align: left;
+        font-size: .75rem;
+        font-weight: 200;
+        letter-spacing: normal;
       }
 
       tr {
