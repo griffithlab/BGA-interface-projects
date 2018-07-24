@@ -47,7 +47,7 @@
                 <ng-container [ngSwitch]="process.files.length > 0">
                   <ng-container *ngSwitchCase="true">
                     <ng-container *ngFor="let file of process.files">
-                      <tr *ngIf="(file.display_name.includes('final\.tsv') || file.display_name.includes('combined\.parsed\.tsv' ))">
+                      <tr *ngIf="file.is_visualizable === true">
                         <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
                         <td class="left">{{file.description}}</td>
                         <td class="right">
@@ -106,6 +106,8 @@
           </div>
         </div>
       </div>
+      <p>Dropbox Files:</p>
+      <pre style="min-height: 800px;">{{ (dropboxFiles$ | async) | json }}</pre>
     </div>
   </div>
 </div>

@@ -104,7 +104,7 @@ export const getProcessesWithVisualizableFiles = createSelector(
     return map(processes)
       .filter((proc) => {
         const vizFiles = filter(proc.files, (file) => {
-          return isVisualizable(file.display_name);
+          return file.is_visualizable === true;
         });
         return vizFiles.length > 0;
         // console.log('proc!');

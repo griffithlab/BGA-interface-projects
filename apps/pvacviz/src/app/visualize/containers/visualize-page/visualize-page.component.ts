@@ -24,7 +24,7 @@ export class VisualizePageComponent implements OnInit {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
     // this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
-    this.dropboxFiles$ = store.pipe(select(fromCore.getDropboxVisualizableFiles));
+    this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
   }
 
   ngOnInit() {
