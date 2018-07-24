@@ -14,7 +14,6 @@ import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
 import { OptionList } from './containers/start-page/option-list.component';
-import { ConsolePipe } from '../core/pipes/console.pipe';
 
 @NgModule({
   imports: [
@@ -46,9 +45,7 @@ import { ConsolePipe } from '../core/pipes/console.pipe';
   ],
   declarations: [
     StartPageComponent,
-    OptionList,
-    ConsolePipe
+    OptionList
   ],
-  exports: [ConsolePipe]
 })
 export class StartModule { }

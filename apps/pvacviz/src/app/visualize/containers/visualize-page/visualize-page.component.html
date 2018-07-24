@@ -15,15 +15,9 @@
 <div class="page-content">
   <div class="row">
     <div class="col-xs-6">
-      <ng-container [ngSwitch]="(processesWithVisualizableFiles$ | async)?.length > 0">
-        <p *ngSwitchCase="true" >
-          Listed below are processes with visualizable files.<br/>
-        </p>
-        <p *ngSwitchDefault>
-          No processes found with visualizable files.
-        </p>
-      </ng-container>
-      <p></p>
+      <p *ngIf="(processesWithVisualizableFiles$ | async)?.length < 1">
+        No processes found with visualizable files.
+      </p>
       <div class="card" *ngFor="let process of (processesWithVisualizableFiles$ | async)">
         <div class="card-header">
           <div class="row">
@@ -72,39 +66,45 @@
       </div>
     </div>
     <div class="col-xs-6">
-      <ng-container [ngSwitch]="(dropboxFiles$ | async)?.length > 0">
-        <p *ngSwitchCase="true" >
-          Listed below are all visualizable files found in ~/pVACseq/Dropbox/
-        </p>
-        <p *ngSwitchDefault>
-          No visualizable files found in ~/pVACseq/Dropbox/
-        </p>
-      </ng-container>
+      <p *ngIf="(dropboxFiles$ | async)?.length < 1">
+        No visualizable files found in ~/pVACseq/Dropbox/
+      </p>
       <div class="card" *ngIf="(dropboxFiles$ | async)?.length > 0">
         <div class="card-block files">
           <div class="card-text">
             <table class="table table-compact table-noborder file-table">
-              <thead>
-                <tr>
-                  <th class="left">Filename</th>
-                  <th class="left">Description</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngFor="let file of (dropboxFiles$ | async)">
-                  <tr>
-                    <td class="left">{{file.display_name}}</td>
-                    <td class="left">{{file.description}}</td>
-                    <td class="right">
-                      <button [routerLink]="['/visualize/process', '-1', 'results', file.fileID]" class="btn btn-sm btn-link">Visualize</button>
-                    </td>
-                  </tr>
+              <ng-template #dropboxFiles let-files>
+                <ng-container *ngFor="let node of files">
+                  {{ 'node:' | console }} {{ node | json | console }}
+                  <ng-container [ngSwitch]="node.type">
+                    <ng-container *ngSwitchCase="'directory'">
+                      <tr class="directory">
+                        <td colspan="2">{{ parent + node.display_name + '/' }}</td>
+                      </tr>
+                      <tr>
+                        <th class="left">Filename</th>
+                        <th class="left">Description</th>
+                        <th></th>
+                      </tr>
+                      <ng-container *ngTemplateOutlet="dropboxFiles; context: {$implicit: node.contents, parent: parent + node.display_name + '/'}"></ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'file'">
+                      <tr>
+                        <td class="left">{{node.display_name}}</td>
+                        <td class="left">{{node.description}}</td>
+                        <td class="right">
+                          <button [routerLink]="['/visualize/process', '-1', 'results', node.fileID]" class="btn btn-sm btn-link">Visualize</button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
                 </ng-container>
-              </tbody>
+              </ng-template>
+              <ng-container *ngTemplateOutlet="dropboxFiles; context: {$implicit: (dropboxFiles$ | async), parent:'~/pVAC-Seq/input/'}"></ng-container>
             </table>
           </div>
         </div>
+
       </div>
       <p>Dropbox Files:</p>
       <pre style="min-height: 800px;">{{ (dropboxFiles$ | async) | json }}</pre>
