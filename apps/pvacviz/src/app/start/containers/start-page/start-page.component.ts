@@ -15,6 +15,7 @@ import { File, Files } from '../../../core/models/file.model';
 import { InputService } from '../../../core/services/inputs.service';
 
 import * as fromInputsActions from '../../actions/inputs.actions';
+import * as fromAlgorithmsActions from '../../actions/algorithms.actions';
 import * as fromStartActions from '../../actions/start.actions';
 import * as fromStart from '../../reducers';
 
@@ -25,6 +26,7 @@ import * as fromStart from '../../reducers';
 })
 export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
+  algorithms$: Observable<Array<string>>;
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;
@@ -40,6 +42,7 @@ export class StartPageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
@@ -90,6 +93,7 @@ export class StartPageComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
+    this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
   }
 
   onSubmit(startParameters): void {

@@ -14,7 +14,7 @@ export class AlgorithmsService {
   private algorithmsPath: string;
 
   constructor(private http: HttpClient, private conf: ConfigService) {
-    this.algorithmsPath = conf.apiUrl() + '/algorithms';
+    this.algorithmsPath = conf.apiUrl() + '/validalgorithms';
   }
 
   query(): Observable<ApiAlgorithmsResponse> {

@@ -12,6 +12,7 @@ import { NotFoundComponent } from './containers/not-found/not-found.component';
 
 import { ConfigService } from './services/config.service';
 import { ProcessService } from './services/process.service';
+import { AlgorithmsService } from './services/algorithms.service';
 import { InputService } from './services/inputs.service';
 import { DropboxService } from './services/dropbox.service';
 
@@ -36,6 +37,7 @@ export const COMPONENTS = [
   providers: [
     ConfigService,
     ProcessService,
+    AlgorithmsService,
     InputService,
     DropboxService
   ],

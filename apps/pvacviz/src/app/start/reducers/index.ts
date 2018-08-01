@@ -1,10 +1,12 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import * as fromAlgorithms from './algorithms.reducer';
 import * as fromInputs from './inputs.reducer';
 import * as fromStart from './start.reducer';
 import * as fromRoot from '../../reducers';
 
 export interface StartState {
   inputs: fromInputs.State;
+  algorithms: fromAlgorithms.State;
   post: fromStart.State;
 }
 
@@ -14,6 +16,7 @@ export interface State extends fromRoot.State {
 
 export const reducers = {
   inputs: fromInputs.reducer,
+  algorithms: fromAlgorithms.reducer,
   post: fromStart.reducer
 }
 
@@ -55,6 +58,11 @@ export const getInputsState = createSelector(
   state => state.inputs
 );
 
+export const getAlgorithmsState = createSelector(
+  getStartState,
+  state => state.algorithms
+);
+
 export const getPostState = createSelector(
   getStartState,
   state => state.post
@@ -73,3 +81,8 @@ export const {
   selectEntities: getInputs,
   selectAll: getAllInputs,
 } = fromInputs.adapter.getSelectors(getInputsState);
+
+export const {
+  selectEntities: getAlgorithms,
+  selectAll: getAllAlgorithms,
+} = fromAlgorithms.adapter.getSelectors(getAlgorithmsState);
