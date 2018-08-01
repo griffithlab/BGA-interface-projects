@@ -8,3 +8,4 @@ export interface ApiStartResponse {
 
 export interface ApiInputResponse extends Array<File> { }
 export interface ApiDropboxResponse extends Array<File> { }
+export interface ApiAlgorithmsResponse extends Array<string> { }
