@@ -6,6 +6,11 @@ export interface ApiStartResponse {
   processid: number;
 }
 
+export interface Algorithm {
+  id: number;
+  name: string;
+}
+
 export interface ApiInputResponse extends Array<File> { }
 export interface ApiDropboxResponse extends Array<File> { }
-export interface ApiAlgorithmsResponse extends Array<string> { }
+export interface ApiAlgorithmsResponse extends Array<Algorithm> { }

@@ -21,8 +21,9 @@ export class AlgorithmsService {
     return this.http.get(this.algorithmsPath)
       .map(parseResponse);
 
+    // return an array of Algorithm objects so ngrx-entity has ids to work with
     function parseResponse(res: Response): ApiAlgorithmsResponse {
-      return map(res, f => f as string);
+      return map(res, (f, i) => { return { id: i, name: f } });
     }
   }
 }
