@@ -185,6 +185,12 @@
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-0.11.14.tgz#7a71233267e02d868974c0efa7a705ecc85cc761"
 
+"@ng-select/ng-select@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-2.3.6.tgz#579182bcc31927c47ce08d378a326f02916e4ba0"
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngrx/effects@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-5.2.0.tgz#aa762b69cb6fd4644d724a1cecd265caa42baf09"
