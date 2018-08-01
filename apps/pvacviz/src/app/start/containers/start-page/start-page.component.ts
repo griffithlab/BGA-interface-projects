@@ -63,7 +63,7 @@ export class StartPageComponent implements OnInit {
       'input': [null, [Validators.required]],
       'samplename': ['sample-name-N', [Validators.required]],
       'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
-      'prediction_algorithms': ['NNalign,NetMHC,NetMHCIIpan,NetMHCcons,NetMHCpan,PickPocket,SMM,SMMPMBEC,SMMalign', [Validators.required]],
+      'prediction_algorithms': [[], [Validators.required]],
       'epitope_lengths': ['10', [Validators.required]],
       'peptide_sequence_length': [21, [Validators.required]],
       'net_chop_method': ['', []],
