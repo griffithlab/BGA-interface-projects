@@ -75,7 +75,6 @@
             <table class="table table-compact table-noborder file-table">
               <ng-template #dropboxFiles let-files let-parent="parent">
                 <ng-container *ngFor="let node of files">
-                  {{ 'node:' + parent | console }} {{ node | json | console }}
                   <ng-container [ngSwitch]="node.type">
                     <ng-container *ngSwitchCase="'directory'">
                       <tr class="directory">
@@ -93,7 +92,11 @@
                         <td class="left">{{node.display_name}}</td>
                         <td class="left">{{node.description}}</td>
                         <td class="right">
-                          <button [routerLink]="['/visualize/process', '-1', 'results', node.fileID]" class="btn btn-sm btn-link">Visualize</button>
+                          <button [routerLink]="['/visualize/process', '-1', 'results', node.fileID]"
+                            class="btn btn-sm btn-link"
+                            [disabled]="!node.is_visualizable">
+                            Visualize
+                          </button>
                         </td>
                       </tr>
                     </ng-container>
@@ -104,7 +107,6 @@
             </table>
           </div>
         </div>
-
       </div>
     </div>
   </div>
