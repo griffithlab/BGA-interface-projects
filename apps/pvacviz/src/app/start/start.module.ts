@@ -6,10 +6,12 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { ClarityModule } from '@clr/angular';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { StartRoutingModule } from './start-routing.module';
 import { InputsEffects } from './effects/inputs.effects';
 import { StartEffects } from './effects/start.effects';
+import { AlgorithmsEffects } from './effects/algorithms.effects';
 import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
@@ -21,6 +23,7 @@ import { OptionList } from './containers/start-page/option-list.component';
     FormsModule,
     ReactiveFormsModule,
     ClarityModule,
+    NgSelectModule,
     StartRoutingModule,
     /**
      * StoreModule.forFeature is used for composing state
@@ -40,7 +43,8 @@ import { OptionList } from './containers/start-page/option-list.component';
      */
     EffectsModule.forFeature([
       InputsEffects,
-      StartEffects
+      StartEffects,
+      AlgorithmsEffects
     ])
   ],
   declarations: [

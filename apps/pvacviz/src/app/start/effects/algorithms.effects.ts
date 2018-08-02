@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -10,17 +10,15 @@ import {
   switchMap,
   catchError,
 } from 'rxjs/operators';
-
 import { File, Files } from '../../core/models/file.model';
-import { InputService } from '../../core/services/inputs.service';
+import { AlgorithmsService } from '../../core/services/algorithms.service';
 import {
-  InputsActionTypes,
-  InputsActions,
-  LoadInputs,
-  LoadInputsSuccess,
-  LoadInputsFail
-} from '../actions/inputs.actions';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+  AlgorithmsActionTypes,
+  AlgorithmsActions,
+  LoadAlgorithms,
+  LoadAlgorithmsSuccess,
+  LoadAlgorithmsFail
+} from '../actions/algorithms.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -34,21 +32,21 @@ import { ApiStartResponse } from '../../core/models/api-responses.model';
  */
 
 @Injectable()
-export class InputsEffects {
+export class AlgorithmsEffects {
   constructor(
     private actions$: Actions,
-    private inputs: InputService,
+    private algorithms: AlgorithmsService,
   ) { }
 
   @Effect()
   search$: Observable<Action> = this.actions$.pipe(
-    ofType<LoadInputs>(InputsActionTypes.LoadInputs),
+    ofType<LoadAlgorithms>(AlgorithmsActionTypes.LoadAlgorithms),
     switchMap(action => {
-      return this.inputs
+      return this.algorithms
         .query()
         .pipe(
-          map((files: Files) => new LoadInputsSuccess(files)),
-          catchError(err => of(new LoadInputsFail(err)))
+          map((algorithms: Array<string>) => new LoadAlgorithmsSuccess(algorithms)),
+          catchError(err => of(new LoadAlgorithmsFail(err)))
         );
     })
   );

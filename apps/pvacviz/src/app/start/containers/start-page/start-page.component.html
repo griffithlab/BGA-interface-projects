@@ -38,7 +38,6 @@
                   [parent]="'~/pVAC-Seq/input/'"
                   label="~/pVAC-Seq/input/">
                 </optgroup>
-                <!-- <option *ngFor="let node in (input$ | async)">{{ node.display_name }}}}</option> -->
               </ng-container>
               <ng-container *ngSwitchCase="false">
                 <option value="null">No files found in input directory.</option>
@@ -55,6 +54,25 @@
 
     <div class="form-group row">
       <div class="col-xs-12 col-sm-3 col-form-label">
+        <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        <ng-select
+          [items]="algorithms$ | async"
+          [multiple]="true"
+          [closeOnSelect]="false"
+          bindLabel="name"
+          placeholder="Select Algorithms"
+          formControlName="prediction_algorithms">
+          </ng-select>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-form-help">
+        Comma-separated list of prediction algorithms to use
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-xs-12 col-sm-3 col-form-label">
         <label for="alleles" class="required">Alleles</label>
       </div>
       <div class="col-xs-12 col-sm-4">
@@ -62,18 +80,6 @@
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
         Comma-separated list of alleles to run the sequences against
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <textarea id="prediction_algorithms" formControlName="prediction_algorithms" rows="2"></textarea>
-      </div>
-      <div class="col-xs-12 col-sm-4 col-form-help">
-        Comma-separated list of prediction algorithms to use
       </div>
     </div>
   </section>
@@ -400,3 +406,17 @@
     </div>
   </section>
 </form>
+<div class="row" >
+  <div class="col-sm-6" >
+    <pre>
+      <p>Algorithms:</p>
+      {{ algorithms$ | async | json }}
+    </pre>
+  </div>
+  <div class="col-sm-6" >
+    <p>startForm:</p>
+    <pre>
+      {{ startForm.value | json }}
+    </pre>
+  </div>
+</div>

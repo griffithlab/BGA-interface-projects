@@ -15,6 +15,7 @@ import { File, Files } from '../../../core/models/file.model';
 import { InputService } from '../../../core/services/inputs.service';
 
 import * as fromInputsActions from '../../actions/inputs.actions';
+import * as fromAlgorithmsActions from '../../actions/algorithms.actions';
 import * as fromStartActions from '../../actions/start.actions';
 import * as fromStart from '../../reducers';
 
@@ -25,6 +26,7 @@ import * as fromStart from '../../reducers';
 })
 export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
+  algorithms$: Observable<Array<string>>;
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;
@@ -40,6 +42,7 @@ export class StartPageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
@@ -60,7 +63,7 @@ export class StartPageComponent implements OnInit {
       'input': [null, [Validators.required]],
       'samplename': ['sample-name-N', [Validators.required]],
       'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
-      'prediction_algorithms': ['NNalign,NetMHC,NetMHCIIpan,NetMHCcons,NetMHCpan,PickPocket,SMM,SMMPMBEC,SMMalign', [Validators.required]],
+      'prediction_algorithms': [[], [Validators.required]],
       'epitope_lengths': ['10', [Validators.required]],
       'peptide_sequence_length': [21, [Validators.required]],
       'net_chop_method': ['', []],
@@ -90,6 +93,7 @@ export class StartPageComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
+    this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
   }
 
   onSubmit(startParameters): void {
