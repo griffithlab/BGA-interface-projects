@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 
 import { File, Files } from '../../../core/models/file.model';
+import { Algorithm } from '../../../core/models/api-responses.model';
 import { InputService } from '../../../core/services/inputs.service';
 
 import * as fromInputsActions from '../../actions/inputs.actions';
@@ -26,7 +27,7 @@ import * as fromStart from '../../reducers';
 })
 export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
-  algorithms$: Observable<Array<string>>;
+  algorithms$: Observable<Array<Algorithm>>;
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;

@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { AlgorithmsActions, AlgorithmsActionTypes } from '../actions/algorithms.actions';
+import { Algorithm } from '../../core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -9,7 +10,7 @@ import { AlgorithmsActions, AlgorithmsActionTypes } from '../actions/algorithms.
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State extends EntityState<string> {
+export interface State extends EntityState<Algorithm> {
   loading: boolean;
   loaded: boolean;
   error: boolean;
@@ -24,7 +25,7 @@ export interface State extends EntityState<string> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const adapter: EntityAdapter<string> = createEntityAdapter<string>({
+export const adapter: EntityAdapter<Algorithm> = createEntityAdapter<Algorithm>({
   sortComparer: false,
 });
 

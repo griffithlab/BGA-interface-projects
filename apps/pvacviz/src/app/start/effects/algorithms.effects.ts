@@ -10,7 +10,7 @@ import {
   switchMap,
   catchError,
 } from 'rxjs/operators';
-import { File, Files } from '../../core/models/file.model';
+import { Algorithm } from '../../core/models/api-responses.model';
 import { AlgorithmsService } from '../../core/services/algorithms.service';
 import {
   AlgorithmsActionTypes,
@@ -45,7 +45,7 @@ export class AlgorithmsEffects {
       return this.algorithms
         .query()
         .pipe(
-          map((algorithms: Array<string>) => new LoadAlgorithmsSuccess(algorithms)),
+          map((algorithms: Array<Algorithm>) => new LoadAlgorithmsSuccess(algorithms)),
           catchError(err => of(new LoadAlgorithmsFail(err)))
         );
     })
