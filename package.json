@@ -9,6 +9,16 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "affected:apps": "./node_modules/.bin/nx affected apps",
+    "affected:build": "./node_modules/.bin/nx affected build",
+    "affected:e2e": "./node_modules/.bin/nx affected e2e",
+    "format": "./node_modules/.bin/nx format write",
+    "format:write": "./node_modules/.bin/nx format write",
+    "format:check": "./node_modules/.bin/nx format check",
+    "update": "./node_modules/.bin/nx update",
+    "update:check": "./node_modules/.bin/nx update check",
+    "update:skip": "./node_modules/.bin/nx update skip",
+    "postinstall": "./node_modules/.bin/nx postinstall",
     "start:pvacviz": "ng serve --app=pvacviz --aot --proxy-config ./proxy-config/pvacviz-proxy.config.js"
   },
   "private": true,
@@ -21,17 +31,18 @@
     "@angular/platform-browser": "^6.1.1",
     "@angular/platform-browser-dynamic": "^6.1.1",
     "@angular/router": "^6.1.1",
-    "@clr/angular": "^0.11.14",
-    "@clr/icons": "^0.11.14",
-    "@clr/ui": "^0.11.14",
+    "@clr/angular": "^0.12.7",
+    "@clr/icons": "^0.12.7",
+    "@clr/ui": "^0.12.7",
     "@ng-select/ng-select": "^2.3.6",
     "@ngrx/effects": "^6.1.0",
     "@ngrx/entity": "^6.1.0",
     "@ngrx/router-store": "^6.1.0",
     "@ngrx/store": "^6.1.0",
     "@ngrx/store-devtools": "^6.1.0",
-    "@nrwl/nx": "^0.9.1",
-    "@webcomponents/custom-elements": "^1.0.8",
+    "@nrwl/nx": "^6.1.1",
+    "@schematics/angular": "^0.7.2",
+    "@webcomponents/custom-elements": "^1.2.0",
     "core-js": "^2.4.1",
     "lodash-es": "^4.17.10",
     "ngrx-query": "^3.0.0",
@@ -43,6 +54,7 @@
     "@angular-devkit/build-angular": "~0.7.0",
     "@angular-devkit/schematics": "^0.6.0",
     "@angular/cli": "^6.1.2",
+    "@angular/compiler-cli": "^6.1.1",
     "@ngrx/schematics": "^6.1.0",
     "@nrwl/schematics": "^6.1.1",
     "@types/jasmine": "~2.8.3",
@@ -64,5 +76,7 @@
     "tslint": "~5.9.1",
     "typescript": "^2.6.2"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "jasmine-marbles": "^0.3.1"
+  }
 }
