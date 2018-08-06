@@ -19,7 +19,8 @@
       "@bga-ui-projects/*": [
         "libs/*"
       ]
-    }
+    },
+    "module": "es2015"
   },
   "exclude": [
     "node_modules",
