@@ -44,7 +44,7 @@
     "@angular-devkit/schematics": "^0.6.0",
     "@angular/cli": "^6.1.2",
     "@ngrx/schematics": "^6.1.0",
-    "@nrwl/schematics": "^0.9.1",
+    "@nrwl/schematics": "^6.1.1",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
