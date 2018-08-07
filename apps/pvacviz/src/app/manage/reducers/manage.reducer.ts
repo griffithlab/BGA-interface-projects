@@ -85,7 +85,7 @@ export function reducer(state = initialState, action: ManageActions): State {
 
     case ManageActionTypes.LoadDetailSuccess:
       return {
-        ...adapter.upsertOne({ id: action.payload.id, changes: action.payload }, state),
+        ...adapter.upsertOne(action.payload, state),
         loading: false,
         loaded: true
       };
