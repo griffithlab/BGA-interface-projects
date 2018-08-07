@@ -19,7 +19,7 @@
     "update:check": "./node_modules/.bin/nx update check",
     "update:skip": "./node_modules/.bin/nx update skip",
     "postinstall": "./node_modules/.bin/nx postinstall",
-    "start:pvacviz": "ng serve --app=pvacviz --aot --proxy-config ./proxy-config/pvacviz-proxy.config.js"
+    "start:pvacviz": "ng serve --project=pvacviz --aot --proxy-config ./proxy-config/pvacviz-proxy.config.js"
   },
   "private": true,
   "dependencies": {
