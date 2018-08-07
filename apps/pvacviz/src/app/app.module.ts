@@ -17,7 +17,7 @@ import {
 import { NxModule } from "@nrwl/nx";
 
 // pvacviz
-import { CustomRouterStateSerializer } from 'app/shared/utilities';
+import { CustomRouterStateSerializer } from '@pvz/shared/utilities';
 import { NetworkLoggerService } from './shared/networkLogger.service';
 import { environment } from "../environments/environment";
 import { CoreModule } from './core/core.module';
