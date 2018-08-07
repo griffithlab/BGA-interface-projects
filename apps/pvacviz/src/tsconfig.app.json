@@ -1,7 +1,6 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "../../../dist/out-tsc/apps/pvacviz",
     "module": "es2015",
     "experimentalDecorators": true
