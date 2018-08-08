@@ -11,6 +11,12 @@ export interface Algorithm {
   name: string;
 }
 
+export interface ApiAllelesResponse {
+  [key: string]: string[]
+}
+
 export interface ApiInputResponse extends Array<File> { }
+
 export interface ApiDropboxResponse extends Array<File> { }
+
 export interface ApiAlgorithmsResponse extends Array<Algorithm> { }

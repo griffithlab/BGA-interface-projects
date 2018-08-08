@@ -13,6 +13,7 @@ import { NotFoundComponent } from '@pvz/core/containers/not-found/not-found.comp
 import { ConfigService } from '@pvz/core/services/config.service';
 import { ProcessService } from '@pvz/core/services/process.service';
 import { AlgorithmsService } from '@pvz/core/services/algorithms.service';
+import { AllelesService } from '@pvz/core/services/alleles.service';
 import { InputService } from '@pvz/core/services/inputs.service';
 import { DropboxService } from '@pvz/core/services/dropbox.service';
 
@@ -38,6 +39,7 @@ export const COMPONENTS = [
     ConfigService,
     ProcessService,
     AlgorithmsService,
+    AllelesService,
     InputService,
     DropboxService
   ],
