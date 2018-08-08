@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { AlgorithmsActions, AlgorithmsActionTypes } from '../actions/algorithms.actions';
-import { Algorithm } from '../../core/models/api-responses.model';
+import { AlgorithmsActions, AlgorithmsActionTypes } from '@pvz/start/actions/algorithms.actions';
+import { Algorithm } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling

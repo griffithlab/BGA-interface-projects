@@ -1,14 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
-import { Parameters } from '../../../core/models/parameters.model';
+import { Parameters } from '@pvz/core/models/parameters.model';
 import { Observable } from 'rxjs/Observable';
 
 import { combineLatest, filter, map } from 'rxjs/operators';
 
-import { Process } from '../../../core/models/process.model';
-import * as processes from '../../../core/actions/process.actions';
-import * as fromCore from '../../../core/reducers';
+import { Process } from '@pvz/core/models/process.model';
+import * as processes from '@pvz/core/actions/process.actions';
+import * as fromCore from '@pvz/core/reducers';
 
 @Component({
   selector: 'pvz-process-page',

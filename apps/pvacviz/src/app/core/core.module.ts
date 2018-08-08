@@ -7,17 +7,17 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { ClarityModule } from '@clr/angular';
 
-import { LayoutComponent } from './containers/layout/layout.component';
-import { NotFoundComponent } from './containers/not-found/not-found.component';
+import { LayoutComponent } from '@pvz/core/containers/layout/layout.component';
+import { NotFoundComponent } from '@pvz/core/containers/not-found/not-found.component';
 
-import { ConfigService } from './services/config.service';
-import { ProcessService } from './services/process.service';
-import { AlgorithmsService } from './services/algorithms.service';
-import { InputService } from './services/inputs.service';
-import { DropboxService } from './services/dropbox.service';
+import { ConfigService } from '@pvz/core/services/config.service';
+import { ProcessService } from '@pvz/core/services/process.service';
+import { AlgorithmsService } from '@pvz/core/services/algorithms.service';
+import { InputService } from '@pvz/core/services/inputs.service';
+import { DropboxService } from '@pvz/core/services/dropbox.service';
 
-import { ProcessEffects } from './effects/process.effects';
-import { DropboxEffects } from './effects/dropbox.effects';
+import { ProcessEffects } from '@pvz/core/effects/process.effects';
+import { DropboxEffects } from '@pvz/core/effects/dropbox.effects';
 
 import { reducers } from './reducers';
 

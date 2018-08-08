@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Process } from '../../core/models/process.model';
+import { Process } from '@pvz/core/models/process.model';
 
 export enum ManageActionTypes {
   Load = '[Manage] Load Processes',

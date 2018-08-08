@@ -10,8 +10,8 @@ import {
   switchMap,
   catchError,
 } from 'rxjs/operators';
-import { Algorithm } from '../../core/models/api-responses.model';
-import { AlgorithmsService } from '../../core/services/algorithms.service';
+import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { AlgorithmsService } from '@pvz/core/services/algorithms.service';
 import {
   AlgorithmsActionTypes,
   AlgorithmsActions,

@@ -4,9 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
-import { Process } from '../../../core/models/process.model';
-import * as processes from '../../../core/actions/process.actions';
-import * as fromCore from '../../../core/reducers';
+import { Process } from '@pvz/core/models/process.model';
+import * as processes from '@pvz/core/actions/process.actions';
+import * as fromCore from '@pvz/core/reducers';
 
 @Component({
   selector: 'pvz-manage-page',

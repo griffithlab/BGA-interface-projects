@@ -13,11 +13,11 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
-import { Process } from '../../../core/models/process.model';
-import { Parameters } from '../../../core/models/parameters.model';
+import { Process } from '@pvz/core/models/process.model';
+import { Parameters } from '@pvz/core/models/parameters.model';
 
-import * as processes from '../../actions/manage.actions';
-import * as fromProcesses from '../../reducers';
+import * as processes from '@pvz/manage/actions/manage.actions';
+import * as fromProcesses from '@pvz/reducers';
 
 @Component({
   selector: 'pvz-process-table',

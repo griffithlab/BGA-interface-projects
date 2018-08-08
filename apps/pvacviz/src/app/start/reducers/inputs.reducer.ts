@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { File, Files } from '../../core/models/file.model';
-import { InputsActions, InputsActionTypes } from '../actions/inputs.actions';
+import { File, Files } from '@pvz/core/models/file.model';
+import { InputsActions, InputsActionTypes } from '@pvz/start/actions/inputs.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling

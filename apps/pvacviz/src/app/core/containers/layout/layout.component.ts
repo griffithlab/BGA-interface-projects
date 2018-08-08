@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import * as fromCore from '../../reducers';
-import * as layout from '../../actions/layout.actions';
+import * as fromCore from '@pvz/core/reducers';
+import * as layout from '@pvz/core/actions/layout.actions';
 
 @Component({
   selector: 'pvz-layout',

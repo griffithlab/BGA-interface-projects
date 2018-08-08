@@ -17,7 +17,7 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { ProcessService } from '../../core/services/process.service';
+import { ProcessService } from '@pvz/core/services/process.service';
 import {
   StartActionTypes,
   StartActions,
@@ -25,7 +25,7 @@ import {
   StartProcessSuccess,
   StartProcessFail
 } from '../actions/start.actions';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
