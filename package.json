@@ -45,6 +45,7 @@
     "@webcomponents/custom-elements": "^1.2.0",
     "core-js": "^2.4.1",
     "lodash-es": "^4.17.10",
+    "ngrx-forms": "^3.0.2",
     "ngrx-query": "^3.0.0",
     "ngx-moment": "^2.0.0",
     "rxjs": "^6.2.2",

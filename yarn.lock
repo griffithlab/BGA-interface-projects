@@ -4746,6 +4746,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+ngrx-forms@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/ngrx-forms/-/ngrx-forms-3.0.2.tgz#46a72b7d8cf84d3336c2bf5ebcec8e35e5235a29"
+
 ngrx-query@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ngrx-query/-/ngrx-query-3.0.0.tgz#caef5962c2084e8a016a90d203d8b486dc9d146f"
