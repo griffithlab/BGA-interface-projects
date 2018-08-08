@@ -1,4 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+
 import * as fromAlgorithms from './algorithms.reducer';
 import * as fromInputs from './inputs.reducer';
 import * as fromStart from './start.reducer';
@@ -7,7 +8,8 @@ import * as fromRoot from '@pvz/reducers';
 export interface StartState {
   inputs: fromInputs.State;
   algorithms: fromAlgorithms.State;
-  post: fromStart.State;
+  form: fromStart.FormState;
+  post: fromStart.PostState;
 }
 
 export interface State extends fromRoot.State {
@@ -17,7 +19,8 @@ export interface State extends fromRoot.State {
 export const reducers = {
   inputs: fromInputs.reducer,
   algorithms: fromAlgorithms.reducer,
-  post: fromStart.reducer
+  form: fromStart.formReducer,
+  post: fromStart.postReducer
 }
 
 /**
@@ -61,6 +64,11 @@ export const getInputsState = createSelector(
 export const getAlgorithmsState = createSelector(
   getStartState,
   state => state.algorithms
+);
+
+export const getFormState = createSelector(
+  getStartState,
+  state => state.form
 );
 
 export const getPostState = createSelector(
