@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
-import { ProcessParameters } from '../../core/models/process-parameters.model';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
-import { Algorithm } from '../../core/models/api-responses.model';
+import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
+import { Algorithm } from '@pvz/core/models/api-responses.model';
 export enum AlgorithmsActionTypes {
   LoadAlgorithms = '[Start] Load Algorithms',
   LoadAlgorithmsSuccess = '[Start] Load Algorithms Success',

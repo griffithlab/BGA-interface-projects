@@ -3,8 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import 'rxjs/add/observable/of';
 
-import { Process } from '../../core/models/process.model';
-import { ManageActions, ManageActionTypes } from '../actions/manage.actions';
+import { Process } from '@pvz/core/models/process.model';
+import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling

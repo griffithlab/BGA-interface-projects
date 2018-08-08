@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { File } from '../models/file.model';
+
+import { File } from '@pvz/core/models/file.model';
 
 export enum DropboxActionTypes {
   Load = '[Dropboxes] Load Dropbox Files',

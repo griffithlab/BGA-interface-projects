@@ -1,6 +1,6 @@
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { RouterStateSnapshot, Params } from '@angular/router';
-import { RouterStateUrl } from '../core/models/router.model';
+import { RouterStateUrl } from '@pvz/core/models/router.model';
 
 /**
  * The RouterStateSerializer takes the current RouterStateSnapshot
