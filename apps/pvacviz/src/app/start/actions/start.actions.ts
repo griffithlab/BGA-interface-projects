@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
-import { File, Files } from '../../core/models/file.model';
-import { ProcessParameters } from '../../core/models/process-parameters.model';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+import { File, Files } from '@pvz/core/models/file.model';
+import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 export enum StartActionTypes {
   StartProcess = '[Start] Start Process',
   StartProcessSuccess = '[Start] Start Process Success',

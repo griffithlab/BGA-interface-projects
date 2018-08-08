@@ -4,11 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
-import { File } from '../../../core/models/file.model';
-import { Process } from '../../../core/models/process.model';
-import * as dropbox from '../../../core/actions/dropbox.actions';
-import * as processes from '../../../core/actions/process.actions';
-import * as fromCore from '../../../core/reducers';
+import { File } from '@pvz/core/models/file.model';
+import { Process } from '@pvz/core/models/process.model';
+import * as dropbox from '@pvz/core/actions/dropbox.actions';
+import * as processes from '@pvz/core/actions/process.actions';
+import * as fromCore from '@pvz/core/reducers';
 
 @Component({
   selector: 'pvz-visualize-page',

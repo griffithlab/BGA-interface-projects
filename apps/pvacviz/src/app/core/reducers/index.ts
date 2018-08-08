@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '@pvz/reducers';
 import * as fromLayout from './layout.reducer';
 import * as fromProcesses from './processes.reducer';
 import * as fromDropbox from './dropbox.reducer';

@@ -1,8 +1,8 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { File, Files } from '../../core/models/file.model';
-import { StartActions, StartActionTypes, StartProcessSuccess } from '../actions/start.actions';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+import { File, Files } from '@pvz/core/models/file.model';
+import { StartActions, StartActionTypes, StartProcessSuccess } from '@pvz/start/actions/start.actions';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling

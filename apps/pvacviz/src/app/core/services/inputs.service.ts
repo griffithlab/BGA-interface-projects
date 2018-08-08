@@ -6,8 +6,8 @@ import 'rxjs/add/operator/map';
 import { map, filter, first } from 'lodash-es';
 
 import { ConfigService } from './config.service';
-import { ApiInputResponse } from '../../core/models/api-responses.model';
-import { File } from '../../core/models/file.model';
+import { ApiInputResponse } from '@pvz/core/models/api-responses.model';
+import { File } from '@pvz/core/models/file.model';
 
 @Injectable()
 export class InputService {

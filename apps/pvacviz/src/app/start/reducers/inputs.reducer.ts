@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { File, Files } from '../../core/models/file.model';
-import { InputsActions, InputsActionTypes } from '../actions/inputs.actions';
+import { File, Files } from '@pvz/core/models/file.model';
+import { InputsActions, InputsActionTypes } from '@pvz/start/actions/inputs.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -26,7 +26,7 @@ export interface State extends EntityState<File> {
  * function if the records are to be sorted.
  */
 export const adapter: EntityAdapter<File> = createEntityAdapter<File>({
-  selectId: (file: File) => file.fileID,
+  selectId: (file: File) => file.fileID ? file.fileID : 0,
   sortComparer: false,
 });
 

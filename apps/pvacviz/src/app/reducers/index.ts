@@ -21,8 +21,8 @@ import { storeFreeze } from 'ngrx-store-freeze';
  * notation packages up all of the exports into a single object.
  */
 
-import { environment } from '../../environments/environment';
-import { RouterStateUrl } from '../core/models/router.model';
+import { environment } from '@pvz/environments/environment';
+import { RouterStateUrl } from '@pvz/core/models/router.model';
 
 // console.log all actions
 export function logger(reducer: ActionReducer<State>): ActionReducer<State> {

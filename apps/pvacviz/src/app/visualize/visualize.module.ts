@@ -8,7 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { VisualizePageComponent } from './containers/visualize-page/visualize-page.component';
 import { BokehVisualizationComponent } from './components/bokeh-visualization/bokeh-visualization.component';
 import { VisualizeFileComponent } from './containers/visualize-file/visualize-file.component';
-import { ConsolePipe } from '../core/pipes/console.pipe';
+import { ConsolePipe } from '@pvz/core/pipes/console.pipe';
 
 // import { reducers } from './reducers';
 

@@ -5,8 +5,8 @@ import 'rxjs/add/operator/map';
 
 import { map, filter, first } from 'lodash-es';
 
-import { ApiDropboxResponse } from '../../core/models/api-responses.model';
-import { File } from '../../core/models/file.model';
+import { ApiDropboxResponse } from '@pvz/core/models/api-responses.model';
+import { File } from '@pvz/core/models/file.model';
 
 import { ConfigService } from './config.service';
 

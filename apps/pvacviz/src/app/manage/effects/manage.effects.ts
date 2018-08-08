@@ -16,8 +16,8 @@ import {
   withLatestFrom
 } from 'rxjs/operators';
 
-import { Process } from '../../core/models/process.model';
-import { ProcessService } from '../../core/services/process.service';
+import { Process } from '@pvz/core/models/process.model';
+import { ProcessService } from '@pvz/core/services/process.service';
 import {
   ManageActionTypes,
   ManageActions,
@@ -31,11 +31,11 @@ import {
   Archive,
   ArchiveSuccess,
   ArchiveFail
-} from '../actions/manage.actions';
+} from '@pvz/manage/actions/manage.actions';
 
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '@pvz/reducers';
 import { Store, select } from '@ngrx/store';
-import { getRouterState } from '../reducers';
+import { getRouterState } from '@pvz/manage/reducers';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your

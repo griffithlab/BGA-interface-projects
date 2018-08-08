@@ -17,14 +17,14 @@ import {
 import { NxModule } from "@nrwl/nx";
 
 // pvacviz
-import { CustomRouterStateSerializer } from './shared/utilities';
-import { NetworkLoggerService } from './shared/networkLogger.service';
-import { environment } from "../environments/environment";
-import { CoreModule } from './core/core.module';
-import { LayoutComponent } from "./core/containers/layout/layout.component";
+import { CustomRouterStateSerializer } from '@pvz/shared/utilities';
+import { NetworkLoggerService } from '@pvz/shared/networkLogger.service';
+import { environment } from "@pvz/environments/environment";
+import { CoreModule } from '@pvz/core/core.module';
+import { LayoutComponent } from "@pvz/core/containers/layout/layout.component";
 
-import { reducers, metaReducers } from "./reducers";
-import { routes } from './routes';
+import { reducers, metaReducers } from "@pvz/reducers";
+import { routes } from '@pvz/routes';
 
 
 @NgModule({

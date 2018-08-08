@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
-import { Process } from '../../core/models/process.model';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+import { Process } from '@pvz/core/models/process.model';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 import { ConfigService } from './config.service';
 

@@ -18,8 +18,15 @@
     "paths": {
       "@bga-ui-projects/*": [
         "libs/*"
+      ],
+      "@pvz/*": [
+        "apps/pvacviz/src/*",
+        "apps/pvacviz/src/app/*",
+        "apps/pvacviz/src/assets/*",
+        "apps/pvacviz/src/environments/*"
       ]
-    }
+    },
+    "module": "es2015"
   },
   "exclude": [
     "node_modules",

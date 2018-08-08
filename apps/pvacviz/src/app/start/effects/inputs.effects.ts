@@ -11,16 +11,17 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { File, Files } from '../../core/models/file.model';
-import { InputService } from '../../core/services/inputs.service';
+import { File, Files } from '@pvz/core/models/file.model';
+import { InputService } from '@pvz/core/services/inputs.service';
+import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
+
 import {
   InputsActionTypes,
   InputsActions,
   LoadInputs,
   LoadInputsSuccess,
   LoadInputsFail
-} from '../actions/inputs.actions';
-import { ApiStartResponse } from '../../core/models/api-responses.model';
+} from '@pvz/start/actions/inputs.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your

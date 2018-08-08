@@ -3,8 +3,8 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import 'rxjs/add/observable/of';
 
-import { Process } from '../../core/models/process.model';
-import { ManageActions, ManageActionTypes } from '../actions/manage.actions';
+import { Process } from '@pvz/core/models/process.model';
+import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -85,7 +85,7 @@ export function reducer(state = initialState, action: ManageActions): State {
 
     case ManageActionTypes.LoadDetailSuccess:
       return {
-        ...adapter.upsertOne({ id: action.payload.id, changes: action.payload }, state),
+        ...adapter.upsertOne(action.payload, state),
         loading: false,
         loaded: true
       };

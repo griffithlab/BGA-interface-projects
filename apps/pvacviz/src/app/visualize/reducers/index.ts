@@ -1,8 +1,8 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromNgrxRouter from '@ngrx/router-store';
 
-import * as fromRoot from '../../reducers';
-import { RouterStateUrl } from '../../core/models/router.model';
+import * as fromRoot from '@pvz/reducers';
+import { RouterStateUrl } from '@pvz/core/models/router.model';
 
 export interface State extends fromRoot.State {
   visualize: {};

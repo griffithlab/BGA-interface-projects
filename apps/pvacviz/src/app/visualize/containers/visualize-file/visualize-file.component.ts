@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import { combineLatest, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { environment } from '../../../../environments/environment';
-import * as fromProcesses from '../../reducers';
+import { environment } from '@pvz/environments/environment';
+import * as fromProcesses from '@pvz/visualize/reducers';
 
 
 @Component({

@@ -17,17 +17,17 @@ import {
   catchError,
 } from 'rxjs/operators';
 
-import { File, Files } from '../../core/models/file.model';
-import { DropboxService } from '../../core/services/dropbox.service';
-import { ProcessService } from '../../core/services/process.service';
+import { File, Files } from '@pvz/core/models/file.model';
+import { DropboxService } from '@pvz/core/services/dropbox.service';
+import { ProcessService } from '@pvz/core/services/process.service';
+import { ApiDropboxResponse } from '@pvz/core/models/api-responses.model';
 import {
   DropboxActionTypes,
   DropboxActions,
   Load,
   LoadSuccess,
   LoadFail
-} from '../actions/dropbox.actions';
-import { ApiDropboxResponse } from '../../core/models/api-responses.model';
+} from '@pvz/core/actions/dropbox.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your

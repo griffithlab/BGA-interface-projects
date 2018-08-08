@@ -2,7 +2,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromAlgorithms from './algorithms.reducer';
 import * as fromInputs from './inputs.reducer';
 import * as fromStart from './start.reducer';
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '@pvz/reducers';
 
 export interface StartState {
   inputs: fromInputs.State;

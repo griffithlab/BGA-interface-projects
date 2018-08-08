@@ -11,14 +11,14 @@ import { map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 
-import { File, Files } from '../../../core/models/file.model';
-import { Algorithm } from '../../../core/models/api-responses.model';
-import { InputService } from '../../../core/services/inputs.service';
+import { File, Files } from '@pvz/core/models/file.model';
+import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { InputService } from '@pvz/core/services/inputs.service';
 
-import * as fromInputsActions from '../../actions/inputs.actions';
-import * as fromAlgorithmsActions from '../../actions/algorithms.actions';
-import * as fromStartActions from '../../actions/start.actions';
-import * as fromStart from '../../reducers';
+import * as fromInputsActions from '@pvz/start/actions/inputs.actions';
+import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
+import * as fromStartActions from '@pvz/start/actions/start.actions';
+import * as fromStart from '@pvz/start/reducers';
 
 @Component({
   selector: 'pvz-start-page',
