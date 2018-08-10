@@ -29,21 +29,21 @@
 
       <div class="col-xs-12 col-sm-4">
         <div class="select">
-          <select id="inputVcf" name="inputVcf" formControlName="input">
-            <ng-container [ngSwitch]="(inputs$ | async)?.length > 0">
-              <ng-container *ngSwitchCase="true">
-                <option value="null">Please select input VCF file</option>
-                <optgroup option-list
-                  [files]="inputs$ | async"
-                  [parent]="'~/pVAC-Seq/input/'"
-                  label="~/pVAC-Seq/input/">
-                </optgroup>
-              </ng-container>
-              <ng-container *ngSwitchCase="false">
-                <option value="null">No files found in input directory.</option>
-              </ng-container>
-            </ng-container>
-          </select>
+          <!-- <select id="inputVcf" name="inputVcf" formControlName="input"> -->
+          <!-- <ng-container [ngSwitch]="(inputs$ | async)?.length > 0"> -->
+          <!-- <ng-container *ngSwitchCase="true"> -->
+          <!-- <option value="null">Please select input VCF file</option> -->
+          <!-- <optgroup option-list -->
+          <!-- [files]="inputs$ | async" -->
+          <!-- [parent]="'~/pVAC-Seq/input/'" -->
+          <!-- label="~/pVAC-Seq/input/"> -->
+          <!-- </optgroup> -->
+          <!-- </ng-container> -->
+          <!-- <ng-container *ngSwitchCase="false"> -->
+          <!-- <option value="null">No files found in input directory.</option> -->
+          <!-- </ng-container> -->
+          <!-- </ng-container> -->
+          <!-- </select> -->
           <small *ngIf="(inputs$ | async)?.length < 1" class="text-warning">Please place files in input directory, usually ~/pVAC-Seq/input.</small>
         </div>
       </div>
@@ -57,14 +57,14 @@
         <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <ng-select
-          [items]="algorithms$ | async"
-          [multiple]="true"
-          [closeOnSelect]="false"
-          bindLabel="name"
-          placeholder="Select Algorithms"
-          formControlName="prediction_algorithms">
-          </ng-select>
+        <!-- <ng-select -->
+        <!-- [items]="algorithms$ | async" -->
+        <!-- [multiple]="true" -->
+        <!-- [closeOnSelect]="false" -->
+        <!-- bindLabel="name" -->
+        <!-- placeholder="Select Algorithms" -->
+        <!-- formControlName="prediction_algorithms"> -->
+        <!-- </ng-select> -->
       </div>
       <div class="col-xs-12 col-sm-4 col-form-help">
         Comma-separated list of prediction algorithms to use
@@ -76,7 +76,7 @@
         <label for="alleles" class="required">Alleles</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <textarea id="alleles" formControlName="alleles" rows="2"></textarea>
+        <!-- <textarea id="alleles" formControlName="alleles" rows="2"></textarea> -->
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
         Comma-separated list of alleles to run the sequences against
@@ -85,275 +85,6 @@
   </section>
 
   <section class="form-block">
-    <label>Algorithm Parameter Defaults</label>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="epitope_lengths" class="required">Epitope Lengths</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="epitope_lengths" formControlName="epitope_lengths" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Comma-separated list of epitope lengths to produce
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="epitope_lengths" class="required">Peptide Sequence Length</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="peptide_sequence_length" formControlName="peptide_sequence_length" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help" >
-        Length of the peptide sequences to produce in the FASTA
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="net_chop_method">NetChop Method</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <div class="select">
-          <select id="net_chop_method" name="net_chop_method" formControlName="net_chop_method">
-            <option value="null">Please select a method</option>
-            <option *ngFor="let method of netChopMethodOptions" [value]="method.value">{{method.label}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        NetChop will be run if method specified here.
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="net_chop_threshold">NetChop Prediction Threshold</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="net_chop_threshold" formControlName="net_chop_threshold" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        NetChop prediction threshold
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="netmhc_stab">NetMHC Stabpan</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <clr-checkbox formControlName="netmhc_stab"></clr-checkbox>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Run NetMHCStabPan at the end of the pipeline
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="top_score_metric">Top Score Metric</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <div class="select">
-          <select id="top_score_metric" name="top_score_metric" formControlName="top_score_metric">
-            <option value="null">Please select a method</option>
-            <option *ngFor="let metric of topScoreMetricOptions" [value]="metric.value">{{metric.label}}</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="binding_threshold">Binding Threshold</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="number" id="binding_threshold" formControlName="binding_threshold" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        NetChop prediction threshold
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="allele_specific_cutoffs">Allele Specific Cutoffs</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <clr-checkbox formControlName="allele_specific_cutoffs"></clr-checkbox>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Allele Specific Binding Thresholds: Use allele-specific cutoffs instead of the value provided with the Binding Threshold
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="minimum_fold_change">Minimum Fold Change</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="minimum_fold_change" formControlName="minimum_fold_change" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Report only epitopes with a fold change between the mutant and wildtype sequences above this value
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="expn_val">Expression Value</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="expn_val" formControlName="expn_val" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this expression cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="normal_cov">Normal Coverage Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="normal_cov" formControlName="normal_cov" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this normal DNA cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="tdna_cov">TDNA Coverage Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="tdna_cov" formControlName="tdna_cov" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this tumor DNA cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="trna_cov">TRNA Coverage Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="trna_cov" formControlName="trna_cov" size="8">
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="normal_vaf">Normal VAF Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="normal_vaf" formControlName="normal_vaf" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this normal DNA VAF cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="tdna_vaf">TDNA VAF Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="tdna_vaf" formControlName="tdna_vaf" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this tumor DNA VAF cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="trna_vaf">TRNA VAF Cutoff</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="trna_vaf" formControlName="trna_vaf" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Only sites above this tumor RNA VAF cutoff will be considered
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="fasta_size">FASTA Size</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="fasta_size" formControlName="fasta_size" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Number of entries submitted to IEDB in each request. Must be an even number.
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="iedb_retries">IEDB Retries</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="iedb_retries" formControlName="iedb_retries" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="cols-xs-12 col-sm-3 col-form-label">
-        <label for="downstream_sequence_length">Downstream Sequence Length</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="downstream_sequence_length" formControlName="downstream_sequence_length" size="8">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence.
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="iedb_install_dir">IEDB Install Directory</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="iedb_install_dir" formControlName="iedb_install_dir" size="32">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Full path to local IEDB installation
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="keep_tmp_files">Keep Temporary Files</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <clr-checkbox formControlName="keep_tmp_files"></clr-checkbox>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Retain process temp files in results directory
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="force">Bypass duplicate process check</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <clr-checkbox formControlName="force"></clr-checkbox>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Allows the submission of processes with identical parameters
-      </div>
-    </div>
 
     <div class="row">
       <div class="col-sm-3">
@@ -409,14 +140,13 @@
 <div class="row" >
   <div class="col-sm-6" >
     <pre>
-      <p>Algorithms:</p>
-      {{ algorithms$ | async | json }}
+      <p>formState$.value:</p>
+      {{ (formState$| async)?.value | json }}
     </pre>
   </div>
   <div class="col-sm-6" >
-    <p>startForm:</p>
+    <p>submittedValue$:</p>
     <pre>
-      {{ startForm.value | json }}
     </pre>
   </div>
 </div>

@@ -6,10 +6,15 @@ import {
   Validators
 } from "@angular/forms";
 
+
 import { Observable } from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
+
+import { FormGroupState, ResetAction, SetValueAction } from 'ngrx-forms';
+
+import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { Algorithm } from '@pvz/core/models/api-responses.model';
@@ -26,6 +31,9 @@ import * as fromStart from '@pvz/start/reducers';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit {
+  formState$: Observable<FormGroupState<StartFormGroupValue>>;
+  submittedValue$: Observable<StartFormGroupValue | undefined>;
+
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
   postSubmitting$: Observable<boolean>;
@@ -42,6 +50,10 @@ export class StartPageComponent implements OnInit {
     private store: Store<fromStart.State>,
     private fb: FormBuilder
   ) {
+    // TODO: refactor start.reducer & reducers index to eliminate clumsy form state references
+    this.formState$ = store.pipe(select(fromStart.getFormState));
+    this.submittedValue$ = store.pipe(select(fromStart.getStartState), map(state => state.form.startForm.submittedValue));
+
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));

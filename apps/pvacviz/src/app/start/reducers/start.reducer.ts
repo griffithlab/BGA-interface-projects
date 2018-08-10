@@ -3,7 +3,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createFormGroupState, formGroupReducer, FormGroupState } from 'ngrx-forms';
 
 import { File, Files } from '@pvz/core/models/file.model';
-import { StartFormGroup, StartFormGroupInitialState } from '@pvz/start/models/start.models';
+import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
 import { StartActions, StartActionTypes, StartProcessSuccess } from '@pvz/start/actions/start.actions';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
@@ -13,26 +13,26 @@ import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
  **/
 export interface FormState {
   startForm: {
-    formState: FormGroupState<StartFormGroup>;
-    submittedValue: StartFormGroup | undefined;
+    state: FormGroupState<StartFormGroupValue>;
+    submittedValue: StartFormGroupValue | undefined;
   }
 }
 
 export class SetSubmittedValueAction implements Action {
   static readonly TYPE = 'startForm/SET_SUBMITTED_VALUE';
   readonly type = SetSubmittedValueAction.TYPE;
-  constructor(public submittedValue: StartFormGroup) { }
+  constructor(public submittedValue: StartFormGroupValue) { }
 }
 
 export const FORM_ID = 'startForm';
 
-export const INITIAL_STATE = createFormGroupState<StartFormGroup>(FORM_ID, StartFormGroupInitialState);
+export const INITIAL_STATE = createFormGroupState<StartFormGroupValue>(FORM_ID, StartFormGroupInitialState);
 
 const formReducers = combineReducers<FormState['startForm'], any>({
-  formState(s = INITIAL_STATE, a: Action) {
+  state(s = INITIAL_STATE, a: Action) {
     return formGroupReducer(s, a);
   },
-  submittedValue(s: StartFormGroup | undefined, a: SetSubmittedValueAction) {
+  submittedValue(s: StartFormGroupValue | undefined, a: SetSubmittedValueAction) {
     switch (a.type) {
       case SetSubmittedValueAction.TYPE:
         return a.submittedValue;
@@ -43,8 +43,6 @@ const formReducers = combineReducers<FormState['startForm'], any>({
   },
 });
 
-// need to export this function instead of the formReducers b/c of
-// AOT issues w/ combineReducers
 export function formReducer(s: FormState['startForm'], a: Action) {
   return formReducers(s, a);
 }

@@ -1,6 +1,6 @@
 import { Boxed, box } from 'ngrx-forms';
 
-export interface StartFormGroup {
+export interface StartFormGroupValue {
   'input': string;
   'samplename': string;
   'alleles': Boxed<string[]>;
