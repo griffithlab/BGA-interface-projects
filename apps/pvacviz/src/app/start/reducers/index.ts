@@ -68,7 +68,7 @@ export const getAlgorithmsState = createSelector(
 
 export const getFormState = createSelector(
   getStartState,
-  state => state.form.startForm.state
+  state => state.form.state
 );
 
 export const getPostState = createSelector(
