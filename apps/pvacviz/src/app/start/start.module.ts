@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NgrxFormsModule } from 'ngrx-forms';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -21,6 +23,7 @@ import { OptionList } from './containers/start-page/option-list.component';
   imports: [
     CommonModule,
     FormsModule,
+    NgrxFormsModule,
     ReactiveFormsModule,
     ClarityModule,
     NgSelectModule,

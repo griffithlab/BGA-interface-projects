@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form class="form compact" [formGroup]="startForm" (ngSubmit)="onSubmit(startForm.value)">
+<form class="form compact" [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
   <section class="form-block">
     <label>Inputs, Alleles, and Algorithms</label>
     <div class="form-group row">
@@ -15,7 +15,10 @@
         <label for="samplename" class="required">Sample Name</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <input type="text" id="samplename" formControlName="samplename" size="32">
+        <input type="text"
+          id="samplename"
+          [ngrxFormControlState]="(formState$ | async).controls.samplename"
+          size="32">
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
         Name you wish to be associated with this process
