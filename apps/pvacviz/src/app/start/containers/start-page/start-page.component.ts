@@ -57,7 +57,7 @@ export class StartPageComponent implements OnInit {
 
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
     this.inputOptions$ = this.inputs$.map((inputs) => {
-      let options = [];
+      let options = [{ display_name: 'Please select an Input VCF file', fileID: undefined, directory: null }];
       let dir = '~pVAC-Seq';
 
       function groupFiles(dir, contents) {

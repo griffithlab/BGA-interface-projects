@@ -26,12 +26,12 @@
       <div class="col-xs-12 col-sm-3 col-form-label">
         <label for="samplename" class="required">Input VCF</label>
       </div>
-      <div class="col-xs-12 col-sm-4">
+      <div class="col-xs-12 col-sm-4" [formGroup]="startForm">
         <ng-select [items]="inputOptions$ | async"
           bindLabel="display_name"
           bindValue="fileID"
-          groupBy="directory"
-          [ngrxFormControlState]="(formState$ | async).controls.input">
+          [searchable]="false"
+          formControlName="input">
         </ng-select>
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
