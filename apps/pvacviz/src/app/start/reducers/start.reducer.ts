@@ -12,10 +12,8 @@ import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
  * Stores the form data itself
  **/
 export interface FormState {
-  startForm: {
-    state: FormGroupState<StartFormGroupValue>;
-    submittedValue: StartFormGroupValue | undefined;
-  }
+  state: FormGroupState<StartFormGroupValue>;
+  submittedValue: StartFormGroupValue | undefined;
 }
 
 export class SetSubmittedValueAction implements Action {
@@ -28,7 +26,7 @@ export const FORM_ID = 'startForm';
 
 export const INITIAL_STATE = createFormGroupState<StartFormGroupValue>(FORM_ID, StartFormGroupInitialState);
 
-const formReducers = combineReducers<FormState['startForm'], any>({
+const formReducers = combineReducers<FormState, any>({
   state(s = INITIAL_STATE, a: Action) {
     return formGroupReducer(s, a);
   },
@@ -43,7 +41,7 @@ const formReducers = combineReducers<FormState['startForm'], any>({
   },
 });
 
-export function formReducer(s: FormState['startForm'], a: Action) {
+export function formReducer(s: FormState, a: Action) {
   return formReducers(s, a);
 }
 

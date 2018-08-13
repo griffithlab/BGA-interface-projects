@@ -51,8 +51,8 @@ export class StartPageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     // TODO: refactor start.reducer & reducers index to eliminate clumsy form state references
-    this.formState$ = store.pipe(select(fromStart.getFormState));
-    this.submittedValue$ = store.pipe(select(fromStart.getStartState), map(state => state.form.startForm.submittedValue));
+    this.formState$ = store.pipe(select(fromStart.getFormState), map(s => s.state));
+    this.submittedValue$ = store.pipe(select(fromStart.getStartState), map(state => state.form.submittedValue));
 
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
