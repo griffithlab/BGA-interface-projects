@@ -35,6 +35,7 @@ export class StartPageComponent implements OnInit {
   submittedValue$: Observable<StartFormGroupValue | undefined>;
 
   inputs$: Observable<Files>;
+  inputOptions$: Observable<{}>;
   algorithms$: Observable<Array<Algorithm>>;
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
@@ -55,6 +56,28 @@ export class StartPageComponent implements OnInit {
     this.submittedValue$ = store.pipe(select(fromStart.getStartState), map(state => state.form.submittedValue));
 
     this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    this.inputOptions$ = this.inputs$.map((inputs) => {
+      let options = [];
+      let dir = '~pVAC-Seq';
+
+      function groupFiles(dir, contents) {
+        contents.forEach((item) => {
+          if (item.type === "file") {
+            let option = {
+              display_name: item.display_name,
+              fileID: item.fileID,
+              directory: dir
+            }
+            options.push(option);
+          } else if (item.type === "directory") {
+            dir = dir + '/' + item.display_name;
+            groupFiles(dir, item.contents);
+          }
+        })
+      }
+      groupFiles(dir, inputs);
+      return options;
+    })
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));

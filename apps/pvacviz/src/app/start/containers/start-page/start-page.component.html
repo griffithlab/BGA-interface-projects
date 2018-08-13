@@ -27,9 +27,10 @@
         <label for="samplename" class="required">Input VCF</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <ng-select [items]="inputs$ | async"
+        <ng-select [items]="inputOptions$ | async"
           bindLabel="display_name"
           bindValue="fileID"
+          groupBy="directory"
           [ngrxFormControlState]="(formState$ | async).controls.input">
         </ng-select>
       </div>
@@ -157,7 +158,7 @@
   <div class="col-sm-6">
     <p>inputs$:</p>
     <pre>
-      {{ (inputs$| async) | json }}
+      {{ (inputOptions$| async) | json }}
     </pre>
   </div>
 </div>

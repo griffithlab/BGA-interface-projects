@@ -6,6 +6,7 @@ export interface File {
   readonly url: string;
   readonly rows?: number;
   readonly size?: number;
+  directory?: string;
 }
 
 export interface Files extends Array<File> { };
