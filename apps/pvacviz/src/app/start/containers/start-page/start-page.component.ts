@@ -72,36 +72,36 @@ export class StartPageComponent implements OnInit {
       { label: 'Lowest Score', value: 'lowest' },
     ];
 
-    const startFormGroup = {
-      'input': [null, [Validators.required]],
-      'samplename': ['sample-name-N', [Validators.required]],
-      'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
-      'prediction_algorithms': [[], [Validators.required]],
-      'epitope_lengths': ['10', [Validators.required]],
-      'peptide_sequence_length': [21, [Validators.required]],
-      'net_chop_method': ['', []],
-      'net_chop_threshold': [0.5, []],
-      'netmhc_stab': [false, []],
-      'top_score_metric': ['median', []],
-      'binding_threshold': [500, []],
-      'allele_specific_cutoffs': [false, []],
-      'minimum_fold_change': [0, []],
-      'expn_val': [1, []],
-      'normal_cov': [5, []],
-      'tdna_cov': [5, []],
-      'trna_cov': [5, []],
-      'normal_vaf': [5, []],
-      'tdna_vaf': [5, []],
-      'trna_vaf': [5, []],
-      'fasta_size': [200, []],
-      'iedb_retries': [5, []],
-      'downstream_sequence_length': [1000, []],
-      'iedb_install_dir': ['', []],
-      'keep_tmp_files': [false, []],
-      'force': [false, []],
-    };
+    // const startFormGroup = {
+    //   'input': [null, [Validators.required]],
+    //   'samplename': ['sample-name-N', [Validators.required]],
+    //   'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
+    //   'prediction_algorithms': [[], [Validators.required]],
+    //   'epitope_lengths': ['10', [Validators.required]],
+    //   'peptide_sequence_length': [21, [Validators.required]],
+    //   'net_chop_method': ['', []],
+    //   'net_chop_threshold': [0.5, []],
+    //   'netmhc_stab': [false, []],
+    //   'top_score_metric': ['median', []],
+    //   'binding_threshold': [500, []],
+    //   'allele_specific_cutoffs': [false, []],
+    //   'minimum_fold_change': [0, []],
+    //   'expn_val': [1, []],
+    //   'normal_cov': [5, []],
+    //   'tdna_cov': [5, []],
+    //   'trna_cov': [5, []],
+    //   'normal_vaf': [5, []],
+    //   'tdna_vaf': [5, []],
+    //   'trna_vaf': [5, []],
+    //   'fasta_size': [200, []],
+    //   'iedb_retries': [5, []],
+    //   'downstream_sequence_length': [1000, []],
+    //   'iedb_install_dir': ['', []],
+    //   'keep_tmp_files': [false, []],
+    //   'force': [false, []],
+    // };
 
-    this.startForm = fb.group(startFormGroup);
+    // this.startForm = fb.group(startFormGroup);
   }
 
   ngOnInit() {
