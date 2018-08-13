@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form class="form compact" [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
+<form class="form compact" [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
   <section class="form-block">
     <label>Inputs, Alleles, and Algorithms</label>
     <div class="form-group row">
@@ -15,13 +15,26 @@
         <label for="samplename" class="required">Sample Name</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <input type="text"
-          id="samplename"
-          [ngrxFormControlState]="(formState$ | async).controls.samplename"
-          size="32">
+        <input type="text" id="samplename" [ngrxFormControlState]="(formState$ | async).controls.samplename" size="32">
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
         Name you wish to be associated with this process
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-xs-12 col-sm-3 col-form-label">
+        <label for="samplename" class="required">Input VCF</label>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        <ng-select [items]="inputs$ | async"
+          bindLabel="display_name"
+          bindValue="fileID"
+          [ngrxFormControlState]="(formState$ | async).controls.input">
+        </ng-select>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-form-help">
+        Input VCF File
       </div>
     </div>
 
@@ -105,9 +118,7 @@
       </div>
       <div class="col-sm-9">
         <!-- form incomplete -->
-        <clr-alert [clrAlertType]="'warning'"
-          [clrAlertClosable]="false"
-          *ngIf="startForm.dirty && startForm.invalid">
+        <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false" *ngIf="startForm.dirty && startForm.invalid">
           <div class="alert-item">
             <span class="alert-text">
               To submit, please ensure that all required fields are properly specified.
@@ -116,9 +127,7 @@
         </clr-alert>
 
         <!-- submit error -->
-        <clr-alert [clrAlertType]="'danger'"
-          [clrAlertClosable]="false"
-          *ngIf="(postError$ | async) === true">
+        <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(postError$ | async) === true">
           <div class="alert-item">
             <span class="alert-text">
               {{postMessage$ | async}}
@@ -127,9 +136,7 @@
         </clr-alert>
 
         <!-- submit success -->
-        <clr-alert [clrAlertType]="'success'"
-          [clrAlertClosable]="false"
-          *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
+        <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
           <div class="alert-item">
             <span class="alert-text">
               Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.
@@ -140,16 +147,17 @@
     </div>
   </section>
 </form>
-<div class="row" >
-  <div class="col-sm-6" >
+<div class="row">
+  <div class="col-sm-6">
+    <p>formState$.value:</p>
     <pre>
-      <p>formState$.value:</p>
       {{ (formState$| async)?.value | json }}
     </pre>
   </div>
-  <div class="col-sm-6" >
-    <p>submittedValue$:</p>
+  <div class="col-sm-6">
+    <p>inputs$:</p>
     <pre>
+      {{ (inputs$| async) | json }}
     </pre>
   </div>
 </div>

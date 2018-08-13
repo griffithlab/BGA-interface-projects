@@ -7,7 +7,7 @@ import { NgrxFormsModule } from 'ngrx-forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-import { ClarityModule } from '@clr/angular';
+import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { StartRoutingModule } from './start-routing.module';
@@ -26,6 +26,7 @@ import { OptionList } from './containers/start-page/option-list.component';
     NgrxFormsModule,
     ReactiveFormsModule,
     ClarityModule,
+    ClrFormsNextModule,
     NgSelectModule,
     StartRoutingModule,
     /**
