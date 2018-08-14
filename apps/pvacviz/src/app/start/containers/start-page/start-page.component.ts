@@ -1,11 +1,4 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from "@angular/forms";
-
 
 import { Observable } from 'rxjs/Rx';
 import { map } from 'rxjs/operators';
@@ -21,6 +14,7 @@ import { Algorithm } from '@pvz/core/models/api-responses.model';
 import { InputService } from '@pvz/core/services/inputs.service';
 
 import * as fromInputsActions from '@pvz/start/actions/inputs.actions';
+import * as fromAllelesActions from '@pvz/start/actions/alleles.actions';
 import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
@@ -45,19 +39,15 @@ export class StartPageComponent implements OnInit {
 
   netChopMethodOptions;
   topScoreMetricOptions;
-  startForm: FormGroup;
 
   constructor(
     private store: Store<fromStart.State>,
-    private fb: FormBuilder
   ) {
-    // TODO: refactor start.reducer & reducers index to eliminate clumsy form state references
     this.formState$ = store.pipe(select(fromStart.getFormState), map(s => s.state));
-    this.submittedValue$ = store.pipe(select(fromStart.getStartState), map(state => state.form.submittedValue));
+    this.submittedValue$ = store.pipe(select(fromStart.getFormState), map(s => s.submittedValue));
 
-    this.inputs$ = store.pipe(select(fromStart.getAllInputs));
-    this.inputOptions$ = this.inputs$.map((inputs) => {
-      let options = [{ display_name: 'Please select an Input VCF file', fileID: undefined, directory: null }];
+    this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
+      let options = [];
       let dir = '~pVAC-Seq';
 
       function groupFiles(dir, contents) {
@@ -77,7 +67,8 @@ export class StartPageComponent implements OnInit {
       }
       groupFiles(dir, inputs);
       return options;
-    })
+    }));
+
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
@@ -94,42 +85,12 @@ export class StartPageComponent implements OnInit {
       { label: 'Median Score', value: 'median' },
       { label: 'Lowest Score', value: 'lowest' },
     ];
-
-    const startFormGroup = {
-      'input': [null, [Validators.required]],
-      'samplename': ['sample-name-N', [Validators.required]],
-      'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
-      'prediction_algorithms': [[], [Validators.required]],
-      'epitope_lengths': ['10', [Validators.required]],
-      'peptide_sequence_length': [21, [Validators.required]],
-      'net_chop_method': ['', []],
-      'net_chop_threshold': [0.5, []],
-      'netmhc_stab': [false, []],
-      'top_score_metric': ['median', []],
-      'binding_threshold': [500, []],
-      'allele_specific_cutoffs': [false, []],
-      'minimum_fold_change': [0, []],
-      'expn_val': [1, []],
-      'normal_cov': [5, []],
-      'tdna_cov': [5, []],
-      'trna_cov': [5, []],
-      'normal_vaf': [5, []],
-      'tdna_vaf': [5, []],
-      'trna_vaf': [5, []],
-      'fasta_size': [200, []],
-      'iedb_retries': [5, []],
-      'downstream_sequence_length': [1000, []],
-      'iedb_install_dir': ['', []],
-      'keep_tmp_files': [false, []],
-      'force': [false, []],
-    };
-
-    this.startForm = fb.group(startFormGroup);
   }
 
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
+    this.store.dispatch(new fromAllelesActions.LoadAlleles(['MHCflurry', 'NetMHCIIpan']));
   }
 
   onSubmit(startParameters): void {

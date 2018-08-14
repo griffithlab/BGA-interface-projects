@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form class="form compact" [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
+<form  [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
   <section class="form-block">
     <label>Inputs, Alleles, and Algorithms</label>
     <div class="form-group row">
@@ -26,12 +26,15 @@
       <div class="col-xs-12 col-sm-3 col-form-label">
         <label for="samplename" class="required">Input VCF</label>
       </div>
-      <div class="col-xs-12 col-sm-4" [formGroup]="startForm">
-        <ng-select [items]="inputOptions$ | async"
+      <div class="col-xs-12 col-sm-4">
+        <ng-select
+          [items]="inputs$ | async"
           bindLabel="display_name"
           bindValue="fileID"
-          [searchable]="false"
-          formControlName="input">
+          [searchable]="true"
+          groupBy="directory"
+          placeholder="Select Input VCF File"
+          [ngrxFormControlState]="(formState$ | async).controls.input">
         </ng-select>
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
@@ -41,47 +44,18 @@
 
     <div class="form-group row">
       <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="inputVcf" class="required">Input VCF</label>
-      </div>
-
-      <div class="col-xs-12 col-sm-4">
-        <div class="select">
-          <!-- <select id="inputVcf" name="inputVcf" formControlName="input"> -->
-          <!-- <ng-container [ngSwitch]="(inputs$ | async)?.length > 0"> -->
-          <!-- <ng-container *ngSwitchCase="true"> -->
-          <!-- <option value="null">Please select input VCF file</option> -->
-          <!-- <optgroup option-list -->
-          <!-- [files]="inputs$ | async" -->
-          <!-- [parent]="'~/pVAC-Seq/input/'" -->
-          <!-- label="~/pVAC-Seq/input/"> -->
-          <!-- </optgroup> -->
-          <!-- </ng-container> -->
-          <!-- <ng-container *ngSwitchCase="false"> -->
-          <!-- <option value="null">No files found in input directory.</option> -->
-          <!-- </ng-container> -->
-          <!-- </ng-container> -->
-          <!-- </select> -->
-          <small *ngIf="(inputs$ | async)?.length < 1" class="text-warning">Please place files in input directory, usually ~/pVAC-Seq/input.</small>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Input VCF file
-      </div>
-    </div>
-
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
         <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <!-- <ng-select -->
-        <!-- [items]="algorithms$ | async" -->
-        <!-- [multiple]="true" -->
-        <!-- [closeOnSelect]="false" -->
-        <!-- bindLabel="name" -->
-        <!-- placeholder="Select Algorithms" -->
-        <!-- formControlName="prediction_algorithms"> -->
-        <!-- </ng-select> -->
+        <ng-select
+          [items]="algorithms$ | async"
+          [multiple]="true"
+          bindLabel="name"
+          bindValue="name"
+          [searchable]="true"
+          placeholder="Select Prediction Algorithms"
+          [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
+        </ng-select>
       </div>
       <div class="col-xs-12 col-sm-4 col-form-help">
         Comma-separated list of prediction algorithms to use
@@ -93,7 +67,15 @@
         <label for="alleles" class="required">Alleles</label>
       </div>
       <div class="col-xs-12 col-sm-4">
-        <!-- <textarea id="alleles" formControlName="alleles" rows="2"></textarea> -->
+        <ng-select
+          [items]="algorithms$ | async"
+          [multiple]="true"
+          bindLabel="name"
+          bindValue="name"
+          [searchable]="true"
+          placeholder="Select Prediction Algorithms"
+          [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
+        </ng-select>
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
         Comma-separated list of alleles to run the sequences against
@@ -102,50 +84,7 @@
   </section>
 
   <section class="form-block">
-
-    <div class="row">
-      <div class="col-sm-3">
-        <button class="btn btn-block" [ngClass]="{'btn-primary': (postError$ | async) == false, 'btn-warning': (postError$ | async) == true}" type="submit" [disabled]="startForm.invalid">
-          <!-- default play icon -->
-          <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
-          <!-- spinner while submitting -->
-          <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
-          <!-- successful submit -->
-          <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
-          <!-- submit error -->
-          <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
-          Submit Process
-        </button>
-      </div>
-      <div class="col-sm-9">
-        <!-- form incomplete -->
-        <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false" *ngIf="startForm.dirty && startForm.invalid">
-          <div class="alert-item">
-            <span class="alert-text">
-              To submit, please ensure that all required fields are properly specified.
-            </span>
-          </div>
-        </clr-alert>
-
-        <!-- submit error -->
-        <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(postError$ | async) === true">
-          <div class="alert-item">
-            <span class="alert-text">
-              {{postMessage$ | async}}
-            </span>
-          </div>
-        </clr-alert>
-
-        <!-- submit success -->
-        <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
-          <div class="alert-item">
-            <span class="alert-text">
-              Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.
-            </span>
-          </div>
-        </clr-alert>
-      </div>
-    </div>
+    <!-- button row goes here -->
   </section>
 </form>
 <div class="row">
@@ -158,7 +97,7 @@
   <div class="col-sm-6">
     <p>inputs$:</p>
     <pre>
-      {{ (inputOptions$| async) | json }}
+      {{ (algorithms$| async) | json }}
     </pre>
   </div>
 </div>
