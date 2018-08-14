@@ -11,6 +11,12 @@ export interface Algorithm {
   name: string;
 }
 
+export interface Allele {
+  id: number;
+  name: string;
+  algorithms: string[];
+}
+
 export interface ApiAllelesResponse {
   [key: string]: string[]
 }

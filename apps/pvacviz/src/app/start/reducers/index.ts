@@ -1,6 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 import * as fromAlgorithms from './algorithms.reducer';
+import * as fromAlleles from './alleles.reducer';
 import * as fromInputs from './inputs.reducer';
 import * as fromStart from './start.reducer';
 import * as fromRoot from '@pvz/reducers';
@@ -19,6 +20,7 @@ export interface State extends fromRoot.State {
 export const reducers = {
   inputs: fromInputs.reducer,
   algorithms: fromAlgorithms.reducer,
+  alleles: fromAlleles.reducer,
   form: fromStart.formReducer,
   post: fromStart.postReducer
 }

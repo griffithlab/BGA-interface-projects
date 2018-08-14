@@ -14,6 +14,7 @@ import { StartRoutingModule } from './start-routing.module';
 import { InputsEffects } from './effects/inputs.effects';
 import { StartEffects } from './effects/start.effects';
 import { AlgorithmsEffects } from './effects/algorithms.effects';
+import { AllelesEffects } from './effects/alleles.effects';
 import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
@@ -48,7 +49,8 @@ import { OptionList } from './containers/start-page/option-list.component';
     EffectsModule.forFeature([
       InputsEffects,
       StartEffects,
-      AlgorithmsEffects
+      AlgorithmsEffects,
+      AllelesEffects
     ])
   ],
   declarations: [
