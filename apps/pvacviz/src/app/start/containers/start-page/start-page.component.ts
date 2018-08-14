@@ -99,12 +99,10 @@ export class StartPageComponent implements OnInit {
   }
 
   onAllelesUpdate() {
-    console.log('------- algorithms changed, updating alleles')
     let subscription = this.formState$.subscribe((form) => {
       const newAlleles = unbox(form.value.alleles);
       this.store.dispatch(new fromAllelesActions.LoadAlleles(newAlleles));
-    });
-    this.subscriptions.push(subscription);
+    }).unsubscribe();
   }
 
   onSubmit(startParameters): void {
@@ -112,7 +110,6 @@ export class StartPageComponent implements OnInit {
   }
 
   onDestroy() {
-    console.log('------- Destroying Start page subscriptions');
     if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
   }
 }
