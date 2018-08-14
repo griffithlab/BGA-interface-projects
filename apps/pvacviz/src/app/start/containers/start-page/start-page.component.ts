@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { Store, select } from '@ngrx/store';
 
-import { FormGroupState, ResetAction, SetValueAction } from 'ngrx-forms';
+import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
 
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
 
@@ -25,6 +25,7 @@ import * as fromStart from '@pvz/start/reducers';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit {
+  private subscriptions = [];
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
   submittedValue$: Observable<StartFormGroupValue | undefined>;
 
@@ -36,7 +37,7 @@ export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
   // TODO: figure out why Observable<Array<any>> below throws a type error
-  alleles$: Observable<Array<Alleles>>;
+  alleles$: Observable<Array<any>>;
   newProcessId$: Observable<number>;
 
   netChopMethodOptions;
@@ -97,7 +98,21 @@ export class StartPageComponent implements OnInit {
     this.store.dispatch(new fromAllelesActions.LoadAlleles(['MHCflurry', 'NetMHCIIpan']));
   }
 
+  onAllelesUpdate() {
+    console.log('------- algorithms changed, updating alleles')
+    let subscription = this.formState$.subscribe((form) => {
+      const newAlleles = unbox(form.value.alleles);
+      this.store.dispatch(new fromAllelesActions.LoadAlleles(newAlleles));
+    });
+    this.subscriptions.push(subscription);
+  }
+
   onSubmit(startParameters): void {
     this.store.dispatch(new fromStartActions.StartProcess(startParameters));
+  }
+
+  onDestroy() {
+    console.log('------- Destroying Start page subscriptions');
+    if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
   }
 }

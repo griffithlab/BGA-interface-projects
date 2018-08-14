@@ -74,6 +74,7 @@
           bindValue="name"
           [searchable]="true"
           placeholder="Select Alleles"
+          (change)="onAllelesUpdate()"
           [ngrxFormControlState]="(formState$ | async).controls.alleles">
         </ng-select>
       </div>
