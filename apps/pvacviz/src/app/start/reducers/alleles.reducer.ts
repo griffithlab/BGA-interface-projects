@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { AllelesActions, AllelesActionTypes } from '@pvz/start/actions/alleles.actions';
-import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { Allele } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -10,7 +10,7 @@ import { Algorithm } from '@pvz/core/models/api-responses.model';
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State extends EntityState<Algorithm> {
+export interface State extends EntityState<Allele> {
   loading: boolean;
   loaded: boolean;
   error: boolean;
@@ -25,7 +25,7 @@ export interface State extends EntityState<Algorithm> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const adapter: EntityAdapter<Algorithm> = createEntityAdapter<Algorithm>({
+export const adapter: EntityAdapter<Allele> = createEntityAdapter<Allele>({
   sortComparer: false,
 });
 

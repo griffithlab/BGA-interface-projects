@@ -9,6 +9,7 @@ import * as fromRoot from '@pvz/reducers';
 export interface StartState {
   inputs: fromInputs.State;
   algorithms: fromAlgorithms.State;
+  alleles: fromAlleles.State;
   form: fromStart.FormState;
   post: fromStart.PostState;
 }
@@ -68,6 +69,11 @@ export const getAlgorithmsState = createSelector(
   state => state.algorithms
 );
 
+export const getAllelesState = createSelector(
+  getStartState,
+  state => state.alleles
+);
+
 export const getFormState = createSelector(
   getStartState,
   state => state.form
@@ -96,3 +102,8 @@ export const {
   selectEntities: getAlgorithms,
   selectAll: getAllAlgorithms,
 } = fromAlgorithms.adapter.getSelectors(getAlgorithmsState);
+
+export const {
+  selectEntities: getAlleles,
+  selectAll: getAllAlleles,
+} = fromAlgorithms.adapter.getSelectors(getAllelesState);

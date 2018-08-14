@@ -10,7 +10,7 @@ import {
   switchMap,
   catchError,
 } from 'rxjs/operators';
-import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { Allele } from '@pvz/core/models/api-responses.model';
 import { AllelesService } from '@pvz/core/services/alleles.service';
 import {
   AllelesActionTypes,
@@ -45,7 +45,7 @@ export class AllelesEffects {
       return this.alleles
         .query(action.payload)
         .pipe(
-          map((alleles: Array<Algorithm>) => new LoadAllelesSuccess(alleles)),
+          map((alleles: Array<Allele>) => new LoadAllelesSuccess(alleles)),
           catchError(err => of(new LoadAllelesFail(err)))
         );
     })

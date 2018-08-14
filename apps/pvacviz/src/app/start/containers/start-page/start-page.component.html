@@ -68,13 +68,13 @@
       </div>
       <div class="col-xs-12 col-sm-4">
         <ng-select
-          [items]="algorithms$ | async"
+          [items]="alleles$ | async"
           [multiple]="true"
           bindLabel="name"
           bindValue="name"
           [searchable]="true"
-          placeholder="Select Prediction Algorithms"
-          [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
+          placeholder="Select Alleles"
+          [ngrxFormControlState]="(formState$ | async).controls.alleles">
         </ng-select>
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">

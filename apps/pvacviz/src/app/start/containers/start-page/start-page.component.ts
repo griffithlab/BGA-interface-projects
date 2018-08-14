@@ -10,7 +10,7 @@ import { FormGroupState, ResetAction, SetValueAction } from 'ngrx-forms';
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
-import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { Algorithm, Allele } from '@pvz/core/models/api-responses.model';
 import { InputService } from '@pvz/core/services/inputs.service';
 
 import * as fromInputsActions from '@pvz/start/actions/inputs.actions';
@@ -28,13 +28,15 @@ export class StartPageComponent implements OnInit {
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
   submittedValue$: Observable<StartFormGroupValue | undefined>;
 
-  inputs$: Observable<Files>;
-  inputOptions$: Observable<{}>;
-  algorithms$: Observable<Array<Algorithm>>;
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;
   postError$: Observable<boolean>;
+
+  inputs$: Observable<Files>;
+  algorithms$: Observable<Array<Algorithm>>;
+  // TODO: figure out why Observable<Array<any>> below throws a type error
+  alleles$: Observable<Array<Alleles>>;
   newProcessId$: Observable<number>;
 
   netChopMethodOptions;
@@ -68,6 +70,8 @@ export class StartPageComponent implements OnInit {
       groupFiles(dir, inputs);
       return options;
     }));
+
+    this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
 
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
