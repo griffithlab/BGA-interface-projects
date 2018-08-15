@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgrxFormsModule } from 'ngrx-forms';
 
@@ -27,9 +26,7 @@ import { PrettyJsonComponent } from '../../../../../node_modules/angular2-pretty
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     NgrxFormsModule,
-    ReactiveFormsModule,
     ClarityModule,
     ClrFormsNextModule,
     NgSelectModule,

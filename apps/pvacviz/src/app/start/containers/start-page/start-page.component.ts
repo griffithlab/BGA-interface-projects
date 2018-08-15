@@ -102,14 +102,13 @@ export class StartPageComponent implements OnInit {
     this.predictionAlgorithms$ = store.pipe(
       select(getPredictedAlgorithmsState),
       map(s => unbox(s)),
-      filter(v => v.length > 0)
-    );
-    // query updated alleles list when algorithms updated
+      filter(v => v.length > 0));
+
+    // load new allele set when algorithms updated
     this.subscriptions.push(
       this.predictionAlgorithms$.subscribe((algorithms) => {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
-      })
-    );
+      }));
   }
 
   ngOnInit() {
@@ -122,7 +121,7 @@ export class StartPageComponent implements OnInit {
   }
 
   onDestroy() {
-    // unsubscribe from all subscriptions
+    // unsubscribe from all manual subscriptions
     if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
   }
 }

@@ -7,89 +7,125 @@
     </div>
   </div>
 </div>
-<form  [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
-  <section class="form-block">
-    <label>Inputs, Alleles, and Algorithms</label>
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="samplename" class="required">Sample Name</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <input type="text" id="samplename" [ngrxFormControlState]="(formState$ | async).controls.samplename" size="32">
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Name you wish to be associated with this process
-      </div>
-    </div>
+<form clrForm [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
+  <clr-tabs>
+    <clr-tab>
+      <button clrTabLink>Dashboard</button>
+      <clr-tab-content *clrIfActive>
+        <section class="form-block">
+          <label>Inputs, Alleles, and Algorithms</label>
+          <div class="form-group row">
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="samplename" class="required">Sample Name</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="samplename" [ngrxFormControlState]="(formState$ | async).controls.samplename" size="32">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Name you wish to be associated with this process
+            </div>
+          </div>
 
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="samplename" class="required">Input VCF</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <ng-select
-          [items]="inputs$ | async"
-          bindLabel="display_name"
-          bindValue="fileID"
-          [searchable]="true"
-          groupBy="directory"
-          placeholder="Select Input VCF File"
-          [ngrxFormControlState]="(formState$ | async).controls.input">
-        </ng-select>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        Input VCF File
-      </div>
-    </div>
+          <div class="form-group row">
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="samplename" class="required">Input VCF</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <ng-select
+                [items]="inputs$ | async"
+                bindLabel="display_name"
+                bindValue="fileID"
+                [searchable]="true"
+                groupBy="directory"
+                placeholder="Select Input VCF File"
+                [ngrxFormControlState]="(formState$ | async).controls.input">
+              </ng-select>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Input VCF File
+            </div>
+          </div>
 
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <ng-select
-          [items]="algorithms$ | async"
-          [multiple]="true"
-          [closeOnSelect]="false"
-          bindLabel="name"
-          bindValue="name"
-          [searchable]="true"
-          placeholder="Select Prediction Algorithms"
-          [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
-        </ng-select>
-      </div>
-      <div class="col-xs-12 col-sm-4 col-form-help">
-        List of prediction algorithms to use
-      </div>
-    </div>
+          <div class="form-group row">
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <ng-select
+                [items]="algorithms$ | async"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                bindLabel="name"
+                bindValue="name"
+                [searchable]="true"
+                placeholder="Select Prediction Algorithms"
+                [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
+              </ng-select>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-form-help">
+              List of prediction algorithms to use
+            </div>
+          </div>
 
-    <div class="form-group row">
-      <div class="col-xs-12 col-sm-3 col-form-label">
-        <label for="alleles" class="required">Alleles</label>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-        <ng-select
-          [items]="alleles$ | async"
-          [multiple]="true"
-          [closeOnSelect]="false"
-          bindLabel="name"
-          bindValue="name"
-          [searchable]="true"
-          placeholder="Select Alleles"
-          [ngrxFormControlState]="(formState$ | async).controls.alleles">
-          <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
-            <span>{{ item.name }}</span>
-            <span style="font-size: 11px; font-style: oblique; color: grey;line-height: 11px;">
-              &nbsp;({{ item.algorithms.join(',') }})
-            </span>
-          </ng-template>
-        </ng-select>
-      </div>
-      <div class="col-xs-12 col-sm-5 col-form-help">
-        List of alleles to run the sequences against
-      </div>
-    </div>
-  </section>
+          <div class="form-group row">
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="alleles" class="required">Alleles</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <ng-select
+                [items]="alleles$ | async"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                bindLabel="name"
+                bindValue="name"
+                [searchable]="true"
+                placeholder="Select Alleles"
+                [ngrxFormControlState]="(formState$ | async).controls.alleles">
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                  <span>{{ item.name }}</span>
+                  <span style="font-size: 11px; font-style: oblique; color: grey;line-height: 11px;">
+                    &nbsp;({{ item.algorithms.join(',') }})
+                  </span>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              List of alleles to run the sequences against
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="prediction_algorithms" class="required">Epitope Lengths</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="epitope_lengths" [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              List of epitope lengths to produce
+            </div>
+          </div>
+        </section>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Process Defaults</button>
+      <clr-tab-content *clrIfActive>
+        <section class="form-block">
+          <label>Some Header?</label>
+          <div class="form-group row">
+            <div class="col-xs-12 col-sm-3 col-form-label">Peptide Sequence Length</div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="peptide_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.peptide_sequence_length" size="32">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Name you wish to be associated with this process
+            </div>
+          </div>
+        </section>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
 
   <section class="form-block">
     <!-- button row goes here -->
