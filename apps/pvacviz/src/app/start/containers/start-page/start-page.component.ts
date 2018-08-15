@@ -1,9 +1,9 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
-import { Store, select } from '@ngrx/store';
+import { Store, select, createSelector } from '@ngrx/store';
 
 import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
 
@@ -42,6 +42,8 @@ export class StartPageComponent implements OnInit {
 
   netChopMethodOptions;
   topScoreMetricOptions;
+
+  predictionAlgorithms$: Observable<Array<string>>;
 
   constructor(
     private store: Store<fromStart.State>,
@@ -90,19 +92,29 @@ export class StartPageComponent implements OnInit {
       { label: 'Median Score', value: 'median' },
       { label: 'Lowest Score', value: 'lowest' },
     ];
+
+    const getPredictedAlgorithmsState = createSelector(
+      fromStart.getFormState,
+      form => form.state.value.prediction_algorithms
+    );
+
+    // observe form prediction algorithms value, filtering empty arrays
+    this.predictionAlgorithms$ = store.pipe(
+      select(getPredictedAlgorithmsState),
+      map(s => unbox(s)),
+      filter(v => v.length > 0)
+    );
+    // query updated alleles list when algorithms updated
+    this.subscriptions.push(
+      this.predictionAlgorithms$.subscribe((algorithms) => {
+        this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
+      })
+    );
   }
 
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
-    this.store.dispatch(new fromAllelesActions.LoadAlleles(['MHCflurry', 'NetMHCIIpan']));
-  }
-
-  onAllelesUpdate() {
-    let subscription = this.formState$.subscribe((form) => {
-      const newAlleles = unbox(form.value.alleles);
-      this.store.dispatch(new fromAllelesActions.LoadAlleles(newAlleles));
-    }).unsubscribe();
   }
 
   onSubmit(startParameters): void {
@@ -110,6 +122,7 @@ export class StartPageComponent implements OnInit {
   }
 
   onDestroy() {
+    // unsubscribe from all subscriptions
     if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
   }
 }

@@ -39,7 +39,7 @@ export class AllelesEffects {
   ) { }
 
   @Effect()
-  search$: Observable<Action> = this.actions$.pipe(
+  loadAlleles$: Observable<Action> = this.actions$.pipe(
     ofType<LoadAlleles>(AllelesActionTypes.LoadAlleles),
     switchMap(action => {
       return this.alleles

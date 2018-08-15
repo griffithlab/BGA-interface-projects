@@ -50,6 +50,7 @@
         <ng-select
           [items]="algorithms$ | async"
           [multiple]="true"
+          [closeOnSelect]="false"
           bindLabel="name"
           bindValue="name"
           [searchable]="true"
@@ -70,12 +71,18 @@
         <ng-select
           [items]="alleles$ | async"
           [multiple]="true"
+          [closeOnSelect]="false"
           bindLabel="name"
           bindValue="name"
           [searchable]="true"
           placeholder="Select Alleles"
-          (change)="onAllelesUpdate()"
           [ngrxFormControlState]="(formState$ | async).controls.alleles">
+          <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+            <span>{{ item.name }}</span>
+            <span style="font-size: 11px; font-style: oblique; color: grey;line-height: 11px;">
+              &nbsp;({{ item.algorithms.join(',') }})
+            </span>
+          </ng-template>
         </ng-select>
       </div>
       <div class="col-xs-12 col-sm-5 col-form-help">
@@ -91,14 +98,11 @@
 <div class="row">
   <div class="col-sm-6">
     <p>formState$.value:</p>
-    <pre>
-      {{ (formState$| async)?.value | json }}
-    </pre>
+    <prettyjson [obj]="(formState$| async)?.value | json:2" [style.min-height]="800">
+    </prettyjson>
   </div>
   <div class="col-sm-6">
     <p>inputs$:</p>
-    <pre>
-      {{ (algorithms$| async) | json }}
-    </pre>
+    <prettyjson [obj]="(algorithms$| async) | json:2" [style.min-height]="800"></prettyjson>
   </div>
 </div>

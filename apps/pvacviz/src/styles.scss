@@ -2,6 +2,16 @@
 @import '~@ng-select/ng-select/themes/default.theme.css';
 @import './pvz-variables';
 
+// improves json output
+pre {
+  span { white-space: normal; }
+  .string { color: green; }
+  .number { color: darkorange; }
+  .boolean { color: blue; }
+  .null { color: magenta; }
+  .key { color: red; }
+}
+
 // table cells with action buttons look better w/o padding
 .datagrid-cell {
   &.row-actions {
