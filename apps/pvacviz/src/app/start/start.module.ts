@@ -10,6 +10,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+// misc
+import { PrettyJsonModule } from 'angular2-prettyjson';
+
 import { StartRoutingModule } from './start-routing.module';
 import { InputsEffects } from './effects/inputs.effects';
 import { StartEffects } from './effects/start.effects';
@@ -19,6 +22,7 @@ import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
 import { OptionList } from './containers/start-page/option-list.component';
+import { PrettyJsonComponent } from '../../../../../node_modules/angular2-prettyjson/src/prettyjson.component';
 
 @NgModule({
   imports: [
@@ -51,7 +55,8 @@ import { OptionList } from './containers/start-page/option-list.component';
       StartEffects,
       AlgorithmsEffects,
       AllelesEffects
-    ])
+    ]),
+    PrettyJsonModule
   ],
   declarations: [
     StartPageComponent,

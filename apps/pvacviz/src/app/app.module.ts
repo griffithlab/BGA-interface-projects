@@ -16,6 +16,9 @@ import {
 // nrwl
 import { NxModule } from "@nrwl/nx";
 
+// misc
+import { PrettyJsonModule } from 'angular2-prettyjson';
+
 // pvacviz
 import { CustomRouterStateSerializer } from '@pvz/shared/utilities';
 import { NetworkLoggerService } from '@pvz/shared/networkLogger.service';
@@ -78,6 +81,7 @@ import { routes } from '@pvz/routes';
      */
     EffectsModule.forRoot([]),
     CoreModule.forRoot(),
+    PrettyJsonModule
   ],
   providers: [
     /**
