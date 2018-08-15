@@ -10,7 +10,7 @@
 <form clrForm [ngrxFormState]="formState$ | async" (submit)="onSubmit('submitted')">
   <clr-tabs>
     <clr-tab>
-      <button clrTabLink>Dashboard</button>
+      <button clrTabLink>Inputs, Algorithms &amp; Alleles</button>
       <clr-tab-content *clrIfActive>
         <section class="form-block">
           <label>Inputs, Alleles, and Algorithms</label>
@@ -94,9 +94,16 @@
             </div>
           </div>
 
+        </section>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Settings</button>
+      <clr-tab-content *clrIfActive>
+        <section class="form-block">
           <div class="form-group row" >
             <div class="col-xs-12 col-sm-3 col-form-label">
-              <label for="prediction_algorithms" class="required">Epitope Lengths</label>
+              <label for="epitope_lengths" class="required">Epitope Lengths</label>
             </div>
             <div class="col-xs-12 col-sm-4">
               <input type="text" id="epitope_lengths" [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths" size="8">
@@ -105,21 +112,113 @@
               List of epitope lengths to produce
             </div>
           </div>
-        </section>
-      </clr-tab-content>
-    </clr-tab>
-    <clr-tab>
-      <button clrTabLink>Process Defaults</button>
-      <clr-tab-content *clrIfActive>
-        <section class="form-block">
-          <label>Some Header?</label>
-          <div class="form-group row">
-            <div class="col-xs-12 col-sm-3 col-form-label">Peptide Sequence Length</div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="peptide_sequence_length" class="required">Peptide Sequence Length</label>
+            </div>
             <div class="col-xs-12 col-sm-4">
-              <input type="text" id="peptide_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.peptide_sequence_length" size="32">
+              <input type="text" id="peptide_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.peptide_sequence_length" size="8">
+
             </div>
             <div class="col-xs-12 col-sm-5 col-form-help">
-              Name you wish to be associated with this process
+              Length of the peptide sequences to produce in the FASTA
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="net_chop_method">Netchop Method</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <ng-select
+                [items]="netChopMethodOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Choose Netchop Method"
+                [ngrxFormControlState]="(formState$ | async).controls.net_chop_method">
+              </ng-select>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Run NetChop using the specified method
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="net_chop_threshold" class="required">Netchop Threshold</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="net_chop_threshold" [ngrxFormControlState]="(formState$ | async).controls.net_chop_threshold" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Netchop prediction threshold
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="netmhc_stab">Run NeMHC Stab?</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Run NetMHCStabPan at the end of the pipeline
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="top_score_metric" class="required">Top Score Metric</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <ng-select
+                [items]="topScoreMetricOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Choose Top Score Metric"
+                [ngrxFormControlState]="(formState$ | async).controls.top_score_metric">
+              </ng-select>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              ic50 metric for choosing best epitopes during binding filtering
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="binding_threshold" class="required">Binding Threshold</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="binding_threshold" [ngrxFormControlState]="(formState$ | async).controls.binding_threshold" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Report only epitopes with a predicted binding score below this value
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="allele_specific_cutoffs">Allele Specific Cutoffs?</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.allele_specific_cutoffs"/>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Use allele-specific cutoffs instead of the value provided with the Binding Threshold
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="minimum_fold_change" class="required">Minimum Fold Change</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="minimum_fold_change" [ngrxFormControlState]="(formState$ | async).controls.minimum_fold_change" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Report only epitopes with a fold change between the mutant and wildtype sequences above this value
             </div>
           </div>
         </section>

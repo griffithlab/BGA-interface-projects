@@ -84,6 +84,7 @@ export class StartPageComponent implements OnInit {
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
     this.netChopMethodOptions = [
+      { label: 'Skip Netchop', value: '' },
       { label: 'C term 3.0', value: 'cterm' },
       { label: '20S 3.0', value: '20s' },
     ];
