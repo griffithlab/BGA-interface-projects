@@ -1,7 +1,7 @@
 import { Boxed, box } from 'ngrx-forms';
 
 export interface StartFormGroupValue {
-  'input': number;
+  'input': string;
   'samplename': string;
   'alleles': Boxed<string[]>;
   'prediction_algorithms': Boxed<string[]>;
@@ -29,7 +29,7 @@ export interface StartFormGroupValue {
   'force': boolean;
 }
 export const StartFormGroupInitialState = {
-  'input': null,
+  'input': '',
   'samplename': '',
   'alleles': box([]),
   'prediction_algorithms': box([]),

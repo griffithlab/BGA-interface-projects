@@ -1,5 +1,5 @@
 export interface File {
-  readonly fileID: number;
+  readonly fileID: string;
   readonly type: string;
   readonly description: string;
   readonly display_name: string;

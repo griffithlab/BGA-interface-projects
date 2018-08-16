@@ -1,5 +1,13 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+  FormsModule
+} from "@angular/forms";
+
 import { Observable } from 'rxjs/Rx';
 import { map, filter, take } from 'rxjs/operators';
 
@@ -108,30 +116,27 @@ export class StartPageComponent implements OnInit {
     // observe form prediction algorithms value, filtering empty arrays
     this.predictionAlgorithms$ = store.pipe(
       select(getPredictedAlgorithmsState),
-      map(s => unbox(s)),
-      filter(v => v.length > 0));
+      map(s => unbox(s)));
 
     // load new allele set when algorithms updated
     this.subscriptions.push(
       this.predictionAlgorithms$.subscribe((algorithms) => {
-        this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
+        if (algorithms.length > 0) {
+          this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
+        }
       }));
 
     // fire off submit action when submitValue is updated
     this.submittedValue$.subscribe((formValue) => {
-      console.log('=-=-=-=-=-=-=-=- formValue -=-=-=-=-=-=-=-');
-      console.log(unbox(formValue));
-      const formParameters = unbox(formValue);
-      const processParameters: ProcessParameters = parse(formParameters)
-
-      console.log('=-=-=-=-=-=-=-=- processParams -=-=-=-=-=-=-=-');
-      console.log(processParameters);
+      const processParameters: ProcessParameters = parse(unbox(formValue))
       this.store.dispatch(new fromStartActions.StartProcess(processParameters));
 
       function parse(formParameters) {
         formParameters.alleles = formParameters.alleles.join(',')
         formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
         formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
+        // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
+        formParameters.input.toString();
         return formParameters as ProcessParameters;
       }
     });
