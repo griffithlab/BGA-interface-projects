@@ -18,9 +18,6 @@
         <div class="alert-item">
           <span class="alert-text">
             <strong>Running:</strong> {{(process$ | async)?.last_message}}
-            <ng-container *ngIf="(process$ | async)?.last_message.length < 1">
-              No log messages yet.
-            </ng-container>
           </span>
         </div>
       </clr-alert>
@@ -29,9 +26,6 @@
         <div class="alert-item">
           <span class="alert-text">
             <strong>Completed:</strong> {{(process$ | async)?.last_message}}
-            <ng-container *ngIf="(process$ | async)?.last_message.length < 1">
-              No log messages yet.
-            </ng-container>
           </span>
         </div>
       </clr-alert>
@@ -40,9 +34,6 @@
         <div class="alert-item">
           <span class="alert-text">
             <strong>Stopped:</strong> {{(process$ | async)?.last_message}}
-            <ng-container *ngIf="(process$ | async)?.last_message.length < 1">
-              No log messages yet.
-            </ng-container>
           </span>
         </div>
       </clr-alert>

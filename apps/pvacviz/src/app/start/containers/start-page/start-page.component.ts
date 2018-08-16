@@ -28,7 +28,7 @@ import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
 // TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
-import { SetSubmittedValueAction } from '@pvz/start/reducers/start.reducer';
+import { SetSubmittedValueAction, INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 
 @Component({
   selector: 'pvz-start-page',
@@ -158,6 +158,10 @@ export class StartPageComponent implements OnInit {
         map(fs => new SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
+  reset() {
+    this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
+    this.store.dispatch(new ResetAction(INITIAL_STATE.id));
+  }
   // onSubmit(startParameters): void {
   //   this.store.dispatch(new fromStartActions.StartProcess(startParameters));
   // }
