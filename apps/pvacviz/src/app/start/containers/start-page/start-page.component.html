@@ -221,6 +221,161 @@
               Report only epitopes with a fold change between the mutant and wildtype sequences above this value
             </div>
           </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="expn_val" class="required">Gene and Transcript Expression Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="expn_val" [ngrxFormControlState]="(formState$ | async).controls.expn_val" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="normal_cov" class="required">Normal Coverage Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="normal_cov" [ngrxFormControlState]="(formState$ | async).controls.normal_cov" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="tdna_cov" class="required">Tumor DNA Coverage Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="tdna_cov" [ngrxFormControlState]="(formState$ | async).controls.tdna_cov" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="trna_cov" class="required">Tumor RNA Coverage Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="trna_cov" [ngrxFormControlState]="(formState$ | async).controls.trna_cov" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="trna_cov" class="required">Tumor RNA Coverage Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="trna_cov" [ngrxFormControlState]="(formState$ | async).controls.trna_cov" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="normal_vaf" class="required">Normal VAF Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="normal_vaf" [ngrxFormControlState]="(formState$ | async).controls.normal_vaf" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites below this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="tdna_vaf" class="required">Normal VAF Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="tdna_vaf" [ngrxFormControlState]="(formState$ | async).controls.tdna_vaf" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites below this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="trna_vaf" class="required">Tumor DNA VAF Cutoff</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="trna_vaf" [ngrxFormControlState]="(formState$ | async).controls.trna_vaf" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Sites above this cutoff will be considered
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="fasta_size" class="required">FASTA Size</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="fasta_size" [ngrxFormControlState]="(formState$ | async).controls.fasta_size" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Event number of entries submitted to IEDB in each request
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="iedb_entries" class="required">IEDB Retries</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="iedb_entries" [ngrxFormControlState]="(formState$ | async).controls.iedb_entries" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="downstream_sequence_length" class="required">Downstream Sequence Length</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="text" id="downstream_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.downstream_sequence_length" size="8">
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="keep_tmp_files">Keep Temp Files?</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Keep temporary files in the output directory after completion
+            </div>
+          </div>
+
+          <div class="form-group row" >
+            <div class="col-xs-12 col-sm-3 col-form-label">
+              <label for="force">Force Duplicate Process?</label>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.force"/>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-form-help">
+              Bypass the check for duplicate processes
+            </div>
+          </div>
         </section>
       </clr-tab-content>
     </clr-tab>
