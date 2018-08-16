@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, take } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -10,6 +10,7 @@ import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
+import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
 import { Algorithm, Allele } from '@pvz/core/models/api-responses.model';
 import { InputService } from '@pvz/core/services/inputs.service';
 
@@ -18,6 +19,8 @@ import * as fromAllelesActions from '@pvz/start/actions/alleles.actions';
 import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
+// TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
+import { SetSubmittedValueAction } from '@pvz/start/reducers/start.reducer';
 
 @Component({
   selector: 'pvz-start-page',
@@ -49,7 +52,10 @@ export class StartPageComponent implements OnInit {
     private store: Store<fromStart.State>,
   ) {
     this.formState$ = store.pipe(select(fromStart.getFormState), map(s => s.state));
-    this.submittedValue$ = store.pipe(select(fromStart.getFormState), map(s => s.submittedValue));
+    this.submittedValue$ = store.pipe(select(fromStart.getFormState),
+      map(s => s.submittedValue),
+      filter(v => v !== undefined && v !== null));
+
 
     this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
       let options = [];
@@ -110,6 +116,25 @@ export class StartPageComponent implements OnInit {
       this.predictionAlgorithms$.subscribe((algorithms) => {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
       }));
+
+    // fire off submit action when submitValue is updated
+    this.submittedValue$.subscribe((formValue) => {
+      console.log('=-=-=-=-=-=-=-=- formValue -=-=-=-=-=-=-=-');
+      console.log(unbox(formValue));
+      const formParameters = unbox(formValue);
+      const processParameters: ProcessParameters = parse(formParameters)
+
+      console.log('=-=-=-=-=-=-=-=- processParams -=-=-=-=-=-=-=-');
+      console.log(processParameters);
+      this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+
+      function parse(formParameters) {
+        formParameters.alleles = formParameters.alleles.join(',')
+        formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
+        formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
+        return formParameters as ProcessParameters;
+      }
+    });
   }
 
   ngOnInit() {
@@ -117,9 +142,16 @@ export class StartPageComponent implements OnInit {
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
   }
 
-  onSubmit(startParameters): void {
-    this.store.dispatch(new fromStartActions.StartProcess(startParameters));
+  onSubmit() {
+    this.subscriptions.push(
+      this.formState$.pipe(
+        take(1),
+        map(fs => new SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
+
+  // onSubmit(startParameters): void {
+  //   this.store.dispatch(new fromStartActions.StartProcess(startParameters));
+  // }
 
   onDestroy() {
     // unsubscribe from all manual subscriptions

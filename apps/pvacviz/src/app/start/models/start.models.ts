@@ -1,7 +1,7 @@
 import { Boxed, box } from 'ngrx-forms';
 
 export interface StartFormGroupValue {
-  'input': string;
+  'input': number;
   'samplename': string;
   'alleles': Boxed<string[]>;
   'prediction_algorithms': Boxed<string[]>;
