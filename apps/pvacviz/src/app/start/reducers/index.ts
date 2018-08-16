@@ -79,6 +79,11 @@ export const getFormState = createSelector(
   state => state.form
 );
 
+export const getSubmittedValue = createSelector(
+  getStartState,
+  state => state.form.submittedValue
+);
+
 export const getPostState = createSelector(
   getStartState,
   state => state.post

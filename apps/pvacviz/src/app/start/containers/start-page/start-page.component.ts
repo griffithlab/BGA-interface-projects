@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 
 import { Observable } from 'rxjs/Rx';
-import { map, filter, take } from 'rxjs/operators';
+import { map, filter, take, withLatestFrom } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -60,8 +60,7 @@ export class StartPageComponent implements OnInit {
     private store: Store<fromStart.State>,
   ) {
     this.formState$ = store.pipe(select(fromStart.getFormState), map(s => s.state));
-    this.submittedValue$ = store.pipe(select(fromStart.getFormState),
-      map(s => s.submittedValue),
+    this.submittedValue$ = store.pipe(select(fromStart.getSubmittedValue),
       filter(v => v !== undefined && v !== null));
 
 
@@ -127,21 +126,24 @@ export class StartPageComponent implements OnInit {
       }));
 
     // fire off submit action when submitValue is updated
-    this.submittedValue$.subscribe((formValue) => {
-      const processParameters: ProcessParameters = parse(unbox(formValue))
-      this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+    const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
+    this.subscriptions.push(onSubmitted$);
 
-      function parse(formParameters) {
-        formParameters.alleles = formParameters.alleles.join(',')
-        formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
-        formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
-        // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
-        formParameters.input = formParameters.input.toString();
-        console.log('submitting -=-=-=-==-=-=-=-=-=-==-');
-        console.log(formParameters);
-        return formParameters as ProcessParameters;
-      }
+    onSubmitted$.subscribe(([formValue, formState]) => {
+      const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
+      console.log('new processParameters -=-=-=-=-=-');
+      console.log(processParameters);
+      this.store.dispatch(new fromStartActions.StartProcess(processParameters));
     });
+
+    function parseFormParameters(formParameters) {
+      formParameters.alleles = formParameters.alleles.join(',')
+      formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
+      formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
+      // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
+      formParameters.input = formParameters.input.toString();
+      return formParameters as ProcessParameters;
+    }
   }
 
   ngOnInit() {
