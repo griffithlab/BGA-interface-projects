@@ -136,7 +136,9 @@ export class StartPageComponent implements OnInit {
         formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
         formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
         // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
-        formParameters.input.toString();
+        formParameters.input = formParameters.input.toString();
+        console.log('submitting -=-=-=-==-=-=-=-=-=-==-');
+        console.log(formParameters);
         return formParameters as ProcessParameters;
       }
     });
