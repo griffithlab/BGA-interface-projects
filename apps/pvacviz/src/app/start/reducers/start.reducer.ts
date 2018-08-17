@@ -1,9 +1,20 @@
 import { createSelector, combineReducers, Action } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { createFormGroupState, formGroupReducer, FormGroupState } from 'ngrx-forms';
+import {
+  createFormGroupState,
+  formGroupReducer,
+  FormGroupState,
+  updateGroup,
+  validate
+} from 'ngrx-forms';
+import { required } from 'ngrx-forms/validation';
 
 import { File, Files } from '@pvz/core/models/file.model';
-import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
+import {
+  StartFormGroupValue,
+  StartFormGroupInitialState,
+  updateStartFormGroup
+} from '@pvz/start/models/start-form.models';
 import { StartActions, StartActionTypes, StartProcessSuccess } from '@pvz/start/actions/start.actions';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
@@ -28,7 +39,7 @@ export const INITIAL_STATE = createFormGroupState<StartFormGroupValue>(FORM_ID, 
 
 const formReducers = combineReducers<FormState, any>({
   state(s = INITIAL_STATE, a: Action) {
-    return formGroupReducer(s, a);
+    return updateStartFormGroup(formGroupReducer(s, a));
   },
   submittedValue(s: StartFormGroupValue | undefined, a: SetSubmittedValueAction) {
     switch (a.type) {
@@ -44,7 +55,6 @@ const formReducers = combineReducers<FormState, any>({
 export function formReducer(s: FormState, a: Action) {
   return formReducers(s, a);
 }
-
 
 /**
  * FORM POST STATE AND REDUCER

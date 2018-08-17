@@ -1,13 +1,5 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators,
-  FormsModule
-} from "@angular/forms";
-
 import { Observable } from 'rxjs/Rx';
 import { map, filter, take, withLatestFrom } from 'rxjs/operators';
 
@@ -15,7 +7,7 @@ import { Store, select, createSelector } from '@ngrx/store';
 
 import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
 
-import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start.models';
+import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
@@ -88,8 +80,9 @@ export class StartPageComponent implements OnInit {
     }));
 
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
-
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
+
+    // TODO: create only one observer for post
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));

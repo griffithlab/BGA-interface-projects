@@ -20,7 +20,9 @@
                 <label for="samplename" class="required">Sample Name</label>
               </div>
               <div class="col-xs-12 col-sm-4">
-                <input type="text" id="samplename" [ngrxFormControlState]="(formState$ | async).controls.samplename" size="32">
+                <input [disabled]="true" type="text" id="samplename"
+                  size="32"
+                  [ngrxFormControlState]="(formState$ | async).controls.samplename">
               </div>
               <div class="col-xs-12 col-sm-5 col-form-help">
                 Name you wish to be associated with this process
@@ -29,7 +31,7 @@
 
             <div class="form-group row">
               <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="samplename" class="required">Input VCF</label>
+                <label for="input" class="required">Input VCF</label>
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
@@ -443,14 +445,14 @@
     </div>
   </section>
 </form>
-<!-- <div class="row"> -->
-<!-- <div class="col-sm-6"> -->
-<!-- <p>formState$</p> -->
-<!-- <prettyjson [obj]="(formState$| async) | json:2" [style.min-height]="800"> -->
-<!-- </prettyjson> -->
-<!-- </div> -->
-<!-- <div class="col-sm-6"> -->
-<!-- <p>inputs$:</p> -->
-<!-- <prettyjson [obj]="(algorithms$| async) | json:2" [style.min-height]="800"></prettyjson> -->
-<!-- </div> -->
-<!-- </div> -->
+<div class="row">
+  <div class="col-sm-6">
+    <p>formState$</p>
+    <prettyjson [obj]="(formState$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
+  </div>
+  <div class="col-sm-6">
+    <p>controls.samplename:</p>
+    <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson>
+  </div>
+</div>
