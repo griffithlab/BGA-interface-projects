@@ -1,24 +1,26 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from "@angular/forms";
 
 import { Observable } from 'rxjs/Rx';
-import { map } from 'rxjs/operators';
+import { map, filter, take, withLatestFrom } from 'rxjs/operators';
 
-import { Store, select } from '@ngrx/store';
+import { Store, select, createSelector } from '@ngrx/store';
+
+import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
+
+import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
-import { Algorithm } from '@pvz/core/models/api-responses.model';
+import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
+import { Algorithm, Allele } from '@pvz/core/models/api-responses.model';
 import { InputService } from '@pvz/core/services/inputs.service';
 
 import * as fromInputsActions from '@pvz/start/actions/inputs.actions';
+import * as fromAllelesActions from '@pvz/start/actions/alleles.actions';
 import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
+// TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
+import { SetSubmittedValueAction, INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 
 @Component({
   selector: 'pvz-start-page',
@@ -26,24 +28,61 @@ import * as fromStart from '@pvz/start/reducers';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit {
-  inputs$: Observable<Files>;
-  algorithms$: Observable<Array<Algorithm>>;
+  private subscriptions = [];
+  formState$: Observable<FormGroupState<StartFormGroupValue>>;
+  submittedValue$: Observable<StartFormGroupValue | undefined>;
+
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
   postMessage$: Observable<string>;
   postError$: Observable<boolean>;
+
+  inputs$: Observable<Files>;
+  algorithms$: Observable<Array<Algorithm>>;
+  // TODO: figure out why Observable<Array<any>> below throws a type error
+  alleles$: Observable<Array<any>>;
   newProcessId$: Observable<number>;
 
   netChopMethodOptions;
   topScoreMetricOptions;
-  startForm: FormGroup;
+
+  predictionAlgorithms$: Observable<Array<string>>;
 
   constructor(
     private store: Store<fromStart.State>,
-    private fb: FormBuilder
   ) {
-    this.inputs$ = store.pipe(select(fromStart.getAllInputs));
+    this.formState$ = store.pipe(select(fromStart.getFormState), map(s => s.state));
+    this.submittedValue$ = store.pipe(select(fromStart.getSubmittedValue),
+      filter(v => v !== undefined && v !== null));
+
+
+    this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
+      let options = [];
+      let dir = '~pVAC-Seq';
+
+      function groupFiles(dir, contents) {
+        contents.forEach((item) => {
+          if (item.type === "file") {
+            let option = {
+              display_name: item.display_name,
+              fileID: item.fileID,
+              directory: dir
+            }
+            options.push(option);
+          } else if (item.type === "directory") {
+            dir = dir + '/' + item.display_name;
+            groupFiles(dir, item.contents);
+          }
+        })
+      }
+      groupFiles(dir, inputs);
+      return options;
+    }));
+
+    this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
+
+    // TODO: create only one observer for post
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
@@ -51,6 +90,7 @@ export class StartPageComponent implements OnInit {
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
     this.netChopMethodOptions = [
+      { label: 'Skip Netchop', value: '' },
       { label: 'C term 3.0', value: 'cterm' },
       { label: '20S 3.0', value: '20s' },
     ];
@@ -60,36 +100,43 @@ export class StartPageComponent implements OnInit {
       { label: 'Lowest Score', value: 'lowest' },
     ];
 
-    const startFormGroup = {
-      'input': [null, [Validators.required]],
-      'samplename': ['sample-name-N', [Validators.required]],
-      'alleles': ['HLA-A*01:01,HLA-A*03:01,HLA-B*07:02,HLA-B*08:01,HLA-C*07:02,HLA-C*07:137', [Validators.required]],
-      'prediction_algorithms': [[], [Validators.required]],
-      'epitope_lengths': ['10', [Validators.required]],
-      'peptide_sequence_length': [21, [Validators.required]],
-      'net_chop_method': ['', []],
-      'net_chop_threshold': [0.5, []],
-      'netmhc_stab': [false, []],
-      'top_score_metric': ['median', []],
-      'binding_threshold': [500, []],
-      'allele_specific_cutoffs': [false, []],
-      'minimum_fold_change': [0, []],
-      'expn_val': [1, []],
-      'normal_cov': [5, []],
-      'tdna_cov': [5, []],
-      'trna_cov': [5, []],
-      'normal_vaf': [5, []],
-      'tdna_vaf': [5, []],
-      'trna_vaf': [5, []],
-      'fasta_size': [200, []],
-      'iedb_retries': [5, []],
-      'downstream_sequence_length': [1000, []],
-      'iedb_install_dir': ['', []],
-      'keep_tmp_files': [false, []],
-      'force': [false, []],
-    };
+    const getPredictedAlgorithmsState = createSelector(
+      fromStart.getFormState,
+      form => form.state.value.prediction_algorithms
+    );
 
-    this.startForm = fb.group(startFormGroup);
+    // observe form prediction algorithms value, filtering empty arrays
+    this.predictionAlgorithms$ = store.pipe(
+      select(getPredictedAlgorithmsState),
+      map(s => unbox(s)));
+
+    // load new allele set when algorithms updated
+    this.subscriptions.push(
+      this.predictionAlgorithms$.subscribe((algorithms) => {
+        if (algorithms.length > 0) {
+          this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
+        }
+      }));
+
+    // fire off submit action when submitValue is updated
+    const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
+    this.subscriptions.push(onSubmitted$);
+
+    onSubmitted$.subscribe(([formValue, formState]) => {
+      const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
+      console.log('new processParameters -=-=-=-=-=-');
+      console.log(processParameters);
+      this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+    });
+
+    function parseFormParameters(formParameters) {
+      formParameters.alleles = formParameters.alleles.join(',')
+      formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
+      formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
+      // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
+      formParameters.input = formParameters.input.toString();
+      return formParameters as ProcessParameters;
+    }
   }
 
   ngOnInit() {
@@ -97,7 +144,23 @@ export class StartPageComponent implements OnInit {
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
   }
 
-  onSubmit(startParameters): void {
-    this.store.dispatch(new fromStartActions.StartProcess(startParameters));
+  onSubmit() {
+    this.subscriptions.push(
+      this.formState$.pipe(
+        take(1),
+        map(fs => new SetSubmittedValueAction(fs.value))).subscribe(this.store));
+  }
+
+  reset() {
+    this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
+    this.store.dispatch(new ResetAction(INITIAL_STATE.id));
+  }
+  // onSubmit(startParameters): void {
+  //   this.store.dispatch(new fromStartActions.StartProcess(startParameters));
+  // }
+
+  onDestroy() {
+    // unsubscribe from all manual subscriptions
+    if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
   }
 }

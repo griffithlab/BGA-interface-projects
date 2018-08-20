@@ -1,6 +1,16 @@
 // You can add global styles to this file, and also import other style files
-@import '~@ng-select/ng-select/themes/material.theme.css';
+@import '~@ng-select/ng-select/themes/default.theme.css';
 @import './pvz-variables';
+
+// improves json output
+pre {
+  span { white-space: normal; }
+  .string { color: green; }
+  .number { color: darkorange; }
+  .boolean { color: blue; }
+  .null { color: magenta; }
+  .key { color: red; }
+}
 
 // table cells with action buttons look better w/o padding
 .datagrid-cell {

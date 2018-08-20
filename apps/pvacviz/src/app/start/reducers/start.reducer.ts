@@ -1,29 +1,73 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, combineReducers, Action } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import {
+  createFormGroupState,
+  formGroupReducer,
+  FormGroupState,
+  updateGroup,
+  validate
+} from 'ngrx-forms';
+import { required } from 'ngrx-forms/validation';
+
 import { File, Files } from '@pvz/core/models/file.model';
+import {
+  StartFormGroupValue,
+  StartFormGroupInitialState,
+  updateStartFormGroup
+} from '@pvz/start/models/start-form.models';
 import { StartActions, StartActionTypes, StartProcessSuccess } from '@pvz/start/actions/start.actions';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 /**
- * @ngrx/entity provides a predefined interface for handling
- * a structured dictionary of records. This interface
- * includes an array of ids, and a dictionary of the provided
- * model type by id. This interface is then extended to include
- * any additional interface properties.
- */
-// TODO maybe just move this into the parent interface instead of extending?
-export interface State extends ApiStartResponse {
+ * FORM STATE AND REDUCER
+ * Stores the form data itself
+ **/
+export interface FormState {
+  state: FormGroupState<StartFormGroupValue>;
+  submittedValue: StartFormGroupValue | undefined;
+}
+
+export class SetSubmittedValueAction implements Action {
+  static readonly TYPE = 'startForm/SET_SUBMITTED_VALUE';
+  readonly type = SetSubmittedValueAction.TYPE;
+  constructor(public submittedValue: StartFormGroupValue) { }
+}
+
+export const FORM_ID = 'startForm';
+
+export const INITIAL_STATE = createFormGroupState<StartFormGroupValue>(FORM_ID, StartFormGroupInitialState);
+
+const formReducers = combineReducers<FormState, any>({
+  state(s = INITIAL_STATE, a: Action) {
+    return updateStartFormGroup(formGroupReducer(s, a));
+  },
+  submittedValue(s: StartFormGroupValue | undefined, a: SetSubmittedValueAction) {
+    switch (a.type) {
+      case SetSubmittedValueAction.TYPE:
+        return a.submittedValue;
+
+      default:
+        return s;
+    }
+  },
+});
+
+export function formReducer(s: FormState, a: Action) {
+  return formReducers(s, a);
+}
+
+/**
+ * FORM POST STATE AND REDUCER
+ * Stores info related to submitting the start form, errors, etc.
+ **/
+export interface PostState extends ApiStartResponse {
   submitting: boolean;
   submitted: boolean;
   error: boolean;
 }
 
-/**
- * getInitialState returns the default initial state
- * for the generated entity state. Initial state
- * additional properties can also be defined.
- */
-export const initialState: State = {
+// set initial form post state
+export const initialState: PostState = {
   submitting: false,
   submitted: false,
   status: null,
@@ -32,7 +76,8 @@ export const initialState: State = {
   error: false,
 };
 
-export function reducer(state = initialState, action: StartActions): State {
+// form post reducers
+export function postReducer(state = initialState, action: StartActions): PostState {
   switch (action.type) {
 
     case StartActionTypes.StartProcess:

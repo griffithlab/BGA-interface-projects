@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { File, Files } from '@pvz/core/models/file.model';
-import { InputsActions, InputsActionTypes } from '@pvz/start/actions/inputs.actions';
+import { AllelesActions, AllelesActionTypes } from '@pvz/start/actions/alleles.actions';
+import { Allele } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -10,7 +10,7 @@ import { InputsActions, InputsActionTypes } from '@pvz/start/actions/inputs.acti
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State extends EntityState<File> {
+export interface State extends EntityState<Allele> {
   loading: boolean;
   loaded: boolean;
   error: boolean;
@@ -25,8 +25,7 @@ export interface State extends EntityState<File> {
  * a sortComparer option which is set to a compare
  * function if the records are to be sorted.
  */
-export const adapter: EntityAdapter<File> = createEntityAdapter<File>({
-  selectId: (file: File) => file.fileID ? Number(file.fileID) : 0,
+export const adapter: EntityAdapter<Allele> = createEntityAdapter<Allele>({
   sortComparer: false,
 });
 
@@ -42,16 +41,16 @@ export const initialState: State = adapter.getInitialState({
   errorMessage: null
 });
 
-export function reducer(state = initialState, action: InputsActions): State {
+export function reducer(state = initialState, action: AllelesActions): State {
   switch (action.type) {
 
-    case InputsActionTypes.LoadInputs:
+    case AllelesActionTypes.LoadAlleles:
       return {
         ...state,
         loading: true,
       };
 
-    case InputsActionTypes.LoadInputsSuccess:
+    case AllelesActionTypes.LoadAllelesSuccess:
       return {
         /**
          * The addMany function provided by the created adapter
@@ -60,13 +59,13 @@ export function reducer(state = initialState, action: InputsActions): State {
          * the collection is to be sorted, the adapter will
          * sort each record upon entry into the sorted array.
          */
-        ...adapter.addMany(action.payload, state),
+        ...adapter.addAll(action.payload, state),
         loading: false,
         loaded: true,
         error: false
       };
 
-    case InputsActionTypes.LoadInputsFail:
+    case AllelesActionTypes.LoadAllelesFail:
       return {
         ...state,
         loading: false,

@@ -1,5 +1,7 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+
 import * as fromAlgorithms from './algorithms.reducer';
+import * as fromAlleles from './alleles.reducer';
 import * as fromInputs from './inputs.reducer';
 import * as fromStart from './start.reducer';
 import * as fromRoot from '@pvz/reducers';
@@ -7,7 +9,9 @@ import * as fromRoot from '@pvz/reducers';
 export interface StartState {
   inputs: fromInputs.State;
   algorithms: fromAlgorithms.State;
-  post: fromStart.State;
+  alleles: fromAlleles.State;
+  form: fromStart.FormState;
+  post: fromStart.PostState;
 }
 
 export interface State extends fromRoot.State {
@@ -17,7 +21,9 @@ export interface State extends fromRoot.State {
 export const reducers = {
   inputs: fromInputs.reducer,
   algorithms: fromAlgorithms.reducer,
-  post: fromStart.reducer
+  alleles: fromAlleles.reducer,
+  form: fromStart.formReducer,
+  post: fromStart.postReducer
 }
 
 /**
@@ -63,6 +69,21 @@ export const getAlgorithmsState = createSelector(
   state => state.algorithms
 );
 
+export const getAllelesState = createSelector(
+  getStartState,
+  state => state.alleles
+);
+
+export const getFormState = createSelector(
+  getStartState,
+  state => state.form
+);
+
+export const getSubmittedValue = createSelector(
+  getStartState,
+  state => state.form.submittedValue
+);
+
 export const getPostState = createSelector(
   getStartState,
   state => state.post
@@ -86,3 +107,8 @@ export const {
   selectEntities: getAlgorithms,
   selectAll: getAllAlgorithms,
 } = fromAlgorithms.adapter.getSelectors(getAlgorithmsState);
+
+export const {
+  selectEntities: getAlleles,
+  selectAll: getAllAlleles,
+} = fromAlgorithms.adapter.getSelectors(getAllelesState);

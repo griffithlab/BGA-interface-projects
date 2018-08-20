@@ -577,6 +577,12 @@ amqplib@^0.5.2:
     readable-stream "1.x >=1.1.9"
     safe-buffer "^5.0.1"
 
+angular2-prettyjson@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/angular2-prettyjson/-/angular2-prettyjson-3.0.1.tgz#476fec59850cb3487f30f19e9f7ed72c7ce557f7"
+  dependencies:
+    tslib "^1.7.1"
+
 ansi-html@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ansi-html/-/ansi-html-0.0.7.tgz#813584021962a9e9e6fd039f940d12f56ca7859e"
@@ -4746,6 +4752,10 @@ next-tick@1:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
 
+ngrx-forms@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/ngrx-forms/-/ngrx-forms-3.0.2.tgz#46a72b7d8cf84d3336c2bf5ebcec8e35e5235a29"
+
 ngrx-query@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ngrx-query/-/ngrx-query-3.0.0.tgz#caef5962c2084e8a016a90d203d8b486dc9d146f"
@@ -7109,6 +7119,10 @@ tsickle@^0.32.1:
     source-map "^0.6.0"
     source-map-support "^0.5.0"
 
+tslib@^1.7.1:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
+
 tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
@@ -7183,13 +7197,13 @@ typedarray@^0.0.6, typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.7, "typescript@>=2.6.2 <2.8":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
-
-typescript@~2.9.1:
+typescript@2.9.2, typescript@~2.9.1:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
+
+"typescript@>=2.6.2 <2.8":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
 
 uglify-es@^3.3.4:
   version "3.3.9"

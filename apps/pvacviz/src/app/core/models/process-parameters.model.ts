@@ -1,5 +1,5 @@
 export interface ProcessParameters {
-  'input': number;
+  'input': string;
   'samplename': string;
   'alleles': string;
   'prediction_algorithms': string;
