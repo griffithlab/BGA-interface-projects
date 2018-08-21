@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form clrForm [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
+<form [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
   <clr-tabs>
     <clr-tab>
       <button clrTabLink>Inputs, Algorithms &amp; Alleles</button>
@@ -20,9 +20,21 @@
                 <label for="samplename" class="required">Sample Name</label>
               </div>
               <div class="col-xs-12 col-sm-4">
-                <input [disabled]="true" type="text" id="samplename"
-                  size="32"
-                  [ngrxFormControlState]="(formState$ | async).controls.samplename">
+                <label for="samplename"
+                  aria-haspopup="true"
+                  role="tooltip"
+                  [class.invalid]="(formState$ | async).controls.samplename.isInvalid"
+                  class="tooltip tooltip-validation tooltip-md">
+
+                  <input type="text" id="samplename" size="32"
+                    [ngrxFormControlState]="(formState$ | async).controls.samplename">
+
+                  <span class="tooltip-content">
+                    <pvz-validation-messages [control]="(formState$ | async).controls.samplename">
+                      <pvz-validation-message name="required">This field is required</pvz-validation-message>
+                    </pvz-validation-messages>
+                  </span>
+                </label>
               </div>
               <div class="col-xs-12 col-sm-5 col-form-help">
                 Name you wish to be associated with this process

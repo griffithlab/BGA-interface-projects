@@ -29,21 +29,23 @@ export class ValidationMessageComponent {
   template: '<ng-content></ng-content>'
 })
 export class ValidationMessagesComponent implements OnDestroy, OnChanges {
-  @Input() for: FormControlState<any>;
+  @Input() control: FormControlState<any>;
   @ContentChildren(ValidationMessageComponent) messageComponents: QueryList<ValidationMessageComponent>;
 
   private statusChangesSubscription: Subscription;
 
   ngOnChanges(changes: SimpleChanges) {
-    this.messageComponents.forEach(messageComponent => messageComponent.show = false);
+    Promise.resolve(null).then(() => {
+      this.messageComponents.forEach(messageComponent => messageComponent.show = false);
 
-    if (this.for.isInvalid) {
-      let firstErrorMessageComponent = this.messageComponents.find(messageComponent => {
-        return messageComponent.showsErrorIncludedIn(Object.keys(this.for.errors));
-      });
+      if (this.control.isInvalid) {
+        let firstErrorMessageComponent = this.messageComponents.find(messageComponent => {
+          return messageComponent.showsErrorIncludedIn(Object.keys(this.control.errors));
+        });
 
-      firstErrorMessageComponent.show = true;
-    }
+        firstErrorMessageComponent.show = true;
+      }
+    });
   }
 
   ngOnDestroy() {
