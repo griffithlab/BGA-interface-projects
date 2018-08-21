@@ -15,36 +15,8 @@
         <div class="tab-bg">
           <section class="form-block">
             <label>Inputs, Alleles, and Algorithms</label>
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="samplename" class="required">Sample Name</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <label for="samplename"
-                  aria-haspopup="true"
-                  role="tooltip"
-                  [class.invalid]="(formState$ | async).controls.samplename.isInvalid && (formState$ | async).controls.samplename.isTouched"
-                  class="tooltip tooltip-validation tooltip-md">
 
-                  <input type="text" id="samplename"
-                    size="32"
-                    [disabled]="(formState$ | async).controls.samplename.isDisabled"
-                    [ngrxFormControlState]="(formState$ | async).controls.samplename">
-
-                  <span class="tooltip-content">
-                    <pvz-validation-messages #messages
-                      [control]="(formState$ | async).controls.samplename"
-                      [errors]="(formState$ | async).controls.samplename.errors">
-                      <pvz-validation-message name="required">Please enter a sample name.</pvz-validation-message>
-                      <pvz-validation-message name="minLength">Sample name must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
-                    </pvz-validation-messages>
-                  </span>
-                </label>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Name you wish to be associated with this process
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.samplename, fieldName: 'samplename', helpText: 'User-defined reference name for the process', required: true }"></ng-container>
 
             <div class="form-group row">
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -473,3 +445,40 @@
     <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson>
   </div>
 </div>
+
+<!-- FORM ROW TEMPLATES -->
+<ng-template #inputRow
+  let-control="control"
+  let-fieldName="fieldName"
+  let-helpText="helpText"
+  let-required="required">
+  <div class="form-group row">
+    <div class="col-xs-12 col-sm-3 col-form-label">
+      <label for="samplename" [ngClass]="{ 'required': required === true }">Sample Name</label>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <label for="control"
+        role="tooltip"
+        [class.invalid]="control.isInvalid && control.isTouched"
+        class="tooltip tooltip-validation tooltip-md">
+
+        <input type="text" id="samplename"
+          size="32"
+          [disabled]="control.isDisabled"
+          [ngrxFormControlState]="control">
+
+        <span class="tooltip-content">
+          <pvz-validation-messages #messages
+            [control]="control"
+            [errors]="control.errors">
+            <pvz-validation-message name="required">Please enter a sample name.</pvz-validation-message>
+            <pvz-validation-message name="minLength">Sample name must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
+          </pvz-validation-messages>
+        </span>
+      </label>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-form-help">
+      {{ helpText }}
+    </div>
+  </div>
+</ng-template>
