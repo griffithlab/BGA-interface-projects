@@ -1,5 +1,5 @@
 import { Boxed, box, validate, updateGroup } from 'ngrx-forms';
-import { required } from 'ngrx-forms/validation';
+import { required, minLength } from 'ngrx-forms/validation';
 
 export interface StartFormGroupValue {
   'input': string;
@@ -60,5 +60,5 @@ export const StartFormGroupInitialState = {
 
 // valiation
 export const updateStartFormGroup = updateGroup<StartFormGroupValue>({
-  samplename: validate(required)
+  samplename: validate(required, minLength(2))
 });

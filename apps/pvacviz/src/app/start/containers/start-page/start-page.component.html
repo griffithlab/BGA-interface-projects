@@ -23,15 +23,20 @@
                 <label for="samplename"
                   aria-haspopup="true"
                   role="tooltip"
-                  [class.invalid]="(formState$ | async).controls.samplename.isInvalid"
+                  [class.invalid]="(formState$ | async).controls.samplename.isInvalid && (formState$ | async).controls.samplename.isTouched"
                   class="tooltip tooltip-validation tooltip-md">
 
-                  <input type="text" id="samplename" size="32"
+                  <input type="text" id="samplename"
+                    size="32"
+                    [disabled]="(formState$ | async).controls.samplename.isDisabled"
                     [ngrxFormControlState]="(formState$ | async).controls.samplename">
 
                   <span class="tooltip-content">
-                    <pvz-validation-messages [control]="(formState$ | async).controls.samplename">
-                      <pvz-validation-message name="required">This field is required</pvz-validation-message>
+                    <pvz-validation-messages #messages
+                      [control]="(formState$ | async).controls.samplename"
+                      [errors]="(formState$ | async).controls.samplename.errors">
+                      <pvz-validation-message name="required">Please enter a sample name.</pvz-validation-message>
+                      <pvz-validation-message name="minLength">Sample name must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
                     </pvz-validation-messages>
                   </span>
                 </label>

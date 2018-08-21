@@ -3,11 +3,9 @@ import {
   ContentChildren,
   QueryList,
   Input,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges
+  OnChanges
 } from '@angular/core';
-import { FormControlState } from 'ngrx-forms';
+import { FormControlState, ValidationErrors } from 'ngrx-forms';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -17,10 +15,13 @@ import { Subscription } from 'rxjs';
 })
 export class ValidationMessageComponent {
   @Input() name: string;
-  show: boolean = false;
 
-  showsErrorIncludedIn(errors: string[]): boolean {
-    return errors.some(error => error === this.name);
+  show: boolean = false;
+  error: {} = {};
+
+  showsErrorIncludedIn(errors: ValidationErrors): boolean {
+    this.error = errors[this.name];
+    return Object.keys(errors).some(error => error === this.name);
   }
 }
 
@@ -28,27 +29,24 @@ export class ValidationMessageComponent {
   selector: 'pvz-validation-messages',
   template: '<ng-content></ng-content>'
 })
-export class ValidationMessagesComponent implements OnDestroy, OnChanges {
+export class ValidationMessagesComponent implements OnChanges {
   @Input() control: FormControlState<any>;
+  @Input() errors: ValidationErrors;
   @ContentChildren(ValidationMessageComponent) messageComponents: QueryList<ValidationMessageComponent>;
 
   private statusChangesSubscription: Subscription;
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     Promise.resolve(null).then(() => {
       this.messageComponents.forEach(messageComponent => messageComponent.show = false);
 
       if (this.control.isInvalid) {
         let firstErrorMessageComponent = this.messageComponents.find(messageComponent => {
-          return messageComponent.showsErrorIncludedIn(Object.keys(this.control.errors));
+          return messageComponent.showsErrorIncludedIn(this.control.errors);
         });
 
         firstErrorMessageComponent.show = true;
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.statusChangesSubscription.unsubscribe();
   }
 }
