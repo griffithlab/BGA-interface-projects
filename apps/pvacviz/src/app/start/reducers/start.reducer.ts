@@ -4,8 +4,6 @@ import {
   createFormGroupState,
   formGroupReducer,
   FormGroupState,
-  updateGroup,
-  validate
 } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
 
