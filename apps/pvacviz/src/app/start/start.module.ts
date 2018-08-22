@@ -61,7 +61,7 @@ import { PrettyJsonComponent } from '../../../../../node_modules/angular2-pretty
   declarations: [
     StartPageComponent,
     ValidationMessageComponent,
-    ValidationMessagesComponent
+    ValidationMessagesComponent,
   ]
 })
 export class StartModule { }

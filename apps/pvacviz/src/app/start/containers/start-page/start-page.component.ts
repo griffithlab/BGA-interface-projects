@@ -5,7 +5,7 @@ import { map, filter, take, withLatestFrom } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
-import { FormGroupState, ResetAction, SetValueAction, unbox } from 'ngrx-forms';
+import { FormGroupState, ResetAction, SetValueAction, FormControlState, unbox } from 'ngrx-forms';
 
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
 
@@ -39,9 +39,14 @@ export class StartPageComponent implements OnInit {
 
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
-  // TODO: figure out why Observable<Array<any>> below throws a type error
+  // TODO: figure out why Observable<Array<Allele>> below throws a type error:
+  // Type 'Observable<Algorithm[]>' is not assignable to type 'Observable<Allele[]>'.
+  // There's a type problem with a model somewhere but I haven't found it yet
   alleles$: Observable<Array<any>>;
   newProcessId$: Observable<number>;
+
+  alleleControl$: Observable<FormControlState<any>>;
+  algorithmsControl$: Observable<FormControlState<any>>;
 
   netChopMethodOptions;
   topScoreMetricOptions;
@@ -82,32 +87,22 @@ export class StartPageComponent implements OnInit {
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
-    // TODO: create only one observer for post
+    // TODO: create only one observer for post, access attributes in template
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
     this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
-    this.netChopMethodOptions = [
-      { label: 'Skip Netchop', value: '' },
-      { label: 'C term 3.0', value: 'cterm' },
-      { label: '20S 3.0', value: '20s' },
-    ];
 
-    this.topScoreMetricOptions = [
-      { label: 'Median Score', value: 'median' },
-      { label: 'Lowest Score', value: 'lowest' },
-    ];
-
-    const getPredictedAlgorithmsState = createSelector(
+    const getPredictionAlgorithmsState = createSelector(
       fromStart.getFormState,
       form => form.state.value.prediction_algorithms
     );
 
     // observe form prediction algorithms value, filtering empty arrays
     this.predictionAlgorithms$ = store.pipe(
-      select(getPredictedAlgorithmsState),
+      select(getPredictionAlgorithmsState),
       map(s => unbox(s)));
 
     // load new allele set when algorithms updated
@@ -117,6 +112,12 @@ export class StartPageComponent implements OnInit {
           this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
         }
       }));
+
+    // disable alleles selector if no algorithms specified
+    this.algorithmsControl$.subscribe((state) => {
+      console.log('algorithmsControl$ state changed:');
+      console.log(JSON.stringify(state));
+    })
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
@@ -137,6 +138,17 @@ export class StartPageComponent implements OnInit {
       formParameters.input = formParameters.input.toString();
       return formParameters as ProcessParameters;
     }
+
+    this.netChopMethodOptions = [
+      { label: 'Skip Netchop', value: '' },
+      { label: 'C term 3.0', value: 'cterm' },
+      { label: '20S 3.0', value: '20s' },
+    ];
+
+    this.topScoreMetricOptions = [
+      { label: 'Median Score', value: 'median' },
+      { label: 'Lowest Score', value: 'lowest' },
+    ];
   }
 
   ngOnInit() {
