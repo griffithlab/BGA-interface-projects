@@ -46,7 +46,7 @@ export class StartPageComponent implements OnInit {
   newProcessId$: Observable<number>;
 
   alleleControl$: Observable<FormControlState<any>>;
-  algorithmsControl$: Observable<FormControlState<any>>;
+  selectedAlgorithms$: Observable<Array<Algorithm>>;
 
   netChopMethodOptions;
   topScoreMetricOptions;
@@ -94,7 +94,6 @@ export class StartPageComponent implements OnInit {
     this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
-
     const getPredictionAlgorithmsState = createSelector(
       fromStart.getFormState,
       form => form.state.value.prediction_algorithms
@@ -112,12 +111,6 @@ export class StartPageComponent implements OnInit {
           this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
         }
       }));
-
-    // disable alleles selector if no algorithms specified
-    this.algorithmsControl$.subscribe((state) => {
-      console.log('algorithmsControl$ state changed:');
-      console.log(JSON.stringify(state));
-    })
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));

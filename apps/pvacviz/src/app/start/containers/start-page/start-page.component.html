@@ -80,6 +80,9 @@
                     </span>
                   </ng-template>
                 </ng-select>
+                <span class="p7" style="color: #F54F47" *ngIf="(predictionAlgorithms$ | async).length === 0">
+                  Please select prediction algorithms to populate alleles selector.
+                </span>
               </div>
               <div class="col-xs-12 col-sm-5 col-form-help">
                 List of alleles to run the sequences against
