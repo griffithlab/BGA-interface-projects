@@ -16,7 +16,8 @@
           <section class="form-block">
             <label>Inputs, Alleles, and Algorithms</label>
 
-            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.samplename, fieldName: 'samplename', helpText: 'User-defined reference name for the process', required: true }"></ng-container>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.samplename, fieldName: 'Sample Name', helpText: 'User-defined reference name for the process', required: true }">
+            </ng-container>
 
             <div class="form-group row">
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -98,17 +99,8 @@
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="epitope_lengths" class="required">Epitope Lengths</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="epitope_lengths" [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                List of epitope lengths to produce
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.epitope_lengths, fieldName: 'Epitope Lengths', helpText: 'List of eptope lengths to produce', required: true }">
+            </ng-container>
 
             <div class="form-group row" >
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -450,6 +442,8 @@
 </div>
 
 <!-- FORM ROW TEMPLATES -->
+
+<!-- text input -->
 <ng-template #inputRow
   let-control="control"
   let-fieldName="fieldName"
@@ -457,7 +451,7 @@
   let-required="required">
   <div class="form-group row">
     <div class="col-xs-12 col-sm-3 col-form-label">
-      <label for="samplename" [ngClass]="{ 'required': required === true }">Sample Name</label>
+      <label for="{{control.id}}" [ngClass]="{ 'required': required === true }">{{ fieldName }}</label>
     </div>
     <div class="col-xs-12 col-sm-4">
       <label for="control"
@@ -465,7 +459,7 @@
         [class.invalid]="control.isInvalid && control.isTouched"
         class="tooltip tooltip-validation tooltip-md">
 
-        <input type="text" id="samplename"
+        <input type="text" id="{{control.id}}"
           size="32"
           [disabled]="control.isDisabled"
           [ngrxFormControlState]="control">
@@ -474,8 +468,8 @@
           <pvz-validation-messages #messages
             [control]="control"
             [errors]="control.errors">
-            <pvz-validation-message name="required">Please enter a sample name.</pvz-validation-message>
-            <pvz-validation-message name="minLength">Sample name must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
+            <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
+            <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
           </pvz-validation-messages>
         </span>
       </label>

@@ -60,5 +60,24 @@ export const StartFormGroupInitialState = {
 
 // valiation
 export const updateStartFormGroup = updateGroup<StartFormGroupValue>({
-  samplename: validate(required, minLength(2))
+  samplename: validate(required, minLength(2)),
+  input: validate(required),
+  prediction_algorithms: validate(required),
+  alleles: validate(required),
+  epitope_lengths: validate(required),
+  peptide_sequence_length: validate(required),
+  net_chop_threshold: validate(required),
+  top_score_metric: validate(required),
+  binding_threshold: validate(required),
+  minimum_fold_change: validate(required),
+  expn_val: validate(required),
+  normal_cov: validate(required),
+  tdna_cov: validate(required),
+  trna_cov: validate(required),
+  normal_vaf: validate(required),
+  tdna_vaf: validate(required),
+  trna_vaf: validate(required),
+  fasta_size: validate(required),
+  iedb_retries: validate(required),
+  downstream_sequence_length: validate(required),
 });
