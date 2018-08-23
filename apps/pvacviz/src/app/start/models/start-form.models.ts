@@ -1,4 +1,4 @@
-import { Boxed, box, validate, updateGroup } from 'ngrx-forms';
+import { Boxed, box, unbox, validate, updateGroup } from 'ngrx-forms';
 import { required, minLength } from 'ngrx-forms/validation';
 
 export interface StartFormGroupValue {
@@ -62,9 +62,9 @@ export const StartFormGroupInitialState = {
 export const updateStartFormGroup = updateGroup<StartFormGroupValue>({
   samplename: validate(required, minLength(2)),
   input: validate(required),
-  prediction_algorithms: validate(required),
-  alleles: validate(required),
-  epitope_lengths: validate(required),
+  prediction_algorithms: validate(required, value => unbox(minLength(1))),
+  alleles: validate(required, value => unbox(minLength(1))),
+  epitope_lengths: validate(required, value => unbox(minLength(1))),
   peptide_sequence_length: validate(required),
   net_chop_threshold: validate(required),
   top_score_metric: validate(required),

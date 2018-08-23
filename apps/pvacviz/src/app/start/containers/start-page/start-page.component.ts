@@ -114,14 +114,13 @@ export class StartPageComponent implements OnInit {
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
-    this.subscriptions.push(onSubmitted$);
-
     onSubmitted$.subscribe(([formValue, formState]) => {
       const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
       console.log('new processParameters -=-=-=-=-=-');
       console.log(processParameters);
       this.store.dispatch(new fromStartActions.StartProcess(processParameters));
     });
+    this.subscriptions.push(onSubmitted$);
 
     function parseFormParameters(formParameters) {
       formParameters.alleles = formParameters.alleles.join(',')
