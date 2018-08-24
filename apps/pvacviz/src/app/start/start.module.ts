@@ -12,6 +12,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 // misc
 import { PrettyJsonModule } from 'angular2-prettyjson';
 
+import {
+  ValidationMessageComponent,
+  ValidationMessagesComponent
+} from './components/validation-messages.component';
 import { StartRoutingModule } from './start-routing.module';
 import { InputsEffects } from './effects/inputs.effects';
 import { StartEffects } from './effects/start.effects';
@@ -20,7 +24,6 @@ import { AllelesEffects } from './effects/alleles.effects';
 import { reducers } from './reducers';
 
 import { StartPageComponent } from './containers/start-page/start-page.component';
-import { OptionList } from './containers/start-page/option-list.component';
 import { PrettyJsonComponent } from '../../../../../node_modules/angular2-prettyjson/src/prettyjson.component';
 
 @NgModule({
@@ -57,7 +60,8 @@ import { PrettyJsonComponent } from '../../../../../node_modules/angular2-pretty
   ],
   declarations: [
     StartPageComponent,
-    OptionList
-  ],
+    ValidationMessageComponent,
+    ValidationMessagesComponent,
+  ]
 })
 export class StartModule { }

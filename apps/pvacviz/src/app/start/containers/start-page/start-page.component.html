@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form clrForm [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
+<form [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
   <clr-tabs>
     <clr-tab>
       <button clrTabLink>Inputs, Algorithms &amp; Alleles</button>
@@ -15,19 +15,9 @@
         <div class="tab-bg">
           <section class="form-block">
             <label>Inputs, Alleles, and Algorithms</label>
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="samplename" class="required">Sample Name</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input [disabled]="true" type="text" id="samplename"
-                  size="32"
-                  [ngrxFormControlState]="(formState$ | async).controls.samplename">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Name you wish to be associated with this process
-              </div>
-            </div>
+
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.samplename, fieldName: 'Sample Name', helpText: 'User-defined reference name for the process', required: true }">
+            </ng-container>
 
             <div class="form-group row">
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -91,6 +81,9 @@
                     </span>
                   </ng-template>
                 </ng-select>
+                <span class="p7" style="color: #F54F47" *ngIf="(predictionAlgorithms$ | async).length === 0">
+                  Please select prediction algorithms to populate alleles selector.
+                </span>
               </div>
               <div class="col-xs-12 col-sm-5 col-form-help">
                 List of alleles to run the sequences against
@@ -106,30 +99,11 @@
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="epitope_lengths" class="required">Epitope Lengths</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="epitope_lengths" [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                List of epitope lengths to produce
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.epitope_lengths, fieldName: 'Epitope Lengths', helpText: 'List of eptope lengths to produce', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="peptide_sequence_length" class="required">Peptide Sequence Length</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="peptide_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.peptide_sequence_length" size="8">
-
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Length of the peptide sequences to produce in the FASTA
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.peptide_sequence_length, fieldName: 'Peptide Sequence Length', helpText: 'Length of the peptide sequences to produce in the FASTA', required: true }">
+            </ng-container>
 
             <div class="form-group row" >
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -149,17 +123,8 @@
               </div>
             </div>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="net_chop_threshold" class="required">Netchop Threshold</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="net_chop_threshold" [ngrxFormControlState]="(formState$ | async).controls.net_chop_threshold" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Netchop prediction threshold
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.net_chop_threshold, fieldName: 'Netchop Threshold', helpText: 'Netchop prediction threshold', required: true }">
+            </ng-container>
 
             <div class="form-group row" >
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -191,17 +156,8 @@
               </div>
             </div>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="binding_threshold" class="required">Binding Threshold</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="binding_threshold" [ngrxFormControlState]="(formState$ | async).controls.binding_threshold" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Report only epitopes with a predicted binding score below this value
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.binding_threshold, fieldName: 'Binding Threshold', helpText: 'Report only epitopes with a predicted binding score below this value.', required: true }">
+            </ng-container>
 
             <div class="form-group row" >
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -215,148 +171,38 @@
               </div>
             </div>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="minimum_fold_change" class="required">Minimum Fold Change</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="minimum_fold_change" [ngrxFormControlState]="(formState$ | async).controls.minimum_fold_change" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Report only epitopes with a fold change between the mutant and wildtype sequences above this value
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.minimum_fold_change, fieldName: 'Minimum Fold Change', helpText: 'Report only epitopes with a fold change between the mutant and wildtype sequences above this value', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="expn_val" class="required">Gene and Transcript Expression Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="expn_val" [ngrxFormControlState]="(formState$ | async).controls.expn_val" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="normal_cov" class="required">Normal Coverage Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="normal_cov" [ngrxFormControlState]="(formState$ | async).controls.normal_cov" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.expn_val, fieldName: 'Gene & Transcript Expn. Cutoff', helpText: 'Sites above this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="tdna_cov" class="required">Tumor DNA Coverage Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="tdna_cov" [ngrxFormControlState]="(formState$ | async).controls.tdna_cov" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.normal_cov, fieldName: 'Normal Coverage Cutoff', helpText: 'Sites above this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="trna_cov" class="required">Tumor RNA Coverage Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="trna_cov" [ngrxFormControlState]="(formState$ | async).controls.trna_cov" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.tdna_cov, fieldName: 'Tumor DNA Coverage Cutoff', helpText: 'Sites above this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="trna_cov" class="required">Tumor RNA Coverage Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="trna_cov" [ngrxFormControlState]="(formState$ | async).controls.trna_cov" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.trna_cov, fieldName: 'Tumor RNA Coverage Cutoff', helpText: 'Sites above this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="normal_vaf" class="required">Normal VAF Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="normal_vaf" [ngrxFormControlState]="(formState$ | async).controls.normal_vaf" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites below this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.normal_vaf, fieldName: 'Normal VAF Cutoff', helpText: 'Sites below this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="tdna_vaf" class="required">Normal VAF Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="tdna_vaf" [ngrxFormControlState]="(formState$ | async).controls.tdna_vaf" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites below this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.tdna_vaf, fieldName: 'Tumor DNA VAF Cutoff', helpText: 'Sites below this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="trna_vaf" class="required">Tumor DNA VAF Cutoff</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="trna_vaf" [ngrxFormControlState]="(formState$ | async).controls.trna_vaf" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Sites above this cutoff will be considered
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.trna_vaf, fieldName: 'Tumor RNA VAF Cutoff', helpText: 'Sites below this cutoff will be considered.', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="fasta_size" class="required">FASTA Size</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="fasta_size" [ngrxFormControlState]="(formState$ | async).controls.fasta_size" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Event number of entries submitted to IEDB in each request
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.fasta_size, fieldName: 'FASTA Size', helpText: 'Event number of entries submitted to IEDB in each request', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="iedb_retries" class="required">IEDB Retries</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="iedb_retries" [ngrxFormControlState]="(formState$ | async).controls.iedb_retries" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.iedb_retries, fieldName: 'IEDB Retries', helpText: 'Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100', required: true }">
+            </ng-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="downstream_sequence_length" class="required">Downstream Sequence Length</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="text" id="downstream_sequence_length" [ngrxFormControlState]="(formState$ | async).controls.downstream_sequence_length" size="8">
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.downstream_sequence_length, fieldName: 'Downstream Sequence Length', helpText: 'Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use \'full\' to include the full downstream sequence', required: true }">
+            </ng-container>
 
             <div class="form-group row" >
               <div class="col-xs-12 col-sm-3 col-form-label">
@@ -452,7 +298,46 @@
     </prettyjson>
   </div>
   <div class="col-sm-6">
-    <p>controls.samplename:</p>
-    <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson>
+    <p>controls.prediction_algorithms:</p>
+    <prettyjson [obj]="(formState$ | async).controls.prediction_algorithms | json:2" [style.min-height]="800"></prettyjson>
   </div>
 </div>
+
+<!-- FORM ROW TEMPLATES -->
+
+<!-- text input -->
+<ng-template #inputRow
+  let-control="control"
+  let-fieldName="fieldName"
+  let-helpText="helpText"
+  let-required="required">
+  <div class="form-group row">
+    <div class="col-xs-12 col-sm-3 col-form-label">
+      <label for="{{control.id}}" [ngClass]="{ 'required': required === true }">{{ fieldName }}</label>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <label for="control"
+        role="tooltip"
+        [class.invalid]="control.isInvalid && control.isTouched"
+        class="tooltip tooltip-validation tooltip-md">
+
+        <input type="text" id="{{control.id}}"
+          size="32"
+          [disabled]="control.isDisabled"
+          [ngrxFormControlState]="control">
+
+        <span class="tooltip-content">
+          <pvz-validation-messages #messages
+            [control]="control"
+            [errors]="control.errors">
+            <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
+            <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
+          </pvz-validation-messages>
+        </span>
+      </label>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-form-help">
+      {{ helpText }}
+    </div>
+  </div>
+</ng-template>
