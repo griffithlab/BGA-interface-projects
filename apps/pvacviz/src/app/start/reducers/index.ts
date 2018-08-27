@@ -111,4 +111,4 @@ export const {
 export const {
   selectEntities: getAlleles,
   selectAll: getAllAlleles,
-} = fromAlgorithms.adapter.getSelectors(getAllelesState);
+} = fromAlleles.adapter.getSelectors(getAllelesState);

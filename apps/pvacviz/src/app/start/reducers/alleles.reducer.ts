@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { AllelesActions, AllelesActionTypes } from '@pvz/start/actions/alleles.actions';
-import { Allele } from '@pvz/core/models/api-responses.model';
+import { Allele, Meta } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -15,6 +15,7 @@ export interface State extends EntityState<Allele> {
   loaded: boolean;
   error: boolean;
   errorMessage?: string;
+  meta: Meta;
 }
 
 /**
@@ -27,6 +28,7 @@ export interface State extends EntityState<Allele> {
  */
 export const adapter: EntityAdapter<Allele> = createEntityAdapter<Allele>({
   sortComparer: false,
+  selectId: (allele: Allele) => allele.name
 });
 
 /**
@@ -38,7 +40,8 @@ export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
   error: false,
-  errorMessage: null
+  errorMessage: null,
+  meta: null
 });
 
 export function reducer(state = initialState, action: AllelesActions): State {
@@ -59,10 +62,11 @@ export function reducer(state = initialState, action: AllelesActions): State {
          * the collection is to be sorted, the adapter will
          * sort each record upon entry into the sorted array.
          */
-        ...adapter.addAll(action.payload, state),
+        ...adapter.addAll(action.payload.result, state),
         loading: false,
         loaded: true,
-        error: false
+        error: false,
+        meta: action.payload._meta
       };
 
     case AllelesActionTypes.LoadAllelesFail:
