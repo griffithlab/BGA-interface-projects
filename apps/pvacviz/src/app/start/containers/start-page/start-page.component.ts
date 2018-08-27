@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
-import { map, filter, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs/Rx';
+import { map, filter, take, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -11,7 +11,7 @@ import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/mode
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
-import { Algorithm, Allele } from '@pvz/core/models/api-responses.model';
+import { Algorithm, Allele, ApiMeta } from '@pvz/core/models/api-responses.model';
 import { InputService } from '@pvz/core/services/inputs.service';
 
 import * as fromInputsActions from '@pvz/start/actions/inputs.actions';
@@ -41,7 +41,7 @@ export class StartPageComponent implements OnInit {
   algorithms$: Observable<Array<Algorithm>>;
   // TODO: figure out why Observable<Array<Allele>> below throws a type error:
   // Type 'Observable<Algorithm[]>' is not assignable to type 'Observable<Allele[]>'.
-  // There's a type problem with a model somewhere but I haven't found it yet
+  // There's a type problem with a model somewhere
   alleles$: Observable<Array<any>>;
   newProcessId$: Observable<number>;
 
@@ -52,6 +52,12 @@ export class StartPageComponent implements OnInit {
   topScoreMetricOptions;
 
   predictionAlgorithms$: Observable<Array<string>>;
+
+
+  allelesMeta$: Observable<ApiMeta>;
+  // selector subjects
+  allelesTypeahead$ = new Subject<string>();
+
 
   constructor(
     private store: Store<fromStart.State>,
@@ -94,30 +100,50 @@ export class StartPageComponent implements OnInit {
     this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
+    this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
+
     const getPredictionAlgorithmsState = createSelector(
       fromStart.getFormState,
       form => form.state.value.prediction_algorithms
     );
 
     // observe form prediction algorithms value, filtering empty arrays
+    // dispatch LoadAlleles when prediction_algorithms changes
     this.predictionAlgorithms$ = store.pipe(
       select(getPredictionAlgorithmsState),
       map(s => unbox(s)));
 
-    // load new allele set when algorithms updated
-    this.subscriptions.push(
-      this.predictionAlgorithms$.subscribe((algorithms) => {
-        if (algorithms.length > 0) {
-          this.store.dispatch(new fromAllelesActions.LoadAlleles(algorithms));
+    this.predictionAlgorithms$.subscribe((algorithms) => {
+      if (algorithms.length > 0) {
+        const req = {
+          prediction_algorithms: algorithms.join(',')
         }
-      }));
+        this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
+      }
+    })
+
+    this.subscriptions.push(this.predictionAlgorithms$);
+
+
+    // reload alleles when typeahead updates
+    this.allelesTypeahead$.pipe(
+      debounceTime(100),
+      distinctUntilChanged(),
+      withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
+    ).subscribe(([term, meta, algorithms]) => {
+      const req = {
+        prediction_algorithms: algorithms,
+        name_filter: term
+      }
+      this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+    });
+
+    this.subscriptions.push(this.allelesTypeahead$);
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
     onSubmitted$.subscribe(([formValue, formState]) => {
       const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
-      console.log('new processParameters -=-=-=-=-=-');
-      console.log(processParameters);
       this.store.dispatch(new fromStartActions.StartProcess(processParameters));
     });
     this.subscriptions.push(onSubmitted$);
@@ -141,6 +167,17 @@ export class StartPageComponent implements OnInit {
       { label: 'Median Score', value: 'median' },
       { label: 'Lowest Score', value: 'lowest' },
     ];
+  }
+
+  // fetch more records when select scrolled near end
+  onScroll(e) {
+    console.log('onScroll -=-=-=-=-=-=-=-=-=-==-');
+    console.log(e);
+  }
+
+  onScrollToEnd(e) {
+    console.log('onScrollToEnd -=-=-=-=-=-=-=-=-=-==-');
+    console.log(e);
   }
 
   ngOnInit() {

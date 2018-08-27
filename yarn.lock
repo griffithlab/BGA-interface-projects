@@ -206,7 +206,7 @@
   version "0.12.10"
   resolved "https://registry.yarnpkg.com/@clr/ui/-/ui-0.12.10.tgz#aba591dfe528a8db5c0ee2d4fbd936cac1c16ccf"
 
-"@ng-select/ng-select@^2.5.0":
+"@ng-select/ng-select@2.5.1":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-2.5.1.tgz#fffc8eee627e4427e3477054f9d263f66d619193"
   dependencies:

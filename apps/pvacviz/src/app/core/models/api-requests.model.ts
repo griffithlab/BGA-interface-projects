@@ -1,6 +1,6 @@
 export interface ApiAllelesRequest {
-  prediction_algorithms: string[];
-  count: number;
-  page: number;
+  prediction_algorithms: string;
   filter: string;
+  per_page: string;
+  current_page: string;
 }

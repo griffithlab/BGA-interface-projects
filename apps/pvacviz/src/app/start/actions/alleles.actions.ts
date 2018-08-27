@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
 import { ApiStartResponse, ApiAllelesResponse } from '@pvz/core/models/api-responses.model';
 import { Allele } from '@pvz/core/models/api-responses.model';
+import { ApiAllelesRequest } from '@pvz/app/core/models/api-requests.model';
 export enum AllelesActionTypes {
   LoadAlleles = '[Start] Load Alleles',
   LoadAllelesSuccess = '[Start] Load Alleles Success',
@@ -18,7 +19,7 @@ export enum AllelesActionTypes {
 export class LoadAlleles implements Action {
   readonly type = AllelesActionTypes.LoadAlleles;
 
-  constructor(public payload?: string[]) { }
+  constructor(public payload?: {}) { }
 }
 
 export class LoadAllelesSuccess implements Action {

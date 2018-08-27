@@ -19,6 +19,7 @@ import {
   LoadAllelesSuccess,
   LoadAllelesFail
 } from '../actions/alleles.actions';
+import { ApiAllelesRequest } from '@pvz/app/core/models/api-requests.model';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your

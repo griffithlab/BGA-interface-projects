@@ -1,10 +1,10 @@
 import { File } from './file.model';
 
-export interface Meta {
-  current_page: number;
-  per_page: number;
-  total_count: number;
-  total_pages: number;
+export interface ApiMeta {
+  page: string;
+  count: string;
+  total_count: string;
+  total_pages: string;
 }
 
 export interface ApiStartResponse {
@@ -24,7 +24,7 @@ export interface Allele {
 }
 
 export interface ApiAllelesResponse {
-  _meta: Meta;
+  _meta: ApiMeta;
   result: Allele[];
 }
 

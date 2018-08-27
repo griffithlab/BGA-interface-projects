@@ -73,6 +73,9 @@
                   bindValue="name"
                   [searchable]="true"
                   placeholder="Select Alleles"
+                  [typeahead]="allelesTypeahead$"
+                  (scrollToEnd)="onScrollToEnd($event)"
+                  (scroll)="onScroll($event)"
                   [ngrxFormControlState]="(formState$ | async).controls.alleles">
                   <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
                     <span>{{ item.name }}</span>
