@@ -33,8 +33,9 @@ export class StartPageComponent implements OnInit {
 
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
+
   alleles$: Observable<Array<Allele>>;
-  // BehaviorSubject w/ initial value provided here, or withLatestFrom operators won't fire
+  alleles: Allele[] = []; // stores allele objects for alleles select
   allelesTypeahead$ = new BehaviorSubject<string>('');
   allelesScrollToEnd$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
@@ -44,8 +45,6 @@ export class StartPageComponent implements OnInit {
 
   netChopMethodOptions;
   topScoreMetricOptions;
-
-
 
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
   submittedValue$: Observable<StartFormGroupValue | undefined>;
@@ -117,12 +116,12 @@ export class StartPageComponent implements OnInit {
           page: 1,
           count: dropdownPageCount
         }
-        this.store.dispatch(new fromAllelesActions.ClearAlleles())
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
       }
     })
     this.subscriptions.push(this.predictionAlgorithms$);
     const dropdownPageCount = 20;
+
     // reload alleles when typeahead updates
     this.allelesTypeahead$.pipe(
       debounceTime(100),
@@ -136,7 +135,6 @@ export class StartPageComponent implements OnInit {
         page: 1,
         count: dropdownPageCount
       }
-      this.store.dispatch(new fromAllelesActions.ClearAlleles())
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
     this.subscriptions.push(this.allelesTypeahead$);
@@ -151,7 +149,9 @@ export class StartPageComponent implements OnInit {
         page: meta.page + 1,
         count: dropdownPageCount
       }
-      this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+      if (req.page <= meta.total_pages) {
+        this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+      }
     });
     this.subscriptions.push(this.allelesScrollToEnd$);
 
