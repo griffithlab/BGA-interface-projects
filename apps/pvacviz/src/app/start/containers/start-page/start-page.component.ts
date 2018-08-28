@@ -36,6 +36,7 @@ export class StartPageComponent implements OnInit {
 
   alleles$: Observable<Array<Allele>>;
   alleles: Allele[] = []; // stores allele objects for alleles select
+  concatAlleles: boolean = false;
   allelesTypeahead$ = new BehaviorSubject<string>('');
   allelesScrollToEnd$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
@@ -87,7 +88,7 @@ export class StartPageComponent implements OnInit {
     }));
 
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
-    this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
+    this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
 
     // TODO: create only one observer for post, access attributes in template, this looks awful
@@ -103,6 +104,16 @@ export class StartPageComponent implements OnInit {
       form => form.state.value.prediction_algorithms
     );
 
+    // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
+    // scrollToEnd required concat, others replacement of alleles array
+    this.alleles$.subscribe((alleles) => {
+      if (this.concatAlleles) {
+        this.alleles = this.alleles.concat(alleles);
+      } else {
+        this.alleles = alleles;
+      }
+    });
+
     // observe form prediction algorithms value, filtering empty arrays
     // dispatch LoadAlleles when prediction_algorithms changes
     this.predictionAlgorithms$ = store.pipe(
@@ -110,6 +121,7 @@ export class StartPageComponent implements OnInit {
       map(s => unbox(s)));
 
     this.predictionAlgorithms$.subscribe((algorithms) => {
+      this.concatAlleles = false;
       if (algorithms.length > 0) {
         const req = {
           prediction_algorithms: algorithms.join(','),
@@ -117,6 +129,8 @@ export class StartPageComponent implements OnInit {
           count: dropdownPageCount
         }
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
+      } else {
+        this.store.dispatch(new fromAllelesActions.ClearAlleles());
       }
     })
     this.subscriptions.push(this.predictionAlgorithms$);
@@ -135,11 +149,12 @@ export class StartPageComponent implements OnInit {
         page: 1,
         count: dropdownPageCount
       }
+      this.concatAlleles = false;
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
     this.subscriptions.push(this.allelesTypeahead$);
 
-    // reload alleles when dropdown scrolls to end
+    // load next page of alleles when dropdown scrolls to end
     this.allelesScrollToEnd$.pipe(
       withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
     ).subscribe(([event, meta, algorithms, term]) => {
@@ -150,6 +165,7 @@ export class StartPageComponent implements OnInit {
         count: dropdownPageCount
       }
       if (req.page <= meta.total_pages) {
+        this.concatAlleles = true;
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }
     });
