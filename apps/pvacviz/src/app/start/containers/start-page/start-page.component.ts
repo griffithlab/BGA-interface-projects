@@ -113,25 +113,30 @@ export class StartPageComponent implements OnInit {
     this.predictionAlgorithms$.subscribe((algorithms) => {
       if (algorithms.length > 0) {
         const req = {
-          prediction_algorithms: algorithms.join(',')
+          prediction_algorithms: algorithms.join(','),
+          page: 1,
+          count: dropdownPageCount
         }
+        this.store.dispatch(new fromAllelesActions.ClearAlleles())
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
       }
     })
     this.subscriptions.push(this.predictionAlgorithms$);
-
+    const dropdownPageCount = 20;
     // reload alleles when typeahead updates
     this.allelesTypeahead$.pipe(
       debounceTime(100),
       distinctUntilChanged(),
+      filter(term => term.length > 0),
       withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
     ).subscribe(([term, meta, algorithms]) => {
       const req = {
         prediction_algorithms: algorithms,
         name_filter: term,
         page: 1,
-        count: 100
+        count: dropdownPageCount
       }
+      this.store.dispatch(new fromAllelesActions.ClearAlleles())
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
     this.subscriptions.push(this.allelesTypeahead$);
@@ -144,7 +149,7 @@ export class StartPageComponent implements OnInit {
         prediction_algorithms: algorithms,
         name_filter: term,
         page: meta.page + 1,
-        count: 100
+        count: dropdownPageCount
       }
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });

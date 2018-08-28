@@ -7,6 +7,7 @@ export enum AllelesActionTypes {
   LoadAlleles = '[Start] Load Alleles',
   LoadAllelesSuccess = '[Start] Load Alleles Success',
   LoadAllelesFail = '[Start] Load Alleles Fail',
+  ClearAlleles = '[Start] Clear Alleles'
 }
 
 /**
@@ -34,6 +35,12 @@ export class LoadAllelesFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class ClearAlleles implements Action {
+  readonly type = AllelesActionTypes.ClearAlleles;
+
+  constructor() { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -41,4 +48,5 @@ export class LoadAllelesFail implements Action {
 export type AllelesActions =
   LoadAlleles
   | LoadAllelesSuccess
-  | LoadAllelesFail;
+  | LoadAllelesFail
+  | ClearAlleles;
