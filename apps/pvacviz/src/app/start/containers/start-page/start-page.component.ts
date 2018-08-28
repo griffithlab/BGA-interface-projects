@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs/Rx';
-import { map, filter, take, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
+import { map, filter, take, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -21,6 +21,7 @@ import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
 // TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
 import { SetSubmittedValueAction, INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
+import { combineLatest } from '../../../../../../../node_modules/rxjs';
 
 @Component({
   selector: 'pvz-start-page',
@@ -29,35 +30,30 @@ import { SetSubmittedValueAction, INITIAL_STATE } from '@pvz/start/reducers/star
 })
 export class StartPageComponent implements OnInit {
   private subscriptions = [];
-  formState$: Observable<FormGroupState<StartFormGroupValue>>;
-  submittedValue$: Observable<StartFormGroupValue | undefined>;
-
-  postSubmitting$: Observable<boolean>;
-  postSubmitted$: Observable<boolean>;
-  postMessage$: Observable<string>;
-  postError$: Observable<boolean>;
 
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
-  // TODO: figure out why Observable<Array<Allele>> below throws a type error:
-  // Type 'Observable<Algorithm[]>' is not assignable to type 'Observable<Allele[]>'.
-  // There's a type problem with a model somewhere
-  alleles$: Observable<Array<any>>;
-  newProcessId$: Observable<number>;
+  alleles$: Observable<Array<Allele>>;
+  allelesTypeahead$ = new BehaviorSubject<string>('');
+  allelesScrollToEnd$ = new Subject<any>();
+  allelesMeta$: Observable<ApiMeta>;
 
-  alleleControl$: Observable<FormControlState<any>>;
+  predictionAlgorithms$: Observable<Array<string>>;
   selectedAlgorithms$: Observable<Array<Algorithm>>;
 
   netChopMethodOptions;
   topScoreMetricOptions;
 
-  predictionAlgorithms$: Observable<Array<string>>;
 
 
-  allelesMeta$: Observable<ApiMeta>;
-  // selector subjects
-  allelesTypeahead$ = new Subject<string>();
+  formState$: Observable<FormGroupState<StartFormGroupValue>>;
+  submittedValue$: Observable<StartFormGroupValue | undefined>;
+  newProcessId$: Observable<number>;
 
+  postSubmitting$: Observable<boolean>;
+  postSubmitted$: Observable<boolean>;
+  postMessage$: Observable<string>;
+  postError$: Observable<boolean>;
 
   constructor(
     private store: Store<fromStart.State>,
@@ -66,7 +62,7 @@ export class StartPageComponent implements OnInit {
     this.submittedValue$ = store.pipe(select(fromStart.getSubmittedValue),
       filter(v => v !== undefined && v !== null));
 
-
+    // TODO do this grouping in the service or create a new selector in start.reducer
     this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
       let options = [];
       let dir = '~pVAC-Seq';
@@ -90,8 +86,9 @@ export class StartPageComponent implements OnInit {
       return options;
     }));
 
-    this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
+    this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
+    this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
 
     // TODO: create only one observer for post, access attributes in template
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
@@ -100,8 +97,7 @@ export class StartPageComponent implements OnInit {
     this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
-    this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
-
+    // TODO move to start.reducer
     const getPredictionAlgorithmsState = createSelector(
       fromStart.getFormState,
       form => form.state.value.prediction_algorithms
@@ -121,14 +117,13 @@ export class StartPageComponent implements OnInit {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
       }
     })
-
     this.subscriptions.push(this.predictionAlgorithms$);
 
+    // combine all observables/subjects required to build alleles query
+    const allelesReq$ = combineLatest(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$);
 
     // reload alleles when typeahead updates
     this.allelesTypeahead$.pipe(
-      debounceTime(100),
-      distinctUntilChanged(),
       withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
     ).subscribe(([term, meta, algorithms]) => {
       const req = {
@@ -137,8 +132,16 @@ export class StartPageComponent implements OnInit {
       }
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
-
     this.subscriptions.push(this.allelesTypeahead$);
+
+    // reload alleles when dropdown scrolls to end
+    this.allelesScrollToEnd$.pipe(
+      withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
+    ).subscribe(([event, allelesMeta, algorithms, term]) => {
+      console.log('onScrollToEnd -=-=-=-=-=-=-=-=-=-==-');
+      console.log('allelesMeta:');
+      console.log(allelesMeta);
+    });
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
@@ -172,11 +175,6 @@ export class StartPageComponent implements OnInit {
   // fetch more records when select scrolled near end
   onScroll(e) {
     console.log('onScroll -=-=-=-=-=-=-=-=-=-==-');
-    console.log(e);
-  }
-
-  onScrollToEnd(e) {
-    console.log('onScrollToEnd -=-=-=-=-=-=-=-=-=-==-');
     console.log(e);
   }
 
