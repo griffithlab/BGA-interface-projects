@@ -73,7 +73,7 @@
                   bindValue="name"
                   [searchable]="true"
                   placeholder="Select Alleles"
-                  [typeahead]="allelesTypeaheadSubject$"
+                  [typeahead]="allelesTypeahead$"
                   (scrollToEnd)="allelesScrollToEnd$.next($event)"
                   (scroll)="onScroll($event)"
                   [ngrxFormControlState]="(formState$ | async).controls.alleles">

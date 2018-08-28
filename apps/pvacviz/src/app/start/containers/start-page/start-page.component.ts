@@ -34,6 +34,7 @@ export class StartPageComponent implements OnInit {
   inputs$: Observable<Files>;
   algorithms$: Observable<Array<Algorithm>>;
   alleles$: Observable<Array<Allele>>;
+  // BehaviorSubject w/ initial value provided here, or withLatestFrom operators won't fire
   allelesTypeahead$ = new BehaviorSubject<string>('');
   allelesScrollToEnd$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
@@ -90,7 +91,7 @@ export class StartPageComponent implements OnInit {
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles))
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
 
-    // TODO: create only one observer for post, access attributes in template
+    // TODO: create only one observer for post, access attributes in template, this looks awful
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
@@ -119,16 +120,17 @@ export class StartPageComponent implements OnInit {
     })
     this.subscriptions.push(this.predictionAlgorithms$);
 
-    // combine all observables/subjects required to build alleles query
-    const allelesReq$ = combineLatest(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$);
-
     // reload alleles when typeahead updates
     this.allelesTypeahead$.pipe(
+      debounceTime(100),
+      distinctUntilChanged(),
       withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
     ).subscribe(([term, meta, algorithms]) => {
       const req = {
         prediction_algorithms: algorithms,
-        name_filter: term
+        name_filter: term,
+        page: 1,
+        count: 100
       }
       this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
@@ -137,11 +139,16 @@ export class StartPageComponent implements OnInit {
     // reload alleles when dropdown scrolls to end
     this.allelesScrollToEnd$.pipe(
       withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-    ).subscribe(([event, allelesMeta, algorithms, term]) => {
-      console.log('onScrollToEnd -=-=-=-=-=-=-=-=-=-==-');
-      console.log('allelesMeta:');
-      console.log(allelesMeta);
+    ).subscribe(([event, meta, algorithms, term]) => {
+      const req = {
+        prediction_algorithms: algorithms,
+        name_filter: term,
+        page: meta.page + 1,
+        count: 100
+      }
+      this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
     });
+    this.subscriptions.push(this.allelesScrollToEnd$);
 
     // fire off submit action when submitValue is updated
     const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
