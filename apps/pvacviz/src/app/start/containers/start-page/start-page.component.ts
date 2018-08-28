@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnInit } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, OnDestroy } from '@angular/core';
 
 import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
 import { map, filter, take, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
@@ -28,7 +28,7 @@ import { combineLatest } from '../../../../../../../node_modules/rxjs';
   templateUrl: './start-page.component.html',
   styleUrls: ['./start-page.component.scss']
 })
-export class StartPageComponent implements OnInit {
+export class StartPageComponent implements OnInit, OnDestroy {
   private subscriptions = [];
 
   inputs$: Observable<Files>;
@@ -48,8 +48,10 @@ export class StartPageComponent implements OnInit {
   topScoreMetricOptions;
 
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
+  formPost$: Observable<{}>;
   submittedValue$: Observable<StartFormGroupValue>;
   newProcessId$: Observable<number>;
+
 
   postSubmitting$: Observable<boolean>;
   postSubmitted$: Observable<boolean>;
@@ -92,6 +94,9 @@ export class StartPageComponent implements OnInit {
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
 
     // TODO: create only one observer for post, access attributes in template, this looks awful
+    this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
+
+
     this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
     this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
     this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
@@ -120,64 +125,64 @@ export class StartPageComponent implements OnInit {
       select(getPredictionAlgorithmsState),
       map(s => unbox(s)));
 
-    this.predictionAlgorithms$.subscribe((algorithms) => {
-      this.concatAlleles = false;
-      if (algorithms.length > 0) {
-        const req = {
-          prediction_algorithms: algorithms.join(','),
-          page: 1,
-          count: dropdownPageCount
+    this.subscriptions.push(
+      this.predictionAlgorithms$.subscribe((algorithms) => {
+        this.concatAlleles = false;
+        if (algorithms.length > 0) {
+          const req = {
+            prediction_algorithms: algorithms.join(','),
+            page: 1,
+            count: dropdownPageCount
+          }
+          this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
+        } else {
+          this.store.dispatch(new fromAllelesActions.ClearAlleles());
         }
-        this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
-      } else {
-        this.store.dispatch(new fromAllelesActions.ClearAlleles());
-      }
-    })
-    this.subscriptions.push(this.predictionAlgorithms$);
+      }));
     const dropdownPageCount = 20;
 
     // reload alleles when typeahead updates
-    this.allelesTypeahead$.pipe(
-      debounceTime(100),
-      distinctUntilChanged(),
-      filter(term => term.length > 0),
-      withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
-    ).subscribe(([term, meta, algorithms]) => {
-      const req = {
-        prediction_algorithms: algorithms,
-        name_filter: term,
-        page: 1,
-        count: dropdownPageCount
-      }
-      this.concatAlleles = false;
-      this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
-    });
-    this.subscriptions.push(this.allelesTypeahead$);
+    this.subscriptions.push(
+      this.allelesTypeahead$.pipe(
+        debounceTime(100),
+        distinctUntilChanged(),
+        filter(term => term.length > 0),
+        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
+      ).subscribe(([term, meta, algorithms]) => {
+        const req = {
+          prediction_algorithms: algorithms,
+          name_filter: term,
+          page: 1,
+          count: dropdownPageCount
+        }
+        this.concatAlleles = false;
+        this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+      }));
 
     // load next page of alleles when dropdown scrolls to end
-    this.allelesScrollToEnd$.pipe(
-      withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-    ).subscribe(([event, meta, algorithms, term]) => {
-      const req = {
-        prediction_algorithms: algorithms,
-        name_filter: term,
-        page: meta.page + 1,
-        count: dropdownPageCount
-      }
-      if (req.page <= meta.total_pages) {
-        this.concatAlleles = true;
-        this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
-      }
-    });
-    this.subscriptions.push(this.allelesScrollToEnd$);
+    this.subscriptions.push(
+      this.allelesScrollToEnd$.pipe(
+        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
+      ).subscribe(([event, meta, algorithms, term]) => {
+        const req = {
+          prediction_algorithms: algorithms,
+          name_filter: term,
+          page: meta.page + 1,
+          count: dropdownPageCount
+        }
+        if (req.page <= meta.total_pages) {
+          this.concatAlleles = true;
+          this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+        }
+      }));
 
     // fire off submit action when submitValue is updated with unique value
-    const onSubmitted$ = this.submittedValue$
-      .subscribe((formValue) => {
-        const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
-        this.store.dispatch(new fromStartActions.StartProcess(processParameters));
-      });
-    this.subscriptions.push(onSubmitted$);
+    this.subscriptions.push(
+      this.submittedValue$
+        .subscribe((formValue) => {
+          const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
+          this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+        }));
 
     function parseFormParameters(formParameters) {
       formParameters.alleles = formParameters.alleles.join(',')
@@ -200,17 +205,6 @@ export class StartPageComponent implements OnInit {
     ];
   }
 
-  // fetch more records when select scrolled near end
-  onScroll(e) {
-    console.log('onScroll -=-=-=-=-=-=-=-=-=-==-');
-    console.log(e);
-  }
-
-  ngOnInit() {
-    this.store.dispatch(new fromInputsActions.LoadInputs());
-    this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
-  }
-
   onSubmit() {
     this.subscriptions.push(
       this.formState$.pipe(
@@ -222,12 +216,16 @@ export class StartPageComponent implements OnInit {
     this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this.store.dispatch(new ResetAction(INITIAL_STATE.id));
   }
-  // onSubmit(startParameters): void {
-  //   this.store.dispatch(new fromStartActions.StartProcess(startParameters));
-  // }
 
-  onDestroy() {
-    // unsubscribe from all manual subscriptions
-    if (this.subscriptions.length > 0) { this.subscriptions.forEach(sub => sub.unsubscribe()); }
+  ngOnInit() {
+    this.store.dispatch(new fromInputsActions.LoadInputs());
+    this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
+  }
+
+  ngOnDestroy() {
+    if (this.subscriptions.length > 0) {
+      this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+    this.reset();
   }
 }

@@ -244,13 +244,13 @@
       <div class="col-sm-3">
         <button class="btn btn-block" [ngClass]="{'btn-primary': (postError$ | async) == false, 'btn-warning': (postError$ | async) == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
           <!-- default play icon -->
-          <clr-icon shape="play" size="18" *ngIf="(postSubmitting$ | async) == false && (postSubmitted$ | async) == false"></clr-icon>
+          <clr-icon shape="play" size="18" *ngIf="(formPost$ | async).submitting == false && (formPost$ | async).submitted == false"></clr-icon>
           <!-- spinner while submitting -->
-          <span class="spinner spinner-inline" *ngIf="(postSubmitting$ | async) == true"></span>
+          <span class="spinner spinner-inline" *ngIf="(formPost$ | async).submitting == true"></span>
           <!-- successful submit -->
-          <clr-icon shape="check-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == false"></clr-icon>
+          <clr-icon shape="check-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == false"></clr-icon>
           <!-- submit error -->
-          <clr-icon shape="exclamation-circle" size="18" *ngIf="(postSubmitted$ | async) == true && (postError$ | async) == true"></clr-icon>
+          <clr-icon shape="exclamation-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == true"></clr-icon>
           Submit Process
         </button>
       </div>
@@ -265,7 +265,7 @@
         </clr-alert>
 
         <!-- submit error -->
-        <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(postError$ | async) === true">
+        <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(formPost$ | async).error === true">
           <div class="alert-item">
             <span class="alert-text">
               {{postMessage$ | async}}
@@ -274,7 +274,7 @@
         </clr-alert>
 
         <!-- submit success -->
-        <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(postSubmitted$ | async) === true && (postError$ | async) === false">
+        <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(formPost$ | async).submitted === true && (formPost$ | async).error === false">
           <div class="alert-item">
             <span class="alert-text">
               Process successfully launched. <a routerLink="/manage/{{(newProcessId$ | async)}}">Click here to view its details</a>.
