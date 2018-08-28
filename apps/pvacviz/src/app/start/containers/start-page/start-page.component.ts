@@ -48,7 +48,7 @@ export class StartPageComponent implements OnInit {
   topScoreMetricOptions;
 
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
-  submittedValue$: Observable<StartFormGroupValue | undefined>;
+  submittedValue$: Observable<StartFormGroupValue>;
   newProcessId$: Observable<number>;
 
   postSubmitting$: Observable<boolean>;
@@ -171,12 +171,12 @@ export class StartPageComponent implements OnInit {
     });
     this.subscriptions.push(this.allelesScrollToEnd$);
 
-    // fire off submit action when submitValue is updated
-    const onSubmitted$ = this.submittedValue$.pipe(withLatestFrom(this.formState$));
-    onSubmitted$.subscribe(([formValue, formState]) => {
-      const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
-      this.store.dispatch(new fromStartActions.StartProcess(processParameters));
-    });
+    // fire off submit action when submitValue is updated with unique value
+    const onSubmitted$ = this.submittedValue$
+      .subscribe((formValue) => {
+        const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
+        this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+      });
     this.subscriptions.push(onSubmitted$);
 
     function parseFormParameters(formParameters) {
