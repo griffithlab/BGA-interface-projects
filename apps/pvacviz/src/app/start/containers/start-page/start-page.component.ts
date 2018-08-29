@@ -203,7 +203,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.subscriptions.length > 0) {
-      console.log(JSON.stringify(this.subscriptions));
       this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     this.reset();
