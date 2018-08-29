@@ -6,7 +6,7 @@ export interface StartFormGroupValue {
   'samplename': string;
   'alleles': Boxed<string[]>;
   'prediction_algorithms': Boxed<string[]>;
-  'epitope_lengths': Boxed<number[]>;
+  'epitope_lengths': Boxed<string[]>;
   'peptide_sequence_length': number;
   'net_chop_method': string;
   'net_chop_threshold': number;
@@ -34,7 +34,7 @@ export const StartFormGroupInitialState = {
   'samplename': '',
   'alleles': box([]),
   'prediction_algorithms': box([]),
-  'epitope_lengths': box([10]),
+  'epitope_lengths': box(['10']),
   'peptide_sequence_length': 21,
   'net_chop_method': '',
   'net_chop_threshold': 0.5,

@@ -170,23 +170,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
           }
         }));
 
-    // fire off submit action when submitValue is updated with unique value
-    // this.subscriptions.push(
-    //   this.submittedValue$
-    //     .subscribe((formValue) => {
-    //       const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
-    //       this.store.dispatch(new fromStartActions.StartProcess(processParameters));
-    //     }));
-
-    // function parseFormParameters(formParameters) {
-    //   formParameters.alleles = formParameters.alleles.join(',')
-    //   formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
-    //   formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
-    //   // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
-    //   formParameters.input = formParameters.input.toString();
-    //   return formParameters as ProcessParameters;
-    // }
-
     this.epitopeLengths = ['8', '9', '10', '11', '12', '13', '14'];
 
     this.netChopMethodOptions = [

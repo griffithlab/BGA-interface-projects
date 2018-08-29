@@ -324,8 +324,8 @@
     </prettyjson>
   </div>
   <div class="col-sm-6">
-    <p>controls.prediction_algorithms:</p>
-    <prettyjson [obj]="(formState$ | async).controls.prediction_algorithms | json:2" [style.min-height]="800"></prettyjson>
+    <p>inputs$:</p>
+    <prettyjson [obj]="(inputs$ | async) | json:2" [style.min-height]="800"></prettyjson>
   </div>
 </div>
 
