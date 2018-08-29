@@ -53,12 +53,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
   submittedValue$: Observable<StartFormGroupValue>;
   newProcessId$: Observable<number>;
 
-
-  postSubmitting$: Observable<boolean>;
-  postSubmitted$: Observable<boolean>;
-  postMessage$: Observable<string>;
-  postError$: Observable<boolean>;
-
   constructor(
     private store: Store<fromStart.State>,
   ) {
@@ -93,15 +87,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
-
-    // TODO: create only one observer for post, access attributes in template, this looks awful
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
-
-
-    this.postSubmitting$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitting));
-    this.postSubmitted$ = store.pipe(select(fromStart.getStartState), map(state => state.post.submitted));
-    this.postMessage$ = store.pipe(select(fromStart.getStartState), map(state => state.post.message));
-    this.postError$ = store.pipe(select(fromStart.getStartState), map(state => state.post.error));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
     // TODO move to start.reducer
@@ -135,7 +121,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
             page: 1,
             count: dropdownPageCount
           }
-          this.concatAlleles = false;
           this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
         } else {
           this.store.dispatch(new fromAllelesActions.ClearAlleles());
