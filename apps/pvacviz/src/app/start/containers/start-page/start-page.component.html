@@ -26,6 +26,7 @@
               <div class="col-xs-12 col-sm-4">
                 <ng-select
                   [items]="inputs$ | async"
+                  [clearable]="false"
                   bindLabel="display_name"
                   bindValue="fileID"
                   [searchable]="true"
@@ -48,7 +49,7 @@
                   [items]="algorithms$ | async"
                   [multiple]="true"
                   [closeOnSelect]="false"
-                  clearable="false"
+                  [clearable]="false"
                   bindLabel="name"
                   bindValue="name"
                   [searchable]="true"
@@ -70,7 +71,7 @@
                   [items]="alleles"
                   [multiple]="true"
                   [closeOnSelect]="false"
-                  clearable="false"
+                  [clearable]="false"
                   bindLabel="name"
                   bindValue="name"
                   [searchable]="true"
@@ -78,6 +79,7 @@
                   [typeahead]="allelesTypeahead$"
                   [loading]="allelesLoading$ | async"
                   (scroll)="allelesScroll$.next($event)"
+                  (scrollToEnd)="allelesScrollToEnd$.next($event)"
                   [virtualScroll]="true"
                   [ngrxFormControlState]="(formState$ | async).controls.alleles">
                   <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
@@ -96,8 +98,25 @@
               </div>
             </div>
 
-            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.epitope_lengths, fieldName: 'Epitope Lengths', helpText: 'List of eptope lengths to produce', required: true }">
-            </ng-container>
+            <div class="form-group row">
+              <div class="col-xs-12 col-sm-3 col-form-label">
+                <label for="prediction_algorithms" class="required">Epitope Lengths</label>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <ng-select
+                  [items]="epitopeLengths"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  [clearable]="false"
+                  [searchable]="true"
+                  placeholder="Select Epitope Lengths"
+                  [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths">
+                </ng-select>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-form-help">
+                List of epitope lengths to produce
+              </div>
+            </div>
 
           </section>
         </div>

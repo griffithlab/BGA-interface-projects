@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit, OnDestroy } from '@angular/core';
 
 import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
-import { map, filter, take, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -20,8 +20,7 @@ import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
 // TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
-import { SetSubmittedValueAction, INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
-import { combineLatest } from '../../../../../../../node_modules/rxjs';
+import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 
 @Component({
   selector: 'pvz-start-page',
@@ -38,15 +37,16 @@ export class StartPageComponent implements OnInit, OnDestroy {
   alleles: Allele[] = []; // stores allele objects for alleles select
   concatAlleles: boolean = false;
   allelesTypeahead$ = new BehaviorSubject<string>('');
-  allelesScrollToEnd$ = new Subject<any>();
   allelesScroll$ = new Subject<any>();
+  allelesScrollToEnd$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
   allelesLoading$: Observable<boolean>;
   predictionAlgorithms$: Observable<Array<string>>;
   selectedAlgorithms$: Observable<Array<Algorithm>>;
 
-  netChopMethodOptions;
-  topScoreMetricOptions;
+  netChopMethodOptions: {};
+  topScoreMetricOptions: {};
+  epitopeLengths: string[];
 
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
   formPost$: Observable<{}>;
@@ -127,8 +127,8 @@ export class StartPageComponent implements OnInit, OnDestroy {
           this.store.dispatch(new fromAllelesActions.ClearAlleles());
         }
       }));
-    const dropdownPageCount = 50;
-    const loadPageOnScrollStart = 35;
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
+    const loadPageOnScrollStart = 35; // query next page of results on scroll start > alleles.length - loadPageOnScrollStart
 
     // reload alleles when typeahead updates
     this.subscriptions.push(
@@ -148,60 +148,46 @@ export class StartPageComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }));
 
-    // load next page of alleles when dropdown scrolls to end
-    this.subscriptions.push(
-      this.allelesScrollToEnd$.pipe(
-        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-      ).subscribe(([event, meta, algorithms, term]) => {
-        const req = {
-          prediction_algorithms: algorithms,
-          name_filter: term,
-          page: meta.page + 1,
-          count: dropdownPageCount
-        }
-        if (req.page <= meta.total_pages) {
-          this.concatAlleles = true;
-          this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
-        }
-      }));
-
     // load next page of alleles when dropdown scrolls near the end
     this.subscriptions.push(
-      this.allelesScroll$.pipe(
-        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-      ).subscribe(([event, meta, algorithms, term]) => {
-        const req = {
-          prediction_algorithms: algorithms,
-          name_filter: term,
-          page: meta.page + 1,
-          count: dropdownPageCount
-        }
-        if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
-          console.log('-=-=-=-=-=-=-=- ng-select allelesScroll$ - loading new page');
-          console.log(event);
-          console.log(req);
-
-          this.concatAlleles = true;
-          this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
-        }
-      }));
-
-    // fire off submit action when submitValue is updated with unique value
-    this.subscriptions.push(
-      this.submittedValue$
-        .subscribe((formValue) => {
-          const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
-          this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+      Observable
+        .merge(this.allelesScroll$, this.allelesScrollToEnd$)
+        .pipe(
+          throttleTime(100),
+          withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
+        ).subscribe(([event, meta, algorithms, term]) => {
+          console.log('-=-=-=-==-=-=-=-=-=-=-=-=-=- alleles scroll');
+          console.log(event.start ? 'scroll event' : 'scrollToEnd event');
+          const req = {
+            prediction_algorithms: algorithms,
+            name_filter: term,
+            page: meta.page + 1,
+            count: dropdownPageCount
+          }
+          if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
+            this.concatAlleles = true;
+            this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+          }
         }));
 
-    function parseFormParameters(formParameters) {
-      formParameters.alleles = formParameters.alleles.join(',')
-      formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
-      formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
-      // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
-      formParameters.input = formParameters.input.toString();
-      return formParameters as ProcessParameters;
-    }
+    // fire off submit action when submitValue is updated with unique value
+    // this.subscriptions.push(
+    //   this.submittedValue$
+    //     .subscribe((formValue) => {
+    //       const processParameters: ProcessParameters = parseFormParameters(unbox(formValue))
+    //       this.store.dispatch(new fromStartActions.StartProcess(processParameters));
+    //     }));
+
+    // function parseFormParameters(formParameters) {
+    //   formParameters.alleles = formParameters.alleles.join(',')
+    //   formParameters.prediction_algorithms = formParameters.prediction_algorithms.join(',')
+    //   formParameters.epitope_lengths = formParameters.epitope_lengths.join(',')
+    //   // TODO figure out where input is cast to Number before submitting - shouldn't have to cast it here
+    //   formParameters.input = formParameters.input.toString();
+    //   return formParameters as ProcessParameters;
+    // }
+
+    this.epitopeLengths = ['8', '9', '10', '11', '12', '13', '14'];
 
     this.netChopMethodOptions = [
       { label: 'Skip Netchop', value: '' },
@@ -219,7 +205,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.formState$.pipe(
         take(1),
-        map(fs => new SetSubmittedValueAction(fs.value))).subscribe(this.store));
+        map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
   reset() {
