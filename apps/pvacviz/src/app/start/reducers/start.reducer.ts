@@ -13,7 +13,7 @@ import {
   StartFormGroupInitialState,
   updateStartFormGroup
 } from '@pvz/start/models/start-form.models';
-import { StartActions, StartActionTypes, StartProcessSuccess } from '@pvz/start/actions/start.actions';
+import { StartActions, StartActionTypes, StartProcessSuccess, SetSubmittedValueAction } from '@pvz/start/actions/start.actions';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 /**
@@ -23,12 +23,6 @@ import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 export interface FormState {
   state: FormGroupState<StartFormGroupValue>;
   submittedValue: StartFormGroupValue | undefined;
-}
-
-export class SetSubmittedValueAction implements Action {
-  static readonly TYPE = 'startForm/SET_SUBMITTED_VALUE';
-  readonly type = SetSubmittedValueAction.TYPE;
-  constructor(public submittedValue: StartFormGroupValue) { }
 }
 
 export const FORM_ID = 'startForm';
