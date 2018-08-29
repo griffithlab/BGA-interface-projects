@@ -76,6 +76,7 @@
                   [searchable]="true"
                   placeholder="Select Alleles"
                   [typeahead]="allelesTypeahead$"
+                  [loading]="allelesLoading$ | async"
                   (scroll)="allelesScroll$.next($event)"
                   [virtualScroll]="true"
                   [ngrxFormControlState]="(formState$ | async).controls.alleles">

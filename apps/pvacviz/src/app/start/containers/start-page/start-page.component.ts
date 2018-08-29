@@ -41,7 +41,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
   allelesScrollToEnd$ = new Subject<any>();
   allelesScroll$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
-
+  allelesLoading$: Observable<boolean>;
   predictionAlgorithms$: Observable<Array<string>>;
   selectedAlgorithms$: Observable<Array<Algorithm>>;
 
@@ -87,6 +87,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
+    this.allelesLoading$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.loading));
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
