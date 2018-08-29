@@ -39,6 +39,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
   concatAlleles: boolean = false;
   allelesTypeahead$ = new BehaviorSubject<string>('');
   allelesScrollToEnd$ = new Subject<any>();
+  allelesScroll$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
 
   predictionAlgorithms$: Observable<Array<string>>;
@@ -134,12 +135,14 @@ export class StartPageComponent implements OnInit, OnDestroy {
             page: 1,
             count: dropdownPageCount
           }
+          this.concatAlleles = false;
           this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
         } else {
           this.store.dispatch(new fromAllelesActions.ClearAlleles());
         }
       }));
-    const dropdownPageCount = 20;
+    const dropdownPageCount = 50;
+    const loadPageOnScrollStart = 35;
 
     // reload alleles when typeahead updates
     this.subscriptions.push(
@@ -171,6 +174,27 @@ export class StartPageComponent implements OnInit, OnDestroy {
           count: dropdownPageCount
         }
         if (req.page <= meta.total_pages) {
+          this.concatAlleles = true;
+          this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
+        }
+      }));
+
+    // load next page of alleles when dropdown scrolls near the end
+    this.subscriptions.push(
+      this.allelesScroll$.pipe(
+        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
+      ).subscribe(([event, meta, algorithms, term]) => {
+        const req = {
+          prediction_algorithms: algorithms,
+          name_filter: term,
+          page: meta.page + 1,
+          count: dropdownPageCount
+        }
+        if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
+          console.log('-=-=-=-=-=-=-=- ng-select allelesScroll$ - loading new page');
+          console.log(event);
+          console.log(req);
+
           this.concatAlleles = true;
           this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
         }
@@ -224,6 +248,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.subscriptions.length > 0) {
+      console.log(JSON.stringify(this.subscriptions));
       this.subscriptions.forEach(sub => sub.unsubscribe());
     }
     this.reset();

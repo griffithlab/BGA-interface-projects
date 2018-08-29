@@ -76,7 +76,7 @@
                   [searchable]="true"
                   placeholder="Select Alleles"
                   [typeahead]="allelesTypeahead$"
-                  (scrollToEnd)="allelesScrollToEnd$.next($event)"
+                  (scroll)="allelesScroll$.next($event)"
                   [virtualScroll]="true"
                   [ngrxFormControlState]="(formState$ | async).controls.alleles">
                   <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
@@ -91,9 +91,12 @@
                 </span>
               </div>
               <div class="col-xs-12 col-sm-5 col-form-help">
-                List of alleles to run the sequences against
+                List of alleles against which to run the
               </div>
             </div>
+
+            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.epitope_lengths, fieldName: 'Epitope Lengths', helpText: 'List of eptope lengths to produce', required: true }">
+            </ng-container>
 
           </section>
         </div>
@@ -104,8 +107,6 @@
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
-            <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.epitope_lengths, fieldName: 'Epitope Lengths', helpText: 'List of eptope lengths to produce', required: true }">
-            </ng-container>
 
             <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.peptide_sequence_length, fieldName: 'Peptide Sequence Length', helpText: 'Length of the peptide sequences to produce in the FASTA', required: true }">
             </ng-container>
