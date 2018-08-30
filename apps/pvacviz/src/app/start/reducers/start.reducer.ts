@@ -76,11 +76,9 @@ export const StartFormGroupInitialState = {
   'keep_tmp_files': false,
   'force': false,
 }
-
-// validation
 // TODO keep checking for v3.1.0, which adds transparent validation for boxed values:
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
-export const updateStartFormGroup = createFormStateReducerWithUpdate<StartFormGroupValue>(updateGroup<StartFormGroupValue>({
+export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
   input: validate(required),
   samplename: validate((value) => {
     return required(value);
@@ -107,7 +105,13 @@ export const updateStartFormGroup = createFormStateReducerWithUpdate<StartFormGr
   fasta_size: validate(required),
   iedb_retries: validate(required),
   downstream_sequence_length: validate(required),
-}));
+});
+
+export const FORM_ID = 'startForm';
+export const INITIAL_STATE = validateAndUpdateFormState(createFormGroupState<StartFormGroupValue>(FORM_ID, StartFormGroupInitialState));
+
+// validation
+export const updateStartFormGroup = createFormStateReducerWithUpdate<StartFormGroupValue>(validateAndUpdateFormState);
 
 /**
  * FORM STATE AND REDUCER
@@ -118,9 +122,6 @@ export interface FormState {
   submittedValue: StartFormGroupValue | undefined;
 }
 
-export const FORM_ID = 'startForm';
-
-export const INITIAL_STATE = createFormGroupState<StartFormGroupValue>(FORM_ID, StartFormGroupInitialState);
 
 const formReducers = combineReducers<FormState, any>({
   state(s = INITIAL_STATE, a: Action) {
