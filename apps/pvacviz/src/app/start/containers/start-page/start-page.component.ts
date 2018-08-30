@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
 import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
@@ -6,7 +6,7 @@ import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTi
 import { Store, select, createSelector } from '@ngrx/store';
 
 import { FormGroupState, ResetAction, SetValueAction, FormControlState, unbox } from 'ngrx-forms';
-
+import { NgSelectComponent } from '@ng-select/ng-select';
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
@@ -27,7 +27,9 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   templateUrl: './start-page.component.html',
   styleUrls: ['./start-page.component.scss']
 })
-export class StartPageComponent implements OnInit, OnDestroy {
+export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(NgSelectComponent) algorithmsSelect: NgSelectComponent;
+
   private subscriptions = [];
 
   inputs$: Observable<Files>;
@@ -106,6 +108,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
         this.alleles = alleles;
       }
     });
+
 
     // observe form prediction algorithms value, filtering empty arrays
     // dispatch LoadAlleles when prediction_algorithms changes
@@ -199,6 +202,14 @@ export class StartPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
+  }
+
+  ngAfterViewInit() {
+    console.log('start-page.component ngAfterViewInit:');
+    console.log(this.algorithmsSelect);
+    Promise.resolve(null).then(() => {
+      this.algorithmsSelect.setDisabledState(true);
+    });
   }
 
   ngOnDestroy() {

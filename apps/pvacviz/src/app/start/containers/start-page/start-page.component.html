@@ -25,6 +25,7 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
+                  #algorithmsSelect
                   [items]="inputs$ | async"
                   [clearable]="false"
                   bindLabel="display_name"
