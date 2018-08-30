@@ -78,12 +78,18 @@ export const StartFormGroupInitialState = {
 }
 
 // validation
-// TODO keep checking for v3.1.0, which adds transparent validation for boxed values, eliminating need for all the unbox() crap below:
+// TODO keep checking for v3.1.0, which adds transparent validation for boxed values:
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
 export const updateStartFormGroup = createFormStateReducerWithUpdate<StartFormGroupValue>(updateGroup<StartFormGroupValue>({
   input: validate(required),
-  samplename: validate(required, minLength(2)),
-  prediction_algorithms: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
+  samplename: validate((value) => {
+    return required(value);
+  }, minLength(2)),
+  prediction_algorithms: validate((value) => {
+    return required(unbox(value));
+  }, (value) => {
+    return minLength(1)(unbox(value))
+  }),
   alleles: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
   epitope_lengths: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
   peptide_sequence_length: validate(required),

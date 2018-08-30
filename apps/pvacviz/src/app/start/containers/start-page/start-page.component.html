@@ -25,7 +25,6 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
-                  #algorithmsSelect
                   [items]="inputs$ | async"
                   [clearable]="false"
                   bindLabel="display_name"
@@ -47,6 +46,7 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
+                  #algorithmsSelect
                   [items]="algorithms$ | async"
                   [multiple]="true"
                   [closeOnSelect]="false"
@@ -69,6 +69,7 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
+                  #allelesSelect
                   [items]="alleles"
                   [multiple]="true"
                   [closeOnSelect]="false"
@@ -105,6 +106,7 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
+                  #epitopeLengthsSelect
                   [items]="epitopeLengths"
                   [multiple]="true"
                   [closeOnSelect]="false"

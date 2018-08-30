@@ -5,7 +5,13 @@ import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTi
 
 import { Store, select, createSelector } from '@ngrx/store';
 
-import { FormGroupState, ResetAction, SetValueAction, FormControlState, unbox } from 'ngrx-forms';
+import {
+  FormGroupState,
+  ResetAction,
+  SetValueAction,
+  FormControlState,
+  unbox
+} from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
 
@@ -29,12 +35,17 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(NgSelectComponent) algorithmsSelect: NgSelectComponent;
+  @ViewChild(NgSelectComponent) allelesSelect: NgSelectComponent;
+  @ViewChild(NgSelectComponent) epitopesSelect: NgSelectComponent;
 
   private subscriptions = [];
 
   inputs$: Observable<Files>;
+
+  algorithmsControl$: Observable<any>;
   algorithms$: Observable<Array<Algorithm>>;
 
+  allelesControl$: Observable<any>;
   alleles$: Observable<Array<Allele>>;
   alleles: Allele[] = []; // stores allele objects for alleles select
   concatAlleles: boolean = false;
@@ -43,8 +54,11 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   allelesScrollToEnd$ = new Subject<any>();
   allelesMeta$: Observable<ApiMeta>;
   allelesLoading$: Observable<boolean>;
+
   predictionAlgorithms$: Observable<Array<string>>;
-  selectedAlgorithms$: Observable<Array<Algorithm>>;
+  predictionAlgorithmsControl$: Observable<any>;
+
+  epitopeLengthsControl$: Observable<any>;
 
   netChopMethodOptions: {};
   topScoreMetricOptions: {};
@@ -85,8 +99,10 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       groupFiles(dir, inputs);
       return options;
     }));
-
+    this.algorithmsControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.prediction_algorithms));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
+
+    this.allelesControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.alleles));
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
     this.allelesLoading$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.loading));
@@ -110,7 +126,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
 
-    // observe form prediction algorithms value, filtering empty arrays
+    // observe form prediction algorithms value
     // dispatch LoadAlleles when prediction_algorithms changes
     this.predictionAlgorithms$ = store.pipe(
       select(getPredictionAlgorithmsState),
@@ -206,10 +222,19 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     console.log('start-page.component ngAfterViewInit:');
-    console.log(this.algorithmsSelect);
-    Promise.resolve(null).then(() => {
-      this.algorithmsSelect.setDisabledState(true);
-    });
+    // hook up select components to ngrx controls
+
+
+    this.subscriptions.push(
+      this.algorithmsControl$.subscribe((ctrl) => {
+        console.log('-=-=-=-=-=-=-=-=- Setting algorithmsSelect disabled state: ' + ctrl.isDisabled);
+        Promise.resolve(null).then(() => {
+          this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
+          if (ctrl.isInvalid) {
+            this.allelesSelect.setDisabledState(true);
+          }
+        });
+      }));
   }
 
   ngOnDestroy() {
