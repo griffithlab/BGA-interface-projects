@@ -34,6 +34,7 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(NgSelectComponent) inputVcf: NgSelectComponent;
   @ViewChild(NgSelectComponent) algorithmsSelect: NgSelectComponent;
   @ViewChild(NgSelectComponent) allelesSelect: NgSelectComponent;
   @ViewChild(NgSelectComponent) epitopesSelect: NgSelectComponent;
@@ -222,7 +223,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     console.log('start-page.component ngAfterViewInit:');
-    // hook up select components to ngrx controls
+    // // hook up select components to ngrx controls
 
 
     this.subscriptions.push(

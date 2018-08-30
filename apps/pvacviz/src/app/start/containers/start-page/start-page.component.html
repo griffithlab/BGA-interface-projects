@@ -25,6 +25,7 @@
               </div>
               <div class="col-xs-12 col-sm-4">
                 <ng-select
+                  #inputVcf
                   [items]="inputs$ | async"
                   [clearable]="false"
                   bindLabel="display_name"
@@ -327,6 +328,8 @@
     </prettyjson>
   </div>
   <div class="col-sm-6">
+    <p>formState$.controls.input:</p>
+    <prettyjson [obj]="(formState$ | async).controls.input | json:2" [style.min-height]="800"></prettyjson>
     <p>formState$.controls.samplename:</p>
     <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson>
     <p>formState$.controls.prediction_algorithms:</p>

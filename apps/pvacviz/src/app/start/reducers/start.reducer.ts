@@ -49,7 +49,7 @@ export interface StartFormGroupValue {
   'force': boolean;
 }
 export const StartFormGroupInitialState = {
-  'input': '',
+  'input': null,
   'samplename': '',
   'alleles': box([]),
   'prediction_algorithms': box([]),
