@@ -179,7 +179,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('-=-=-=-==-=-=-=-=-=-=-=-=-=- alleles scroll');
           console.log(event.start ? 'scroll event' : 'scrollToEnd event');
           const req = {
-            prediction_algorithms: algorithms,
+            prediction_algorithms: algorithms.join(','),
             name_filter: term,
             page: meta.page + 1,
             count: dropdownPageCount
