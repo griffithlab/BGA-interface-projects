@@ -79,6 +79,11 @@ export const getFormState = createSelector(
   state => state.form
 );
 
+export const getFormControls = createSelector(
+  getFormState,
+  form => form.state.controls
+);
+
 export const getSubmittedValue = createSelector(
   getStartState,
   state => state.form.submittedValue
@@ -111,4 +116,4 @@ export const {
 export const {
   selectEntities: getAlleles,
   selectAll: getAllAlleles,
-} = fromAlgorithms.adapter.getSelectors(getAllelesState);
+} = fromAlleles.adapter.getSelectors(getAllelesState);

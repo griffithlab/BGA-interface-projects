@@ -1,5 +1,10 @@
 import { Action } from '@ngrx/store';
 import { File, Files } from '@pvz/core/models/file.model';
+import {
+  StartFormGroupValue,
+  StartFormGroupInitialState,
+  updateStartFormGroup
+} from '@pvz/start/models/start-form.models';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 export enum StartActionTypes {
@@ -34,6 +39,12 @@ export class StartProcessFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class SetSubmittedValueAction implements Action {
+  static readonly TYPE = 'startForm/SET_SUBMITTED_VALUE';
+  readonly type = SetSubmittedValueAction.TYPE;
+  constructor(public submittedValue: StartFormGroupValue) { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -41,4 +52,5 @@ export class StartProcessFail implements Action {
 export type StartActions =
   StartProcess
   | StartProcessSuccess
-  | StartProcessFail;
+  | StartProcessFail
+  | SetSubmittedValueAction;

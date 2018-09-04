@@ -1,5 +1,12 @@
 import { File } from './file.model';
 
+export interface ApiMeta {
+  page: string;
+  count: string;
+  total_count: string;
+  total_pages: string;
+}
+
 export interface ApiStartResponse {
   status: number;
   message: string;
@@ -12,13 +19,13 @@ export interface Algorithm {
 }
 
 export interface Allele {
-  id: number;
   name: string;
-  algorithms: string[];
+  prediction_algorithms: string[];
 }
 
 export interface ApiAllelesResponse {
-  [key: string]: string[]
+  _meta: ApiMeta;
+  result: Allele[];
 }
 
 export interface ApiInputResponse extends Array<File> { }

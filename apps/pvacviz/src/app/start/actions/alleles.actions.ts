@@ -1,11 +1,13 @@
 import { Action } from '@ngrx/store';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
-import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
+import { ApiStartResponse, ApiAllelesResponse } from '@pvz/core/models/api-responses.model';
 import { Allele } from '@pvz/core/models/api-responses.model';
+import { ApiAllelesRequest } from '@pvz/app/core/models/api-requests.model';
 export enum AllelesActionTypes {
   LoadAlleles = '[Start] Load Alleles',
   LoadAllelesSuccess = '[Start] Load Alleles Success',
   LoadAllelesFail = '[Start] Load Alleles Fail',
+  ClearAlleles = '[Start] Clear Alleles'
 }
 
 /**
@@ -18,19 +20,25 @@ export enum AllelesActionTypes {
 export class LoadAlleles implements Action {
   readonly type = AllelesActionTypes.LoadAlleles;
 
-  constructor(public payload?: string[]) { }
+  constructor(public payload?: {}) { }
 }
 
 export class LoadAllelesSuccess implements Action {
   readonly type = AllelesActionTypes.LoadAllelesSuccess;
 
-  constructor(public payload: Array<Allele>) { }
+  constructor(public payload: ApiAllelesResponse) { }
 }
 
 export class LoadAllelesFail implements Action {
   readonly type = AllelesActionTypes.LoadAllelesFail;
 
   constructor(public payload: any) { }
+}
+
+export class ClearAlleles implements Action {
+  readonly type = AllelesActionTypes.ClearAlleles;
+
+  constructor() { }
 }
 
 /**
@@ -40,4 +48,5 @@ export class LoadAllelesFail implements Action {
 export type AllelesActions =
   LoadAlleles
   | LoadAllelesSuccess
-  | LoadAllelesFail;
+  | LoadAllelesFail
+  | ClearAlleles;
