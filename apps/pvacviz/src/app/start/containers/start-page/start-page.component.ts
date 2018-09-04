@@ -229,9 +229,9 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.algorithmsControl$.subscribe((ctrl) => {
         Promise.resolve(null).then(() => {
           // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
-          this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
+          if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
           // link algorithms validity state to alleles enabled state
-          this.allelesSelect.setDisabledState(ctrl.isInvalid);
+          if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
         });
       }));
   }
