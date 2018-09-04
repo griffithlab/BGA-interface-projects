@@ -34,10 +34,10 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(NgSelectComponent) inputVcf: NgSelectComponent;
-  @ViewChild(NgSelectComponent) algorithmsSelect: NgSelectComponent;
-  @ViewChild(NgSelectComponent) allelesSelect: NgSelectComponent;
-  @ViewChild(NgSelectComponent) epitopesSelect: NgSelectComponent;
+  @ViewChild('inputVcf') inputVcf: NgSelectComponent;
+  @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
+  @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
+  @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
 
   private subscriptions = [];
 
@@ -222,18 +222,18 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('start-page.component ngAfterViewInit:');
-    // // hook up select components to ngrx controls
-
-
+    /*
+    * hook up form field interactions depending on ViewChild references
+    */
     this.subscriptions.push(
       this.algorithmsControl$.subscribe((ctrl) => {
-        console.log('-=-=-=-=-=-=-=-=- Setting algorithmsSelect disabled state: ' + ctrl.isDisabled);
         Promise.resolve(null).then(() => {
+          // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
           this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
-          if (ctrl.isInvalid) {
-            this.allelesSelect.setDisabledState(true);
-          }
+          // link alleles ng-select
+          // if (ctrl.isInvalid) {
+          //   this.allelesSelect.setDisabledState(true);
+          // }
         });
       }));
   }
