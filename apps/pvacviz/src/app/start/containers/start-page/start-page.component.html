@@ -17,26 +17,36 @@
           <section class="form-block">
             <label>Inputs, Alleles, and Algorithms</label>
 
-            <div class="clr-form-control clr-row">
-              <label for="samplename"
-                class="clr-control-label required clr-col-xs-12 clr-col-md-3">
-                Sample Name
-              </label>
-              <div class="clr-control-container clr-col-xs-12 clr-col-md-4"
-                [class.clr-error]="(formState$ | async).controls.samplename.isInvalid && (formState$ | async).controls.samplename.isTouched">
-                <div class="clr-input-wrapper">
-                  <input type="text" id="samplename" class="clr-input"
-                    size="32"
-                    [disabled]="(formState$ | async).controls.samplename.isDisabled"
-                    [ngrxFormControlState]="(formState$ | async).controls.samplename" />
-                  <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-                </div>
-                <span class="clr-subtext">User-defined reference name for the process</span>
-              </div>
-              <div class="help-text clr-col-xs-12 clr-col-md-5">
-                <span class="clr-subtext">User-defined reference name for the process</span>
-              </div>
-            </div>
+            <pvz-input-container>
+              <label>Sample Name</label>
+              <input pvzInput type="text" id="samplename" class="clr-input"
+                size="32"
+                [disabled]="(formState$ | async).controls.samplename.isDisabled"
+                [ngrxFormControlState]="(formState$ | async).controls.samplename" />
+              <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+              <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+            </pvz-input-container>
+
+            <!-- <div class="clr-form-control clr-row"> -->
+            <!-- <label for="samplename" -->
+            <!-- class="clr-control-label required clr-col-xs-12 clr-col-md-3"> -->
+            <!-- Sample Name -->
+            <!-- </label> -->
+            <!-- <div class="clr-control-container clr-col-xs-12 clr-col-md-4" -->
+            <!-- [class.clr-error]="(formState$ | async).controls.samplename.isInvalid && (formState$ | async).controls.samplename.isTouched"> -->
+            <!-- <div class="clr-input-wrapper"> -->
+            <!-- <input type="text" id="samplename" class="clr-input" -->
+            <!-- size="32" -->
+            <!-- [disabled]="(formState$ | async).controls.samplename.isDisabled" -->
+            <!-- [ngrxFormControlState]="(formState$ | async).controls.samplename" /> -->
+            <!-- <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon> -->
+            <!-- </div> -->
+            <!-- <span class="clr-subtext">User-defined reference name for the process</span> -->
+            <!-- </div> -->
+            <!-- <div class="help-text clr-col-xs-12 clr-col-md-5"> -->
+            <!-- <span class="clr-subtext">User-defined reference name for the process</span> -->
+            <!-- </div> -->
+            <!-- </div> -->
 
             <!-- <ng-container *ngTemplateOutlet="inputRow; context: { control: (formState$ | async).controls.samplename, fieldName: 'Sample Name', helpText: 'User-defined reference name for the process', required: true }"> -->
             <!-- </ng-container> -->
@@ -289,7 +299,7 @@
   <section class="form-block">
     <div class="row">
       <div class="col-sm-3">
-        <button class="btn btn-block" [ngClass]="{'btn-primary': (postError$ | async) == false, 'btn-warning': (postError$ | async) == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
+        <button class="btn btn-block" [ngClass]="{'btn-primary': (formPost$ | async).error == false, 'btn-warning': (formPost$ | async).error == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
           <!-- default play icon -->
           <clr-icon shape="play" size="18" *ngIf="(formPost$ | async).submitting == false && (formPost$ | async).submitted == false"></clr-icon>
           <!-- spinner while submitting -->

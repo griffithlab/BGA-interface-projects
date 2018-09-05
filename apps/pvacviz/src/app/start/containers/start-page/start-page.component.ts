@@ -1,6 +1,6 @@
 import { Component, Input, forwardRef, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 
-import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
+import { Observable, Subject, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
@@ -39,7 +39,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
   @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
 
-  private subscriptions = [];
+  private subscriptions: Subscription[] = [];
 
   inputs$: Observable<Files>;
 

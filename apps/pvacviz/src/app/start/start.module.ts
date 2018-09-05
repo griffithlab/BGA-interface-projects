@@ -23,6 +23,7 @@ import { AlgorithmsEffects } from './effects/algorithms.effects';
 import { AllelesEffects } from './effects/alleles.effects';
 import { reducers } from './reducers';
 
+import { PvzInputContainer } from './components/input-container.component';
 import { StartPageComponent } from './containers/start-page/start-page.component';
 import { PrettyJsonComponent } from '../../../../../node_modules/angular2-prettyjson/src/prettyjson.component';
 
@@ -60,6 +61,7 @@ import { PrettyJsonComponent } from '../../../../../node_modules/angular2-pretty
   ],
   declarations: [
     StartPageComponent,
+    PvzInputContainer,
     ValidationMessageComponent,
     ValidationMessagesComponent,
   ]
