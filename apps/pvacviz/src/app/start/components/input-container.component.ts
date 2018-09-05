@@ -1,4 +1,4 @@
-import { Component, ContentChild, OnDestroy, Optional, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ContentChild, OnDestroy, Optional, QueryList, ContentChildren, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControlState, ValidationErrors } from 'ngrx-forms';
 
@@ -13,7 +13,7 @@ import { PvzInput } from './input.directive';
   }
 })
 export class PvzInputContainer implements AfterViewInit, OnDestroy {
-  @ViewChild(PvzInput) pvzInput: PvzInput;
+  @ContentChildren(PvzInput) pvzInput: QueryList<PvzInput>;
   control: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
@@ -21,10 +21,9 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   constructor() { }
 
   ngAfterViewInit() {
-    Promise.resolve(null).then(() => {
-      if (this.pvzInput) {
-        console.log('-=-=-=-=-=-=- pvzInput container found child form control.')
-      }
+    this.pvzInput.changes.subscribe((changes) => {
+      console.log('input-container noticed changes from child input.');
+      console.log(changes);
     });
   }
 

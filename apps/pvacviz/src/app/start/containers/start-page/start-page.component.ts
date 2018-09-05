@@ -216,9 +216,9 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   samplenameTest(action) {
     if (action === 'disable') {
-      this.store.dispatch(new DisableAction('startForm.samplename')));
+      this.store.dispatch(new DisableAction('startForm.samplename'));
     } else {
-      this.store.dispatch(new EnableAction('startForm.samplename')));
+      this.store.dispatch(new EnableAction('startForm.samplename'));
     }
   }
 
