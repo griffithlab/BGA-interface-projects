@@ -45,7 +45,7 @@ export class PvzInput implements OnInit, OnChanges {
     const controlCh = changes.control;
     const setDisabled = (state: boolean) => {
       if (state) {
-        this.renderer.setAttribute(this.element.nativeElement, 'disabled', state.toString());
+        this.renderer.setAttribute(this.element.nativeElement, 'disabled', '');
       } else {
         this.renderer.removeAttribute(this.element.nativeElement, 'disabled');
       }
