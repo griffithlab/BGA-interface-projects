@@ -10,6 +10,8 @@ import {
   ResetAction,
   SetValueAction,
   FormControlState,
+  DisableAction,
+  EnableAction,
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -34,6 +36,7 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('sampleName') sampleName: any;
   @ViewChild('inputVcf') inputVcf: NgSelectComponent;
   @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
   @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
@@ -211,6 +214,14 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
         map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
+  samplenameTest(action) {
+    if (action === 'disable') {
+      this.store.dispatch(new DisableAction('startForm.samplename')));
+    } else {
+      this.store.dispatch(new EnableAction('startForm.samplename')));
+    }
+  }
+
   reset() {
     this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this.store.dispatch(new ResetAction(INITIAL_STATE.id));
@@ -228,6 +239,11 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions.push(
       this.algorithmsControl$.subscribe((ctrl) => {
         Promise.resolve(null).then(() => {
+          // TMP TESTING
+          if (this.sampleName) {
+            console.log('found sampleName.');
+            console.log(this.sampleName);
+          }
           // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
           if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
           // link algorithms validity state to alleles enabled state

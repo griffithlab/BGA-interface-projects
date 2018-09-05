@@ -20,8 +20,8 @@
             <pvz-input-container>
               <label>Sample Name</label>
               <input pvzInput type="text" id="samplename" class="clr-input"
+                #sampleName
                 size="32"
-                [disabled]="(formState$ | async).controls.samplename.isDisabled"
                 [ngrxFormControlState]="(formState$ | async).controls.samplename" />
               <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
               <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
@@ -348,6 +348,14 @@
           && (formState$ | async).isUnsubmitted"
           (click)="reset()">
           Reset
+        </button>
+        <button type="button" class="btn btn-primary"
+          (click)="samplenameTest('disable')">
+          Disable Sample Name
+        </button>
+        <button type="button" class="btn btn-primary"
+          (click)="samplenameTest('enable')">
+          Enable Sample Name
         </button>
       </div>
     </div>
