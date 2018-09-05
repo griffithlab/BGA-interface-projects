@@ -42,13 +42,19 @@ export class PvzInput implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('pvzInput onChanges called.');
-    console.log(changes);
     const controlCh = changes.control;
+    const setDisabled = (state: boolean) => {
+      if (state) {
+        this.renderer.setAttribute(this.element.nativeElement, 'disabled', state.toString());
+      } else {
+        this.renderer.removeAttribute(this.element.nativeElement, 'disabled');
+      }
+    }
+
     if (controlCh.firstChange === true) {
-      this.renderer.setAttribute(this.element.nativeElement, 'disabled', controlCh.currentValue.isDisabled.toString());
+      setDisabled(controlCh.currentValue.isDisabled);
     } else if (controlCh.previousValue.isDisabled !== controlCh.currentValue.isDisabled) {
-      this.renderer.setAttribute(this.element.nativeElement, 'disabled', controlCh.currentValue.isDisabled.toString());
+      setDisabled(controlCh.currentValue.isDisabled);
     }
   }
 
