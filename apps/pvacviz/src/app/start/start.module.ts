@@ -23,6 +23,7 @@ import { AlgorithmsEffects } from './effects/algorithms.effects';
 import { AllelesEffects } from './effects/alleles.effects';
 import { reducers } from './reducers';
 
+import { PvzSelectContainer } from './components/select-container.component';
 import { PvzSelect } from './components/select.directive';
 import { PvzInputContainer } from './components/input-container.component';
 import { PvzInput } from './components/input.directive';
@@ -64,6 +65,7 @@ import { StartPageComponent } from './containers/start-page/start-page.component
     StartPageComponent,
     PvzInputContainer,
     PvzInput,
+    PvzSelectContainer,
     PvzSelect,
     ValidationMessageComponent,
     ValidationMessagesComponent,
