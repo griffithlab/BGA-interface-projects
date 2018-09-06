@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'pvz-validation-message',
-  template: '<div *ngIf="show"><ng-content></ng-content></div>'
+  template: '<clr-control-error *ngIf="show"><ng-content></ng-content></clr-control-error>'
 })
 export class ValidationMessageComponent {
   @Input() name: string;

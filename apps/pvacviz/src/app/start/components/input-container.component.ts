@@ -16,6 +16,7 @@ import { PvzInput } from './input.directive';
 @Component({
   selector: 'pvz-input-container',
   templateUrl: './input-container.component.html',
+  styleUrls: ['./input-container.component.scss'],
   host: {
     '[class.clr-form-control]': 'true',
     '[class.clr-row]': 'true'

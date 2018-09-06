@@ -7,7 +7,7 @@
     </div>
   </div>
 </div>
-<form clrForm class="clr-form clr-form-horizontal"
+<form clrForm class="clr-form clr-form-compact"
   [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
   <clr-tabs>
     <clr-tab>
@@ -18,13 +18,12 @@
             <label>Inputs, Alleles, and Algorithms</label>
 
             <pvz-input-container>
-              <label>Sample Name</label>
+              <label for="samplename" class="clr-control-label">Sample Name</label>
               <input pvzInput type="text" id="samplename" class="clr-input"
-                #sampleName
                 size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.samplename" />
-              <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
               <clr-control-error>Error message that appears after focus is lost and control is invalid</clr-control-error>
+              <span class="help-text">User-defined reference name for the process</span>
             </pvz-input-container>
 
             <!-- <div class="clr-form-control clr-row"> -->
