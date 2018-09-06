@@ -4,6 +4,6 @@
     <ng-content select="[pvzInput]"></ng-content>
     <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
   </div>
-  <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
-  <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+  <ng-content select="clr-control-helper" *ngIf="!isInvalid"></ng-content>
+  <ng-content select="clr-control-error" *ngIf="isInvalid"></ng-content>
 </div>
