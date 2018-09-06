@@ -4,8 +4,6 @@ import {
   HostBinding,
   OnDestroy,
   Optional,
-  Renderer2,
-  ElementRef,
   QueryList,
   ContentChildren,
   AfterViewInit
@@ -31,15 +29,9 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   subscriptions: Subscription[] = [];
   invalid = false;
 
-  private r2: Renderer2;
-  private el: ElementRef;
 
   constructor(
-    private renderer2: Renderer2,
-    private elementRef: ElementRef
   ) {
-    this.r2 = renderer2;
-    this.el = elementRef;
   }
 
   ngAfterViewInit() {
