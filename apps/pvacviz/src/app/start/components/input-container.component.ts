@@ -3,6 +3,8 @@ import {
   ContentChild,
   HostBinding,
   OnDestroy,
+  Renderer2,
+  ElementRef,
   Optional,
   QueryList,
   ContentChildren,
@@ -30,18 +32,23 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   ctrl: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
-  fieldName: string;
-  id: string;
+  private r2: Renderer2;
+  private el: ElementRef;
 
-  constructor(@Attribute('field-name') public fieldName: string) {
-    this.fieldName = fieldName;
-    this.id = fieldName.replace(/\s+/g, '-').toLowerCase();
+  constructor(@Attribute('field-name') public fieldName: string, renderer2: Renderer2, elementRef: ElementRef) {
+    this.r2 = renderer2;
+    this.el = elementRef;
   }
 
   ngAfterViewInit() {
+    let idSet = false;
     this.subscriptions.push(
       this.pvzInput.control$.subscribe((control: FormControlState<any>) => {
-        console.log('-=-=-=- input state updated -=-=-=-=-=-');
+        // add id to input
+        if (idSet === false) {
+
+          this.r2.setAttribute(this.el.nativeElement, 'id', control.id); idSet = true;
+        }
         this.ctrl = control;
         this.isInvalid = control.isInvalid && control.isTouched && control.isUnfocused;
       })
