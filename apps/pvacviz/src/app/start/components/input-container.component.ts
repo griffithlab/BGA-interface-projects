@@ -13,7 +13,8 @@ import { PvzInput } from './input.directive';
   }
 })
 export class PvzInputContainer implements AfterViewInit, OnDestroy {
-  @ContentChildren(PvzInput) pvzInput: QueryList<PvzInput>;
+  @ContentChild(PvzInput) pvzInput: PvzInput;
+  // @ContentChildren(PvzInput) pvzInput: QueryList<PvzInput>;
   control: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
@@ -21,10 +22,11 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   constructor() { }
 
   ngAfterViewInit() {
-    this.pvzInput.changes.subscribe((changes) => {
-      console.log('input-container noticed changes from child input.');
-      console.log(changes);
-    });
+    this.subscriptions.push(
+      this.pvzInput.control$.subscribe((state: FormControlState<any>) => {
+        console.log('-=-=-=- input state updated -=-=-=-=-=-');
+      })
+    );
   }
 
   ngOnDestroy() {
