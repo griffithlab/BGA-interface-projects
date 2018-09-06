@@ -20,16 +20,16 @@ export class PvzInput implements OnChanges {
   @Input('ngrxFormControlState') public control: FormControlState<any>;
   @Input('disabled') public disabled: boolean;
   public control$: Subject<FormControlState<any>>;
-  private renderer: Renderer2;
-  private element: ElementRef
+  private r2: Renderer2;
+  private el: ElementRef
 
   constructor(
     @Attribute('type') public type: string,
-    r2: Renderer2,
-    el: ElementRef
+    renderer2: Renderer2,
+    elementRef: ElementRef
   ) {
-    this.renderer = r2;
-    this.element = el;
+    this.r2 = renderer2;
+    this.el = elementRef;
     this.control$ = new Subject();
   }
 
@@ -40,8 +40,8 @@ export class PvzInput implements OnChanges {
 
     // toggle disabled attribute on input when control.isDisabled changes
     const setDisabled = (state: boolean) => {
-      if (state) { this.renderer.setAttribute(this.element.nativeElement, 'disabled', ''); }
-      else { this.renderer.removeAttribute(this.element.nativeElement, 'disabled'); }
+      if (state) { this.r2.setAttribute(this.el.nativeElement, 'disabled', ''); }
+      else { this.r2.removeAttribute(this.el.nativeElement, 'disabled'); }
     }
 
     if (controlCh.firstChange) { setDisabled(controlCh.currentValue.isDisabled); }

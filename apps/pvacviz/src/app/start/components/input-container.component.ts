@@ -1,4 +1,15 @@
-import { Component, ContentChild, OnDestroy, Optional, QueryList, ContentChildren, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  HostBinding,
+  OnDestroy,
+  Optional,
+  Renderer2,
+  ElementRef,
+  QueryList,
+  ContentChildren,
+  AfterViewInit
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControlState, ValidationErrors } from 'ngrx-forms';
 
@@ -13,18 +24,29 @@ import { PvzInput } from './input.directive';
   }
 })
 export class PvzInputContainer implements AfterViewInit, OnDestroy {
+  @HostBinding('class.clr-error') isInvalid: boolean = false;
   @ContentChild(PvzInput) pvzInput: PvzInput;
   // @ContentChildren(PvzInput) pvzInput: QueryList<PvzInput>;
   control: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
 
-  constructor() { }
+  private r2: Renderer2;
+  private el: ElementRef;
+
+  constructor(
+    private renderer2: Renderer2,
+    private elementRef: ElementRef
+  ) {
+    this.r2 = renderer2;
+    this.el = elementRef;
+  }
 
   ngAfterViewInit() {
     this.subscriptions.push(
       this.pvzInput.control$.subscribe((state: FormControlState<any>) => {
         console.log('-=-=-=- input state updated -=-=-=-=-=-');
+        this.isInvalid = state.isInvalid;
       })
     );
   }
