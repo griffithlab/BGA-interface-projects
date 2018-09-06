@@ -1,7 +1,7 @@
-<ng-content select="label"></ng-content>
+<ng-content select="label" for="{{ctrl.id}}"></ng-content>
 <div class="clr-control-container">
   <div class="clr-input-wrapper">
-    <ng-content select="[pvzInput]"></ng-content>
+    <ng-content select="[pvzInput]" id="{{ctrl.id}}"></ng-content>
     <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
   </div>
   <ng-content select="clr-control-helper" *ngIf="!isInvalid"></ng-content>

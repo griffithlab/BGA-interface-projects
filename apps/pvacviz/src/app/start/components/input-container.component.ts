@@ -25,20 +25,20 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   @HostBinding('class.clr-error') isInvalid: boolean = false;
   @ContentChild(PvzInput) pvzInput: PvzInput;
   // @ContentChildren(PvzInput) pvzInput: QueryList<PvzInput>;
-  control: FormControlState<any>;
+  ctrl: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
 
 
-  constructor(
-  ) {
+  constructor() {
   }
 
   ngAfterViewInit() {
     this.subscriptions.push(
-      this.pvzInput.control$.subscribe((state: FormControlState<any>) => {
+      this.pvzInput.control$.subscribe((control: FormControlState<any>) => {
         console.log('-=-=-=- input state updated -=-=-=-=-=-');
-        this.isInvalid = state.isInvalid && state.isTouched && state.isUnfocused;
+        this.ctrl = control;
+        this.isInvalid = control.isInvalid && control.isTouched && control.isUnfocused;
       })
     );
   }
