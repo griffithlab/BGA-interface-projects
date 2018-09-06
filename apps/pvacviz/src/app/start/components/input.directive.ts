@@ -8,7 +8,7 @@ import {
   HostBinding,
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { FormControlState, ValidationErrors } from 'ngrx-forms';
+import { FormControlState } from 'ngrx-forms';
 
 
 @Directive({
