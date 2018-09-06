@@ -38,7 +38,7 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
     this.subscriptions.push(
       this.pvzInput.control$.subscribe((state: FormControlState<any>) => {
         console.log('-=-=-=- input state updated -=-=-=-=-=-');
-        this.isInvalid = state.isInvalid && state.isTouched;
+        this.isInvalid = state.isInvalid && state.isTouched && state.isUnfocused;
       })
     );
   }
