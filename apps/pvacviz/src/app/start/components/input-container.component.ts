@@ -6,7 +6,8 @@ import {
   Optional,
   QueryList,
   ContentChildren,
-  AfterViewInit
+  AfterViewInit,
+  Attribute
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormControlState, ValidationErrors } from 'ngrx-forms';
@@ -29,9 +30,12 @@ export class PvzInputContainer implements AfterViewInit, OnDestroy {
   ctrl: FormControlState<any>;
   subscriptions: Subscription[] = [];
   invalid = false;
+  fieldName: string;
+  id: string;
 
-
-  constructor() {
+  constructor(@Attribute('field-name') public fieldName: string) {
+    this.fieldName = fieldName;
+    this.id = fieldName.replace(/\s+/g, '-').toLowerCase();
   }
 
   ngAfterViewInit() {

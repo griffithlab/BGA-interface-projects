@@ -17,8 +17,7 @@
           <section class="form-block">
             <label>Inputs, Alleles, and Algorithms</label>
 
-            <pvz-input-container>
-              <label for="samplename" class="clr-control-label">Sample Name</label>
+            <pvz-input-container field-name="Sample Name">
               <input pvzInput type="text" id="samplename" class="clr-input"
                 size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.samplename" />
