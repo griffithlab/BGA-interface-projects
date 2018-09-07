@@ -129,6 +129,15 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
+    // observe prediction algorithms, enable/disable alleles select
+    this.subscriptions.push(
+      this.algorithmsControl$.subscribe((ctrl) => {
+        if (ctrl.isInvalid) {
+          this.store.dispatch(new DisableAction('startForm.alleles'));
+        } else {
+          this.store.dispatch(new EnableAction('startForm.alleles'));
+        }
+      }));
 
     // observe form prediction algorithms value
     // dispatch LoadAlleles when prediction_algorithms changes
@@ -236,20 +245,20 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
     /*
     * hook up form field interactions depending on ViewChild references
     */
-    this.subscriptions.push(
-      this.algorithmsControl$.subscribe((ctrl) => {
-        Promise.resolve(null).then(() => {
-          // TMP TESTING
-          if (this.sampleName) {
-            console.log('found sampleName.');
-            console.log(this.sampleName);
-          }
-          // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
-          if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
-          // link algorithms validity state to alleles enabled state
-          if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
-        });
-      }));
+    // this.subscriptions.push(
+    //   this.algorithmsControl$.subscribe((ctrl) => {
+    //     Promise.resolve(null).then(() => {
+    //       // TMP TESTING
+    //       if (this.sampleName) {
+    //         console.log('found sampleName.');
+    //         console.log(this.sampleName);
+    //       }
+    //       // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
+    //       if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
+    //       // link algorithms validity state to alleles enabled state
+    //       if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
+    //     });
+    //   }));
   }
 
   ngOnDestroy() {
