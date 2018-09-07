@@ -16,8 +16,7 @@
         <div class="tab-bg">
           <section class="form-block">
             <pvz-input-container field-name="Sample Name">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.samplename" />
               <span class="help-text">User-defined reference name for the process</span>
             </pvz-input-container>
@@ -45,7 +44,7 @@
                 [items]="algorithms$ | async"
                 [multiple]="true"
                 [closeOnSelect]="false"
-                [clearable]="true"
+                [clearable]="false"
                 bindLabel="name"
                 bindValue="name"
                 [searchable]="true"
@@ -62,7 +61,7 @@
                 [items]="alleles"
                 [multiple]="true"
                 [closeOnSelect]="false"
-                [clearable]="true"
+                [clearable]="false"
                 bindLabel="name"
                 bindValue="name"
                 [searchable]="true"
@@ -292,12 +291,12 @@
           Reset
         </button>
         <button type="button" class="btn btn-primary"
-          (click)="samplenameTest('disable')">
-          Disable Sample Name
+          (click)="selectTest('disable')">
+          Disable Input VCF
         </button>
         <button type="button" class="btn btn-primary"
-          (click)="samplenameTest('enable')">
-          Enable Sample Name
+          (click)="selectTest('enable')">
+          Enable Input VCF
         </button>
       </div>
     </div>

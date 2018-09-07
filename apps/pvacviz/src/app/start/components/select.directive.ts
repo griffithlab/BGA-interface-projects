@@ -5,8 +5,9 @@ import {
   SimpleChanges,
   Attribute,
   Input,
-  HostBinding,
+  Host
 } from '@angular/core';
+import { NgSelectComponent } from '@ng-select/ng-select';
 import { Subject } from 'rxjs/Subject';
 import { FormControlState } from 'ngrx-forms';
 
@@ -16,15 +17,21 @@ import { FormControlState } from 'ngrx-forms';
 export class PvzSelect implements OnChanges {
   @Input('ngrxFormControlState') public control: FormControlState<any>;
   public control$: Subject<FormControlState<any>>;
+  public select: NgSelectComponent;
 
-  constructor() {
+  constructor(@Host() select: NgSelectComponent) {
     this.control$ = new Subject();
+    this.select = select;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const controlCh = changes.control;
+    const ctrl = changes.control;
     // push latest control state to observers
-    this.control$.next(controlCh.currentValue);
+    this.control$.next(ctrl.currentValue);
+    // update select disabled state based on control.isDisabled
+    if (ctrl.firstChange || (ctrl.previousValue.isDisabled !== ctrl.currentValue.isDisabled)) {
+      this.select.setDisabledState(ctrl.currentValue.isDisabled);
+    }
   }
 
   ngAfterViewInit() {

@@ -158,7 +158,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.allelesTypeahead$.pipe(
         debounceTime(100),
         distinctUntilChanged(),
-        filter(term => term.length > 0),
+        filter(term => term && term.length > 0),
         withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
       ).subscribe(([term, meta, algorithms]) => {
         const req = {
@@ -214,11 +214,11 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
         map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
-  samplenameTest(action) {
+  selectTest(action) {
     if (action === 'disable') {
-      this.store.dispatch(new DisableAction('startForm.samplename'));
+      this.store.dispatch(new DisableAction('startForm.input'));
     } else {
-      this.store.dispatch(new EnableAction('startForm.samplename'));
+      this.store.dispatch(new EnableAction('startForm.input'));
     }
   }
 

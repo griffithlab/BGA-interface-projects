@@ -46,7 +46,6 @@ export class PvzSelectContainer implements AfterViewInit, OnDestroy {
       this.pvzSelect.control$.subscribe((control: FormControlState<any>) => {
         // add id to select
         if (idSet === false) {
-
           this.r2.setAttribute(this.el.nativeElement, 'id', control.id); idSet = true;
         }
         this.ctrl = control;
