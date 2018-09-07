@@ -18,7 +18,6 @@ export class PvzSelect implements OnChanges {
   public control$: Subject<FormControlState<any>>;
 
   constructor() {
-    console.log('-=-=-=-=-=-=-=-=-=- pvzSelect instantiated');
     this.control$ = new Subject();
   }
 

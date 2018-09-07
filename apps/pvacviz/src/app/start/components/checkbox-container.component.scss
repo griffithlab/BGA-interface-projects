@@ -1,0 +1,103 @@
+/deep/ .pvz-checkbox-wrapper {
+  position: relative;
+
+  .clr-control-label {
+    font-weight: normal;
+    display: block;
+  }
+
+  ~.clr-validate-icon {
+    margin-left: 0;
+  }
+
+  ~.clr-subtext {
+    display: inline-block;
+  }
+
+  input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    top: 5px;
+    left: 0;
+    height: 0.66667rem;
+    width: 0.66667rem;
+  }
+
+  label {
+    position: relative;
+    margin-top: 0.25rem;
+    display: inline-block;
+    color: #000;
+    min-height: 1rem;
+    padding-left: 0.916667rem;
+    margin-top: 0;
+    cursor: pointer;
+    line-height: 1rem;
+  }
+
+  input[type='checkbox']+label::before {
+    position: absolute;
+    top: 0.166666rem;
+    left: 0;
+    content: '';
+    display: inline-block;
+    height: 0.666667rem;
+    width: 0.666667rem;
+    border: 1px solid #9a9a9a;
+    border-radius: 0.125rem;
+  }
+
+  input[type='checkbox']:focus+label::before {
+    outline: 0;
+    box-shadow: 0 0 2px 2px #6bc1e3;
+  }
+
+  input[type='checkbox']+label::after {
+    position: absolute;
+    content: '';
+    display: none;
+    height: 0.208333rem;
+    width: 0.333334rem;
+    border-left: 0.083333rem solid #fff;
+    border-bottom: 0.083333rem solid #fff;
+    top: 0.166666rem;
+    left: 0.166667rem;
+    transform: translate(0, 0.166667rem) rotate(-45deg);
+    border-color: #fff;
+  }
+
+  input[type='checkbox']:checked+label::before {
+    background: #007cbb;
+    border: none;
+  }
+
+  input[type='checkbox']:checked+label::after {
+    display: inline-block;
+  }
+
+  input[type='checkbox'].clr-indeterminate+label::before {
+    border: 1px solid #007cbb;
+  }
+
+  input[type='checkbox'].clr-indeterminate+label::after {
+    border-left: none;
+    border-bottom-color: #007cbb;
+    display: inline-block;
+    transform: translate(0, 0.166667rem);
+  }
+
+  .pvz-checkbox-inline {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+  }
+
+  .pvz-checkbox-inline .clr-control-label {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: auto;
+  }
+}

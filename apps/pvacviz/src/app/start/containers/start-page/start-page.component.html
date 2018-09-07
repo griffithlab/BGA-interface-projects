@@ -135,7 +135,7 @@
             </pvz-input-container>
 
             <pvz-checkbox-container field-name="Run NetHMC Stab?">
-              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
+              <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
               <span class="help-text">Run NetMHCStabPan at the end of the pipeline</span>
             </pvz-checkbox-container>
 
@@ -158,7 +158,7 @@
             </pvz-input-container>
 
             <pvz-checkbox-container field-name="Allele Specific Cutoffs?">
-              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.allele_specific_cutoffs"/>
+              <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.allele_specific_cutoffs"/>
               <span class="help-text">Use allele-specific cutoffs instead of the value provided with the Binding Threshold</span>
             </pvz-checkbox-container>
 
@@ -223,12 +223,12 @@
             </pvz-input-container>
 
             <pvz-checkbox-container field-name="Keep Temp Files?">
-              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
+              <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
               <span class="help-text">Keep temporary files in the output directory after completion</span>
             </pvz-checkbox-container>
 
             <pvz-checkbox-container field-name="Force Duplicate Process?">
-              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.force"/>
+              <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.force"/>
               <span class="help-text">Bypass check for staging a duplicate process</span>
             </pvz-checkbox-container>
 
