@@ -36,11 +36,11 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
-  // @ViewChild('sampleName') sampleName: any;
-  // @ViewChild('inputVcf') inputVcf: NgSelectComponent;
-  // @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
-  // @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
-  // @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
+  @ViewChild('sampleName') sampleName: any;
+  @ViewChild('inputVcf') inputVcf: NgSelectComponent;
+  @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
+  @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
+  @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
 
   private subscriptions: Subscription[] = [];
 
@@ -240,14 +240,14 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.algorithmsControl$.subscribe((ctrl) => {
         Promise.resolve(null).then(() => {
           // TMP TESTING
-          // if (this.sampleName) {
-          //   console.log('found sampleName.');
-          //   console.log(this.sampleName);
-          // }
-          // // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
-          // if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
-          // // link algorithms validity state to alleles enabled state
-          // if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
+          if (this.sampleName) {
+            console.log('found sampleName.');
+            console.log(this.sampleName);
+          }
+          // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
+          if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
+          // link algorithms validity state to alleles enabled state
+          if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
         });
       }));
   }

@@ -15,8 +15,6 @@
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
-            <label>Inputs, Alleles, and Algorithms</label>
-
             <pvz-input-container field-name="Sample Name">
               <input pvzInput type="text" class="clr-input"
                 size="32"
@@ -40,109 +38,67 @@
               <span class="help-text">User-defined reference name for the process</span>
             </pvz-select-container>
 
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="input" class="required">Input VCF</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  pvzSelect
-                  #inputVcf
-                  [items]="inputs$ | async"
-                  [clearable]="false"
-                  bindLabel="display_name"
-                  bindValue="fileID"
-                  [searchable]="true"
-                  groupBy="directory"
-                  placeholder="Select Input VCF File"
-                  [ngrxFormControlState]="(formState$ | async).controls.input">
-                </ng-select>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Input VCF File
-              </div>
-            </div>
+            <pvz-select-container field-name="Prediction Algorithms">
+              <ng-select
+                #algorithmsSelect
+                pvzSelect
+                [items]="algorithms$ | async"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [clearable]="true"
+                bindLabel="name"
+                bindValue="name"
+                [searchable]="true"
+                placeholder="Select Prediction Algorithms"
+                [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
+              </ng-select>
+              <span class="help-text">List of prediction algorithms to use</span>
+            </pvz-select-container>
 
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="prediction_algorithms" class="required">Prediction Algorithms</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  #algorithmsSelect
-                  [items]="algorithms$ | async"
-                  [multiple]="true"
-                  [closeOnSelect]="false"
-                  [clearable]="false"
-                  bindLabel="name"
-                  bindValue="name"
-                  [searchable]="true"
-                  placeholder="Select Prediction Algorithms"
-                  [ngrxFormControlState]="(formState$ | async).controls.prediction_algorithms">
-                </ng-select>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-form-help">
-                List of prediction algorithms to use
-              </div>
-            </div>
+            <pvz-select-container field-name="Alleles">
+              <ng-select
+                #allelesSelect
+                pvzSelect
+                [items]="alleles"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [clearable]="true"
+                bindLabel="name"
+                bindValue="name"
+                [searchable]="true"
+                placeholder="Select Alleles"
+                [typeahead]="allelesTypeahead$"
+                [loading]="allelesLoading$ | async"
+                (scroll)="allelesScroll$.next($event)"
+                (scrollToEnd)="allelesScrollToEnd$.next($event)"
+                [virtualScroll]="true"
+                [ngrxFormControlState]="(formState$ | async).controls.alleles">
+                <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                  <span>{{ item.name }}</span>
+                  <span style="font-size: 11px; font-style: oblique; color: grey;line-height: 11px;">
+                    &nbsp;({{ item.prediction_algorithms.join(',') }})
+                  </span>
+                </ng-template>
+              </ng-select>
+              <span class="help-text">
+                List of alleles against which to run the selected algorithms.<span style="color: #F54F47" *ngIf="(predictionAlgorithms$ | async).length === 0">Please select prediction algorithms to populate alleles selector.</span>
+              </span>
+            </pvz-select-container>
 
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="alleles" class="required">Alleles</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  #allelesSelect
-                  [items]="alleles"
-                  [multiple]="true"
-                  [closeOnSelect]="false"
-                  [clearable]="false"
-                  bindLabel="name"
-                  bindValue="name"
-                  [searchable]="true"
-                  placeholder="Select Alleles"
-                  [typeahead]="allelesTypeahead$"
-                  [loading]="allelesLoading$ | async"
-                  (scroll)="allelesScroll$.next($event)"
-                  (scrollToEnd)="allelesScrollToEnd$.next($event)"
-                  [virtualScroll]="true"
-                  [ngrxFormControlState]="(formState$ | async).controls.alleles">
-                  <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
-                    <span>{{ item.name }}</span>
-                    <span style="font-size: 11px; font-style: oblique; color: grey;line-height: 11px;">
-                      &nbsp;({{ item.prediction_algorithms.join(',') }})
-                    </span>
-                  </ng-template>
-                </ng-select>
-                <span class="p7" style="color: #F54F47" *ngIf="(predictionAlgorithms$ | async).length === 0">
-                  Please select prediction algorithms to populate alleles selector.
-                </span>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                List of alleles against which to run the
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="prediction_algorithms" class="required">Epitope Lengths</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  #epitopeLengthsSelect
-                  [items]="epitopeLengths"
-                  [multiple]="true"
-                  [closeOnSelect]="false"
-                  [clearable]="false"
-                  [searchable]="true"
-                  placeholder="Select Epitope Lengths"
-                  [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths">
-                </ng-select>
-              </div>
-              <div class="col-xs-12 col-sm-4 col-form-help">
-                List of epitope lengths to produce
-              </div>
-            </div>
+            <pvz-select-container field-name="Epitope Lengths">
+              <ng-select
+                #epitopeLengthsSelect
+                pvzSelect
+                [items]="epitopeLengths"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                [clearable]="false"
+                [searchable]="true"
+                placeholder="Select Epitope Lengths"
+                [ngrxFormControlState]="(formState$ | async).controls.epitope_lengths">
+              </ng-select>
+              <span class="help-text">List of epitope lengths to produce</span>
+            </pvz-select-container>
 
           </section>
         </div>
@@ -155,179 +111,126 @@
           <section class="form-block">
 
             <pvz-input-container field-name="Peptide Sequence Length" required="true">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.peptide_sequence_length" />
               <span class="help-text">Length of the peptide sequences to produce in the FASTA</span>
             </pvz-input-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="net_chop_method">Netchop Method</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  [items]="netChopMethodOptions"
-                  bindLabel="label"
-                  bindValue="value"
-                  placeholder="Choose Netchop Method"
-                  [ngrxFormControlState]="(formState$ | async).controls.net_chop_method">
-                </ng-select>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Run NetChop using the specified method
-              </div>
-            </div>
+            <pvz-select-container field-name="Netchop Method">
+              <ng-select
+                pvzSelect
+                [items]="netChopMethodOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Choose Netchop Method"
+                [ngrxFormControlState]="(formState$ | async).controls.net_chop_method">
+              </ng-select>
+              <span class="help-text">Run NetChop using the specified method</span>
+            </pvz-select-container>
 
             <pvz-input-container field-name="Netchop Threshold">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.net_chop_threshold" />
               <span class="help-text">Netchop prediction threshold</span>
             </pvz-input-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="netmhc_stab">Run NeMHC Stab?</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Run NetMHCStabPan at the end of the pipeline
-              </div>
-            </div>
+            <pvz-checkbox-container field-name="Run NetHMC Stab?">
+              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
+              <span class="help-text">Run NetMHCStabPan at the end of the pipeline</span>
+            </pvz-checkbox-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="top_score_metric" class="required">Top Score Metric</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <ng-select
-                  [items]="topScoreMetricOptions"
-                  bindLabel="label"
-                  bindValue="value"
-                  placeholder="Choose Top Score Metric"
-                  [ngrxFormControlState]="(formState$ | async).controls.top_score_metric">
-                </ng-select>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                ic50 metric for choosing best epitopes during binding filtering
-              </div>
-            </div>
+            <pvz-select-container field-name="Top Score Metric">
+              <ng-select
+                pvzSelect
+                [items]="topScoreMetricOptions"
+                bindLabel="label"
+                bindValue="value"
+                placeholder="Choose Top Score Metric"
+                [ngrxFormControlState]="(formState$ | async).controls.top_score_metric">
+              </ng-select>
+              <span class="help-text">ic50 metric for choosing best epitopes during binding filtering</span>
+            </pvz-select-container>
 
             <pvz-input-container field-name="Binding Threshold">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.binding_threshold" />
               <span class="help-text">Report only epitopes with a predicted binding score below this value.</span>
             </pvz-input-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="allele_specific_cutoffs">Allele Specific Cutoffs?</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.allele_specific_cutoffs"/>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Use allele-specific cutoffs instead of the value provided with the Binding Threshold
-              </div>
-            </div>
+            <pvz-checkbox-container field-name="Allele Specific Cutoffs?">
+              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.allele_specific_cutoffs"/>
+              <span class="help-text">Use allele-specific cutoffs instead of the value provided with the Binding Threshold</span>
+            </pvz-checkbox-container>
 
             <pvz-input-container field-name="Minimum Fold Change">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.minimum_fold_change" />
               <span class="help-text">Report only epitopes with a fold change between the mutant and wildtype sequences above this value</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Gene & Transcript Expn. Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.expn_val" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Normal Coverage Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.normal_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor DNA Coverage Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.tdna_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor RNA Coverage Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.trna_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor DNA VAF Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.tdna_vaf" />
               <span class="help-text">Sites below this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor RNA VAF Cutoff">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.trna_vaf" />
               <span class="help-text">Sites below this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="FASTA Size">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.fasta_size" />
               <span class="help-text">Number of entries submitted to IEDB in each request</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="IEDB Retries">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.iedb_retries" />
               <span class="help-text">Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Downstream Sequence Length">
-              <input pvzInput type="text" class="clr-input"
-                size="32"
+              <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.downstream_sequence_length" />
               <span class="help-text">Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence</span>
             </pvz-input-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="keep_tmp_files">Keep Temp Files?</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Keep temporary files in the output directory after completion
-              </div>
-            </div>
+            <pvz-checkbox-container field-name="Keep Temp Files?">
+              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
+              <span class="help-text">Keep temporary files in the output directory after completion</span>
+            </pvz-checkbox-container>
 
-            <div class="form-group row" >
-              <div class="col-xs-12 col-sm-3 col-form-label">
-                <label for="force">Force Duplicate Process?</label>
-              </div>
-              <div class="col-xs-12 col-sm-4">
-                <input type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.force"/>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-form-help">
-                Bypass the check for duplicate processes
-              </div>
-            </div>
+            <pvz-checkbox-container field-name="Force Duplicate Process?">
+              <input pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.force"/>
+              <span class="help-text">Bypass check for staging a duplicate process</span>
+            </pvz-checkbox-container>
 
           </section>
         </div>
