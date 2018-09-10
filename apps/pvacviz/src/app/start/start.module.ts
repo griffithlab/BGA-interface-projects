@@ -23,8 +23,13 @@ import { AlgorithmsEffects } from './effects/algorithms.effects';
 import { AllelesEffects } from './effects/alleles.effects';
 import { reducers } from './reducers';
 
+import { PvzCheckboxContainer } from './components/checkbox-container.component';
+import { PvzCheckbox } from './components/checkbox.directive';
+import { PvzSelectContainer } from './components/select-container.component';
+import { PvzSelect } from './components/select.directive';
+import { PvzInputContainer } from './components/input-container.component';
+import { PvzInput } from './components/input.directive';
 import { StartPageComponent } from './containers/start-page/start-page.component';
-import { PrettyJsonComponent } from '../../../../../node_modules/angular2-prettyjson/src/prettyjson.component';
 
 @NgModule({
   imports: [
@@ -60,6 +65,12 @@ import { PrettyJsonComponent } from '../../../../../node_modules/angular2-pretty
   ],
   declarations: [
     StartPageComponent,
+    PvzCheckboxContainer,
+    PvzCheckbox,
+    PvzInputContainer,
+    PvzInput,
+    PvzSelectContainer,
+    PvzSelect,
     ValidationMessageComponent,
     ValidationMessagesComponent,
   ]

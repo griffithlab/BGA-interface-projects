@@ -1,9 +1,3 @@
-// right-align labels
-.col-form-label  label {
-  display: block;
-  text-align: right;
-}
-
 .tab-bg {
   background-color: #fff;
   border-color: #ccc;
@@ -11,4 +5,12 @@
   border-width: 0 1px 1px;
   margin-top: 0;
   padding: 16px;
+}
+
+.form-control-notes {
+  color: #A89E95;
+  font-size: .5rem;
+  font-style: oblique;
+  line-height: .7rem;
+  padding-top: .25rem;
 }

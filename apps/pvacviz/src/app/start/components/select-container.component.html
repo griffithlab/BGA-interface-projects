@@ -1,0 +1,25 @@
+<div class="clr-col-xs-12 clr-col-sm-3 clr-col-form-label">
+  <label for="{{ctrl?.id}}" class="clr-control-label" >{{fieldName}}</label>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-4 clr-col-form-select">
+  <div class="clr-control-container">
+    <div class="pvz-select-wrapper">
+      <ng-content select="[pvzSelect]"></ng-content>
+      <!-- <clr-icon *ngIf="isInvalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon> -->
+    </div>
+  </div>
+
+  <ng-content></ng-content>
+
+  <ng-container *ngIf="isInvalid">
+    <pvz-validation-messages #messages
+      [control]="ctrl"
+      [errors]="ctrl.errors">
+      <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
+      <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} items.</pvz-validation-message>
+    </pvz-validation-messages>
+  </ng-container>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-5 clr-col-form-help">
+  <ng-content select=".help-text" ></ng-content>
+</div>

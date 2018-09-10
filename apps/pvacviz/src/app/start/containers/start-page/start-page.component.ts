@@ -1,6 +1,6 @@
 import { Component, Input, forwardRef, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 
-import { Observable, Subject, BehaviorSubject } from 'rxjs/Rx';
+import { Observable, Subject, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
@@ -10,6 +10,8 @@ import {
   ResetAction,
   SetValueAction,
   FormControlState,
+  DisableAction,
+  EnableAction,
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -34,12 +36,13 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('sampleName') sampleName: any;
   @ViewChild('inputVcf') inputVcf: NgSelectComponent;
   @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
   @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
   @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
 
-  private subscriptions = [];
+  private subscriptions: Subscription[] = [];
 
   inputs$: Observable<Files>;
 
@@ -118,14 +121,25 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
-    this.alleles$.subscribe((alleles) => {
-      if (this.concatAlleles) {
-        this.alleles = this.alleles.concat(alleles);
-      } else {
-        this.alleles = alleles;
-      }
-    });
+    this.subscriptions.push(
+      this.alleles$.subscribe((alleles) => {
+        if (this.concatAlleles) {
+          this.alleles = this.alleles.concat(alleles);
+        } else {
+          this.alleles = alleles;
+        }
+      })
+    );
 
+    // observe prediction algorithms, enable/disable alleles select
+    this.subscriptions.push(
+      this.algorithmsControl$.subscribe((ctrl) => {
+        if (ctrl.isInvalid) {
+          this.store.dispatch(new DisableAction('startForm.alleles'));
+        } else {
+          this.store.dispatch(new EnableAction('startForm.alleles'));
+        }
+      }));
 
     // observe form prediction algorithms value
     // dispatch LoadAlleles when prediction_algorithms changes
@@ -155,7 +169,7 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.allelesTypeahead$.pipe(
         debounceTime(100),
         distinctUntilChanged(),
-        filter(term => term.length > 0),
+        filter(term => term && term.length > 0),
         withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
       ).subscribe(([term, meta, algorithms]) => {
         const req = {
@@ -211,6 +225,14 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
         map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
+  selectTest(action) {
+    if (action === 'disable') {
+      this.store.dispatch(new DisableAction('startForm.input'));
+    } else {
+      this.store.dispatch(new EnableAction('startForm.input'));
+    }
+  }
+
   reset() {
     this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this.store.dispatch(new ResetAction(INITIAL_STATE.id));
@@ -223,17 +245,22 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     /*
-    * hook up form field interactions depending on ViewChild references
-    */
-    this.subscriptions.push(
-      this.algorithmsControl$.subscribe((ctrl) => {
-        Promise.resolve(null).then(() => {
-          // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
-          this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
-          // link algorithms validity state to alleles enabled state
-          this.allelesSelect.setDisabledState(ctrl.isInvalid);
-        });
-      }));
+     * hook up form field interactions depending on ViewChild references
+     */
+    // this.subscriptions.push(
+    //   this.algorithmsControl$.subscribe((ctrl) => {
+    //     Promise.resolve(null).then(() => {
+    //       // TMP TESTING
+    //       if (this.sampleName) {
+    //         console.log('found sampleName.');
+    //         console.log(this.sampleName);
+    //       }
+    //       // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
+    //       if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
+    //       // link algorithms validity state to alleles enabled state
+    //       if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
+    //     });
+    //   }));
   }
 
   ngOnDestroy() {

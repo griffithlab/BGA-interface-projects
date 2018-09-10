@@ -13,7 +13,7 @@ import {
   compose,
   updateArray
 } from 'ngrx-forms';
-import { required, minLength } from 'ngrx-forms/validation';
+import { required, minLength, lessThanOrEqualTo, greaterThan } from 'ngrx-forms/validation';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { Allele } from '@pvz/core/models/api-responses.model';
@@ -103,7 +103,7 @@ export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
   tdna_vaf: validate(required),
   trna_vaf: validate(required),
   fasta_size: validate(required),
-  iedb_retries: validate(required),
+  iedb_retries: validate(required, lessThanOrEqualTo(100), greaterThan(0)),
   downstream_sequence_length: validate(required),
 });
 

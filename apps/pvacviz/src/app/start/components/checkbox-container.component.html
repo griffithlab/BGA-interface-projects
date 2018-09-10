@@ -1,0 +1,11 @@
+<div class="clr-col-xs-12 clr-col-sm-3 clr-col-form-label">
+  <label for="{{ctrl?.id}}" class="clr-control-label" >{{fieldName}}</label>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-4 clr-col-form-input">
+  <div class="clr-control-container">
+    <ng-content select="[clrCheckbox]"></ng-content>
+  </div>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-5">
+  <ng-content select=".help-text" ></ng-content>
+</div>

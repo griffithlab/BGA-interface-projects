@@ -1,0 +1,25 @@
+<div class="clr-col-xs-12 clr-col-sm-3 clr-col-form-label">
+  <label for="{{ctrl?.id}}" class="clr-control-label" >{{fieldName}}</label>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-4 clr-col-form-input">
+  <div class="clr-control-container">
+    <div class="clr-input-wrapper">
+      <ng-content select="[pvzInput]"></ng-content>
+      <!-- <clr-icon *ngIf="isInvalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon> -->
+    </div>
+  </div>
+  <ng-content></ng-content>
+  <ng-container *ngIf="isInvalid">
+    <pvz-validation-messages #messages
+      [control]="ctrl"
+      [errors]="ctrl.errors">
+      <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
+      <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
+      <pvz-validation-message name="lessThanOrEqualTo">{{ fieldName }} must be less than {{ messages.errors.lessThanOrEqualTo?.comparand}}.</pvz-validation-message>
+      <pvz-validation-message name="greaterThan">{{ fieldName }} must be greater than {{ messages.errors.greaterThan?.comparand}}.</pvz-validation-message>
+    </pvz-validation-messages>
+  </ng-container>
+</div>
+<div class="clr-col-xs-12 clr-col-sm-5">
+  <ng-content select=".help-text" ></ng-content>
+</div>
