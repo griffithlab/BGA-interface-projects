@@ -24,7 +24,6 @@
             <pvz-select-container field-name="Input VCF">
               <ng-select
                 pvzSelect
-                #inputVcf
                 [items]="inputs$ | async"
                 [clearable]="false"
                 bindLabel="display_name"
@@ -34,12 +33,26 @@
                 placeholder="Select Input VCF File"
                 [ngrxFormControlState]="(formState$ | async).controls.input">
               </ng-select>
-              <span class="help-text">User-defined reference name for the process</span>
+              <span class="help-text">Input VCF</span>
+            </pvz-select-container>
+
+            <pvz-select-container field-name="Phased Prox. VCF">
+              <ng-select
+                pvzSelect
+                [items]="inputs$ | async"
+                [clearable]="false"
+                bindLabel="display_name"
+                bindValue="fileID"
+                [searchable]="true"
+                groupBy="directory"
+                placeholder="Select Phased Prox. VCF File"
+                [ngrxFormControlState]="(formState$ | async).controls.phased_proximal_variants_vcf">
+              </ng-select>
+              <span class="help-text">A VCF with phased proximal variant information.</span>
             </pvz-select-container>
 
             <pvz-select-container field-name="Prediction Algorithms">
               <ng-select
-                #algorithmsSelect
                 pvzSelect
                 [items]="algorithms$ | async"
                 [multiple]="true"
@@ -56,7 +69,6 @@
 
             <pvz-select-container field-name="Alleles">
               <ng-select
-                #allelesSelect
                 pvzSelect
                 [items]="alleles"
                 [multiple]="true"
@@ -87,7 +99,6 @@
 
             <pvz-select-container field-name="Epitope Lengths">
               <ng-select
-                #epitopeLengthsSelect
                 pvzSelect
                 [items]="epitopeLengths"
                 [multiple]="true"
@@ -137,6 +148,11 @@
             <pvz-checkbox-container field-name="Run NetHMC Stab?">
               <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
               <span class="help-text">Run NetMHCStabPan at the end of the pipeline</span>
+            </pvz-checkbox-container>
+
+            <pvz-checkbox-container field-name="Only process PASS variants">
+              <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.pass_only"/>
+              <span class="help-text">Process only variants that are PASS</span>
             </pvz-checkbox-container>
 
             <pvz-select-container field-name="Top Score Metric">

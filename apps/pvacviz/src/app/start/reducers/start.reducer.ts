@@ -22,6 +22,7 @@ import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 export interface StartFormGroupValue {
   'input': string;
+  'phased_proximal_variants_vcf': string,
   'samplename': string;
   'alleles': Boxed<string[]>;
   'prediction_algorithms': Boxed<string[]>;
@@ -30,6 +31,7 @@ export interface StartFormGroupValue {
   'net_chop_method': string;
   'net_chop_threshold': number;
   'netmhc_stab': boolean;
+  'pass_only': boolean;
   'top_score_metric': string;
   'binding_threshold': number;
   'allele_specific_cutoffs': boolean;
@@ -50,6 +52,7 @@ export interface StartFormGroupValue {
 }
 export const StartFormGroupInitialState = {
   'input': null,
+  'phased_proximal_variants_vcf': null,
   'samplename': '',
   'alleles': box([]),
   'prediction_algorithms': box([]),
@@ -58,6 +61,7 @@ export const StartFormGroupInitialState = {
   'net_chop_method': '',
   'net_chop_threshold': 0.5,
   'netmhc_stab': false,
+  'pass_only': false,
   'top_score_metric': 'median',
   'binding_threshold': 500,
   'allele_specific_cutoffs': false,
@@ -80,6 +84,7 @@ export const StartFormGroupInitialState = {
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
 export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
   input: validate(required),
+  phased_proximal_variants_vcf: validate(required),
   samplename: validate((value) => {
     return required(value);
   }, minLength(2)),
