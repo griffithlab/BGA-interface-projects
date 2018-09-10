@@ -121,13 +121,15 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
-    this.alleles$.subscribe((alleles) => {
-      if (this.concatAlleles) {
-        this.alleles = this.alleles.concat(alleles);
-      } else {
-        this.alleles = alleles;
-      }
-    });
+    this.subscriptions.push(
+      this.alleles$.subscribe((alleles) => {
+        if (this.concatAlleles) {
+          this.alleles = this.alleles.concat(alleles);
+        } else {
+          this.alleles = alleles;
+        }
+      })
+    );
 
     // observe prediction algorithms, enable/disable alleles select
     this.subscriptions.push(
@@ -243,8 +245,8 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     /*
-    * hook up form field interactions depending on ViewChild references
-    */
+     * hook up form field interactions depending on ViewChild references
+     */
     // this.subscriptions.push(
     //   this.algorithmsControl$.subscribe((ctrl) => {
     //     Promise.resolve(null).then(() => {

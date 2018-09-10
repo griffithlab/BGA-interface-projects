@@ -8,14 +8,14 @@
       <!-- <clr-icon *ngIf="isInvalid" class="clr-validate-icon" shape="exclamation-circle"></clr-icon> -->
     </div>
   </div>
-  <clr-control-error *ngIf="isInvalid">
+  <ng-container *ngIf="isInvalid">
     <pvz-validation-messages #messages
       [control]="ctrl"
       [errors]="ctrl.errors">
       <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
       <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} items.</pvz-validation-message>
     </pvz-validation-messages>
-  </clr-control-error>
+  </ng-container>
   <ng-content select="clr-control-error" *ngIf="isInvalid"></ng-content>
 </div>
 <div class="clr-col-xs-12 clr-col-sm-5 clr-col-form-help">

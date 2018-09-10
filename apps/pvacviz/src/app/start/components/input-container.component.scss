@@ -1,8 +1,5 @@
-/deep/ .help-text {
-  font-size: 13px;
-}
-
-clr-icon {
-  position: static;
-  margin-left: -1.25rem;
+::ng-deep {
+  .help-text {
+    font-size: 13px;
+  }
 }

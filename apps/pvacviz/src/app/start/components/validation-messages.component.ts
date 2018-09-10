@@ -9,9 +9,10 @@ import { FormControlState, ValidationErrors } from 'ngrx-forms';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+// TODO: figure out why the margin-left: 0 style is required to eliminate uncessary margin on error msgs
 @Component({
   selector: 'pvz-validation-message',
-  template: '<clr-control-error *ngIf="show"><ng-content></ng-content></clr-control-error>'
+  template: '<span class="clr-subtext" style="margin-left: 0" *ngIf="show"><ng-content></ng-content></span>'
 })
 export class ValidationMessageComponent {
   @Input() name: string;
