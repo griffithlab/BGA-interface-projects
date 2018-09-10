@@ -1,14 +1,17 @@
-/deep/ .pvz-select-wrapper {
-  position: relative;
-  white-space: nowrap;
-  width: 100%;
-  display: block;
-}
+::ng-deep {
+  .pvz-select-wrapper {
+    position: relative;
+    white-space: nowrap;
+    width: 100%;
+    display: block;
+  }
 
-.clr-error .pvz-select-wrapper::after {
-  right: 1.25rem;
-}
-/deep/ .clr-error ng-select .ng-select-container {
-  border-color: #dc3545;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
+  .clr-error ng-select .ng-select-container {
+    border-color: #dc3545;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px #fde6e8;
+  }
+
+  .clr-error .pvz-select-wrapper::after {
+    right: 1.25rem;
+  }
 }
