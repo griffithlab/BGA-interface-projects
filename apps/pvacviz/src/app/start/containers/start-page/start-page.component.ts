@@ -15,7 +15,7 @@ import {
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
+import { StartFormGroupValue } from '@pvz/start/models/start-form.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
@@ -27,7 +27,6 @@ import * as fromAllelesActions from '@pvz/start/actions/alleles.actions';
 import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
-// TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
 import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 
 @Component({
@@ -54,7 +53,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
   allelesLoading$: Observable<boolean>;
 
   predictionAlgorithms$: Observable<Array<string>>;
-  predictionAlgorithmsControl$: Observable<any>;
 
   epitopeLengthsControl$: Observable<any>;
 
@@ -97,21 +95,14 @@ export class StartPageComponent implements OnInit, OnDestroy {
       groupFiles(dir, inputs);
       return options;
     }));
-    this.algorithmsControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.prediction_algorithms));
+    this.algorithmsControl$ = store.pipe(select(fromStart.getFormControl('prediction_algorithms')));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
-    this.allelesControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.alleles));
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
     this.allelesLoading$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.loading));
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
-
-    // TODO move to start.reducer
-    const getPredictionAlgorithmsState = createSelector(
-      fromStart.getFormState,
-      form => form.state.value.prediction_algorithms
-    );
 
     // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
@@ -125,38 +116,24 @@ export class StartPageComponent implements OnInit, OnDestroy {
       })
     );
 
-    // observe prediction algorithms, enable/disable alleles select
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
+    const loadPageOnScrollStart = 35; // query next page of results on scroll start > alleles.length - loadPageOnScrollStart
     this.subscriptions.push(
-      this.algorithmsControl$.subscribe((ctrl) => {
-        if (ctrl.isInvalid) {
-          this.store.dispatch(new DisableAction('startForm.alleles'));
-        } else {
-          this.store.dispatch(new EnableAction('startForm.alleles'));
-        }
-      }));
-
-    // observe form prediction algorithms value
-    // dispatch LoadAlleles when prediction_algorithms changes
-    this.predictionAlgorithms$ = store.pipe(
-      select(getPredictionAlgorithmsState),
-      map(s => unbox(s)));
-
-    this.subscriptions.push(
-      this.predictionAlgorithms$.subscribe((algorithms) => {
+      this.algorithmsControl$.subscribe((control) => {
         this.concatAlleles = false;
-        if (algorithms.length > 0) {
+        if (control.isValid) {
           const req = {
-            prediction_algorithms: algorithms.join(','),
+            prediction_algorithms: unbox(control.value).join(','),
             page: 1,
             count: dropdownPageCount
           }
+          this.store.dispatch(new EnableAction('startForm.alleles'));
           this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
         } else {
+          this.store.dispatch(new DisableAction('startForm.alleles'));
           this.store.dispatch(new fromAllelesActions.ClearAlleles());
         }
       }));
-    const dropdownPageCount = 50; // items loaded per alleles select page-load
-    const loadPageOnScrollStart = 35; // query next page of results on scroll start > alleles.length - loadPageOnScrollStart
 
     // reload alleles when typeahead updates
     this.subscriptions.push(
@@ -164,10 +141,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
         debounceTime(100),
         distinctUntilChanged(),
         filter(term => term && term.length > 0),
-        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
-      ).subscribe(([term, meta, algorithms]) => {
+        withLatestFrom(this.allelesMeta$, this.algorithmsControl$)
+      ).subscribe(([term, meta, control]) => {
         const req = {
-          prediction_algorithms: algorithms,
+          prediction_algorithms: unbox(control.value).join(','),
           name_filter: term,
           page: 1,
           count: dropdownPageCount
@@ -182,16 +159,19 @@ export class StartPageComponent implements OnInit, OnDestroy {
         .merge(this.allelesScroll$, this.allelesScrollToEnd$)
         .pipe(
           throttleTime(100),
-          withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-        ).subscribe(([event, meta, algorithms, term]) => {
+          withLatestFrom(this.allelesMeta$, this.algorithmsControl$, this.allelesTypeahead$)
+        ).subscribe(([event, meta, control, term]) => {
           console.log('-=-=-=-==-=-=-=-=-=-=-=-=-=- alleles scroll');
           console.log(event.start ? 'scroll event' : 'scrollToEnd event');
           const req = {
-            prediction_algorithms: algorithms.join(','),
+            prediction_algorithms: unbox(control.value).join(','),
             name_filter: term,
-            page: meta.page + 1,
+            page: meta.current_page + 1,
             count: dropdownPageCount
           }
+          console.log(req);
+          console.log('this.alleles.length: ' + this.alleles.length);
+          console.log('event.start: ' + event.start);
           if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
             this.concatAlleles = true;
             this.store.dispatch(new fromAllelesActions.LoadAlleles(req))

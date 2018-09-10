@@ -1,8 +1,8 @@
 import { File } from './file.model';
 
 export interface ApiMeta {
-  page: string;
-  count: string;
+  current_page: string;
+  per_page: string;
   total_count: string;
   total_pages: string;
 }
