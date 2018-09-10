@@ -116,8 +116,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
       })
     );
 
-    const dropdownPageCount = 50; // items loaded per alleles select page-load
-    const loadPageOnScrollStart = 35; // query next page of results on scroll start > alleles.length - loadPageOnScrollStart
     this.subscriptions.push(
       this.algorithmsControl$.subscribe((control) => {
         this.concatAlleles = false;
@@ -153,7 +151,9 @@ export class StartPageComponent implements OnInit, OnDestroy {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }));
 
-    // load next page of alleles when dropdown scrolls near the end
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
+    const loadPageOnScrollStart = .35 // query next page of results on scroll start > alleles.length - Math.floor(alleles.length / loadPageOnScrollStart)
+    // load next page of alleles when dropdown scrolls past loadPageOnScrollStart% of allele length
     this.subscriptions.push(
       Observable
         .merge(this.allelesScroll$, this.allelesScrollToEnd$)
@@ -161,18 +161,14 @@ export class StartPageComponent implements OnInit, OnDestroy {
           throttleTime(100),
           withLatestFrom(this.allelesMeta$, this.algorithmsControl$, this.allelesTypeahead$)
         ).subscribe(([event, meta, control, term]) => {
-          console.log('-=-=-=-==-=-=-=-=-=-=-=-=-=- alleles scroll');
-          console.log(event.start ? 'scroll event' : 'scrollToEnd event');
           const req = {
             prediction_algorithms: unbox(control.value).join(','),
             name_filter: term,
             page: meta.current_page + 1,
             count: dropdownPageCount
           }
-          console.log(req);
-          console.log('this.alleles.length: ' + this.alleles.length);
-          console.log('event.start: ' + event.start);
-          if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
+          let loadAlleles = req.page <= meta.total_pages;
+          if (loadAlleles) {
             this.concatAlleles = true;
             this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
           }
