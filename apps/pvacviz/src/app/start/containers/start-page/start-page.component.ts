@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Observable, Subject, BehaviorSubject, Subscription } from 'rxjs/Rx';
 import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import {
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { StartFormGroupValue, StartFormGroupInitialState } from '@pvz/start/models/start-form.models';
+import { StartFormGroupValue } from '@pvz/start/models/start-form.models';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
@@ -27,7 +27,6 @@ import * as fromAllelesActions from '@pvz/start/actions/alleles.actions';
 import * as fromAlgorithmsActions from '@pvz/start/actions/algorithms.actions';
 import * as fromStartActions from '@pvz/start/actions/start.actions';
 import * as fromStart from '@pvz/start/reducers';
-// TODO: move SetSubmittedValueAction to start/reducers/index to be included with fromStart
 import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
 
 @Component({
@@ -35,13 +34,7 @@ import { INITIAL_STATE } from '@pvz/start/reducers/start.reducer';
   templateUrl: './start-page.component.html',
   styleUrls: ['./start-page.component.scss']
 })
-export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('sampleName') sampleName: any;
-  @ViewChild('inputVcf') inputVcf: NgSelectComponent;
-  @ViewChild('algorithmsSelect') algorithmsSelect: NgSelectComponent;
-  @ViewChild('allelesSelect') allelesSelect: NgSelectComponent;
-  @ViewChild('epitopesSelect') epitopesSelect: NgSelectComponent;
-
+export class StartPageComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   inputs$: Observable<Files>;
@@ -60,7 +53,6 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   allelesLoading$: Observable<boolean>;
 
   predictionAlgorithms$: Observable<Array<string>>;
-  predictionAlgorithmsControl$: Observable<any>;
 
   epitopeLengthsControl$: Observable<any>;
 
@@ -103,21 +95,14 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       groupFiles(dir, inputs);
       return options;
     }));
-    this.algorithmsControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.prediction_algorithms));
+    this.algorithmsControl$ = store.pipe(select(fromStart.getFormControl('prediction_algorithms')));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
-    this.allelesControl$ = store.pipe(select(fromStart.getFormControls), map(controls => controls.alleles));
     this.alleles$ = store.pipe(select(fromStart.getAllAlleles));
     this.allelesMeta$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.meta))
     this.allelesLoading$ = store.pipe(select(fromStart.getStartState), map(state => state.alleles.loading));
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
-
-    // TODO move to start.reducer
-    const getPredictionAlgorithmsState = createSelector(
-      fromStart.getFormState,
-      form => form.state.value.prediction_algorithms
-    );
 
     // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
@@ -131,38 +116,22 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
 
-    // observe prediction algorithms, enable/disable alleles select
     this.subscriptions.push(
-      this.algorithmsControl$.subscribe((ctrl) => {
-        if (ctrl.isInvalid) {
-          this.store.dispatch(new DisableAction('startForm.alleles'));
-        } else {
-          this.store.dispatch(new EnableAction('startForm.alleles'));
-        }
-      }));
-
-    // observe form prediction algorithms value
-    // dispatch LoadAlleles when prediction_algorithms changes
-    this.predictionAlgorithms$ = store.pipe(
-      select(getPredictionAlgorithmsState),
-      map(s => unbox(s)));
-
-    this.subscriptions.push(
-      this.predictionAlgorithms$.subscribe((algorithms) => {
+      this.algorithmsControl$.subscribe((control) => {
         this.concatAlleles = false;
-        if (algorithms.length > 0) {
+        if (control.isValid) {
           const req = {
-            prediction_algorithms: algorithms.join(','),
+            prediction_algorithms: unbox(control.value).join(','),
             page: 1,
             count: dropdownPageCount
           }
+          this.store.dispatch(new EnableAction('startForm.alleles'));
           this.store.dispatch(new fromAllelesActions.LoadAlleles(req));
         } else {
+          this.store.dispatch(new DisableAction('startForm.alleles'));
           this.store.dispatch(new fromAllelesActions.ClearAlleles());
         }
       }));
-    const dropdownPageCount = 50; // items loaded per alleles select page-load
-    const loadPageOnScrollStart = 35; // query next page of results on scroll start > alleles.length - loadPageOnScrollStart
 
     // reload alleles when typeahead updates
     this.subscriptions.push(
@@ -170,10 +139,10 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
         debounceTime(100),
         distinctUntilChanged(),
         filter(term => term && term.length > 0),
-        withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$)
-      ).subscribe(([term, meta, algorithms]) => {
+        withLatestFrom(this.allelesMeta$, this.algorithmsControl$)
+      ).subscribe(([term, meta, control]) => {
         const req = {
-          prediction_algorithms: algorithms,
+          prediction_algorithms: unbox(control.value).join(','),
           name_filter: term,
           page: 1,
           count: dropdownPageCount
@@ -182,23 +151,24 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }));
 
-    // load next page of alleles when dropdown scrolls near the end
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
+    const loadPageOnScrollStart = .35 // query next page of results on scroll start > alleles.length - Math.floor(alleles.length / loadPageOnScrollStart)
+    // load next page of alleles when dropdown scrolls past loadPageOnScrollStart% of allele length
     this.subscriptions.push(
       Observable
         .merge(this.allelesScroll$, this.allelesScrollToEnd$)
         .pipe(
           throttleTime(100),
-          withLatestFrom(this.allelesMeta$, this.predictionAlgorithms$, this.allelesTypeahead$)
-        ).subscribe(([event, meta, algorithms, term]) => {
-          console.log('-=-=-=-==-=-=-=-=-=-=-=-=-=- alleles scroll');
-          console.log(event.start ? 'scroll event' : 'scrollToEnd event');
+          withLatestFrom(this.allelesMeta$, this.algorithmsControl$, this.allelesTypeahead$)
+        ).subscribe(([event, meta, control, term]) => {
           const req = {
-            prediction_algorithms: algorithms.join(','),
+            prediction_algorithms: unbox(control.value).join(','),
             name_filter: term,
-            page: meta.page + 1,
+            page: meta.current_page + 1,
             count: dropdownPageCount
           }
-          if (req.page <= meta.total_pages && event.start > this.alleles.length - loadPageOnScrollStart) {
+          let loadAlleles = req.page <= meta.total_pages;
+          if (loadAlleles) {
             this.concatAlleles = true;
             this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
           }
@@ -241,26 +211,6 @@ export class StartPageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.store.dispatch(new fromInputsActions.LoadInputs());
     this.store.dispatch(new fromAlgorithmsActions.LoadAlgorithms());
-  }
-
-  ngAfterViewInit() {
-    /*
-     * hook up form field interactions depending on ViewChild references
-     */
-    // this.subscriptions.push(
-    //   this.algorithmsControl$.subscribe((ctrl) => {
-    //     Promise.resolve(null).then(() => {
-    //       // TMP TESTING
-    //       if (this.sampleName) {
-    //         console.log('found sampleName.');
-    //         console.log(this.sampleName);
-    //       }
-    //       // link ngrx-forms control isDisabled state to ng-select component's setDisabledState
-    //       if (this.algorithmsSelect) this.algorithmsSelect.setDisabledState(ctrl.isDisabled);
-    //       // link algorithms validity state to alleles enabled state
-    //       if (this.allelesSelect) this.allelesSelect.setDisabledState(ctrl.isInvalid);
-    //     });
-    //   }));
   }
 
   ngOnDestroy() {

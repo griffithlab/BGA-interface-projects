@@ -84,6 +84,11 @@ export const getFormControls = createSelector(
   form => form.state.controls
 );
 
+export const getFormControl = (field: string) => createSelector(
+  getFormControls,
+  controls => controls[field]
+);
+
 export const getSubmittedValue = createSelector(
   getStartState,
   state => state.form.submittedValue
