@@ -39,23 +39,21 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   inputs$: Observable<Files>;
 
-  algorithmsControl$: Observable<any>;
-  algorithms$: Observable<Array<Algorithm>>;
+  algorithmsControl$: Observable<any>; // algorithms ngrx-forms control
+  algorithms$: Observable<Array<Algorithm>>; // agorithms field values
 
-  allelesControl$: Observable<any>;
-  alleles$: Observable<Array<Allele>>;
-  alleles: Allele[] = []; // stores allele objects for alleles select
-  concatAlleles: boolean = false;
-  allelesTypeahead$ = new BehaviorSubject<string>('');
-  allelesScroll$ = new Subject<any>();
-  allelesScrollToEnd$ = new Subject<any>();
-  allelesMeta$: Observable<ApiMeta>;
-  allelesLoading$: Observable<boolean>;
+  allelesControl$: Observable<any>; // alleles ngrx-form controls
+  alleles$: Observable<Array<Allele>>; // alleles field values
+  alleles: Allele[] = []; // list of alleles displayed in alleles field dropdown
 
-  predictionAlgorithms$: Observable<Array<string>>;
+  concatAlleles: boolean = false; // flag determines if dropdown alleles list is replaced or appended
+  allelesTypeahead$ = new BehaviorSubject<string>(''); // subject provided to alleles ng-select, fires off typeahead keypresses
+  allelesScroll$ = new Subject<any>(); // subject provided to alleles ng-select, fires on all scroll events
+  allelesScrollToEnd$ = new Subject<any>(); // subject provided to alleles ng-select fires on scroll to end
+  allelesMeta$: Observable<ApiMeta>; // paging data from alleles endpoint request
+  allelesLoading$: Observable<boolean>; // flag communicated the state of alleles requests, used for loading indicator
 
-  epitopeLengthsControl$: Observable<any>;
-
+  // selector values
   netChopMethodOptions: {};
   topScoreMetricOptions: {};
   epitopeLengths: string[];
@@ -104,7 +102,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
-    // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
+    // concatAlleles flag, set by algorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
     this.subscriptions.push(
       this.alleles$.subscribe((alleles) => {
@@ -136,10 +134,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
     // reload alleles when typeahead updates
     this.subscriptions.push(
       this.allelesTypeahead$.pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        filter(term => term && term.length > 0),
-        withLatestFrom(this.allelesMeta$, this.algorithmsControl$)
+        debounceTime(100), // don't send requests for every keypress
+        distinctUntilChanged(), // don't send identical requests
+        filter(term => term && term.length > 0), // don't send empty requests
+        withLatestFrom(this.allelesMeta$, this.algorithmsControl$) // get metadata to provide paging information
       ).subscribe(([term, meta, control]) => {
         const req = {
           prediction_algorithms: unbox(control.value).join(','),
@@ -147,13 +145,12 @@ export class StartPageComponent implements OnInit, OnDestroy {
           page: 1,
           count: dropdownPageCount
         }
-        this.concatAlleles = false;
+        this.concatAlleles = false; // typeahead requests should replace all alleles in dropdown
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }));
 
-    const dropdownPageCount = 50; // items loaded per alleles select page-load
-    const loadPageOnScrollStart = .35 // query next page of results on scroll start > alleles.length - Math.floor(alleles.length / loadPageOnScrollStart)
     // load next page of alleles when dropdown scrolls past loadPageOnScrollStart% of allele length
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
     this.subscriptions.push(
       Observable
         .merge(this.allelesScroll$, this.allelesScrollToEnd$)
@@ -169,7 +166,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
           }
           let loadAlleles = req.page <= meta.total_pages;
           if (loadAlleles) {
-            this.concatAlleles = true;
+            this.concatAlleles = true; // scrolling alleles requests should append query results
             this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
           }
         }));
