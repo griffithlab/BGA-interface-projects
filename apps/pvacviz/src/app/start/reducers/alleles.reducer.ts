@@ -37,9 +37,8 @@ export const adapter: EntityAdapter<Allele> = createEntityAdapter<Allele>({
  * additional properties can also be defined.
  */
 export const initialMeta = {
-  page_count: null,
-  current_page: null,
-  per_page: null,
+  count: null,
+  page: null,
   total_count: null,
   total_pages: null
 };

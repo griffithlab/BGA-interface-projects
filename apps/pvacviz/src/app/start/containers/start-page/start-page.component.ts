@@ -140,7 +140,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
           const req = {
             prediction_algorithms: unbox(control.value).join(','),
             name_filter: term,
-            page: meta.current_page + 1,
+            page: meta.page + 1,
             count: dropdownPageCount
           }
           let loadAlleles = req.page <= meta.total_pages;
