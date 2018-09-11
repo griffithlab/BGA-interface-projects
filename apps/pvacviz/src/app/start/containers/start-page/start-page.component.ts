@@ -41,6 +41,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   algorithmsControl$: Observable<any>; // algorithms ngrx-forms control
   algorithms$: Observable<Array<Algorithm>>; // agorithms field values
+  selectedAlgorithms$: Observable<Array<Algorithm>>; // user-selected algorithms
 
   allelesControl$: Observable<any>; // alleles ngrx-form controls
   alleles$: Observable<Array<Allele>>; // alleles field values

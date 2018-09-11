@@ -90,7 +90,7 @@
                   </span>
                 </ng-template>
               </ng-select>
-              <span *ngIf="(algorithms$ | async).length === 0" class="form-control-notes">Select prediction algorithm(s) to populate and activate alleles selector.</span>
+              <span *ngIf="(algorithmsControl$ | async).isInvalid" class="form-control-notes">Select prediction algorithm(s) to populate and activate alleles selector.</span>
               <span class="help-text">
                 List of alleles against which to run the selected algorithms.
               </span>

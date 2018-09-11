@@ -84,7 +84,6 @@ export const StartFormGroupInitialState = {
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
 export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
   input: validate(required),
-  phased_proximal_variants_vcf: validate(required),
   samplename: validate((value) => {
     return required(value);
   }, minLength(2)),
