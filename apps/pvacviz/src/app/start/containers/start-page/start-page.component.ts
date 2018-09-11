@@ -15,7 +15,7 @@ import {
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { StartFormGroupValue } from '@pvz/start/models/start-form.models';
+import { StartFormGroupValue } from '@pvz/start/reducers/start.reducer';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
@@ -48,7 +48,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   concatAlleles: boolean = false; // flag determines if dropdown alleles list is replaced or appended
   allelesTypeahead$ = new BehaviorSubject<string>(''); // subject provided to alleles ng-select, fires off typeahead keypresses
-  allelesScroll$ = new Subject<any>(); // subject provided to alleles ng-select, fires on all scroll events
+  allelesScroll$ = new Subject<any>(); // subject provided to alleles ng-select, fires on all scroll events (not currently used)
   allelesScrollToEnd$ = new Subject<any>(); // subject provided to alleles ng-select fires on scroll to end
   allelesMeta$: Observable<ApiMeta>; // paging data from alleles endpoint request
   allelesLoading$: Observable<boolean>; // flag communicated the state of alleles requests, used for loading indicator
