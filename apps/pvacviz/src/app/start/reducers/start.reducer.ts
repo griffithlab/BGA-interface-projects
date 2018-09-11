@@ -21,70 +21,69 @@ import { StartActions, StartActionTypes, StartProcessSuccess, SetSubmittedValueA
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 
 export interface StartFormGroupValue {
-  'input': string;
-  'phased_proximal_variants_vcf': string,
-  'samplename': string;
+  'allele_specific_cutoffs': boolean;
   'alleles': Boxed<string[]>;
-  'prediction_algorithms': Boxed<string[]>;
+  'binding_threshold': number;
+  'downstream_sequence_length': number;
   'epitope_lengths': Boxed<string[]>;
-  'peptide_sequence_length': number;
+  'expn_val': number;
+  'fasta_size': number;
+  'force': boolean;
+  'iedb_install_dir': string;
+  'iedb_retries': number;
+  'input': string;
+  'keep_tmp_files': boolean;
+  'minimum_fold_change': number;
   'net_chop_method': string;
   'net_chop_threshold': number;
   'netmhc_stab': boolean;
-  'pass_only': boolean;
-  'top_score_metric': string;
-  'binding_threshold': number;
-  'allele_specific_cutoffs': boolean;
-  'minimum_fold_change': number;
-  'expn_val': number;
   'normal_cov': number;
-  'tdna_cov': number;
-  'trna_cov': number;
   'normal_vaf': number;
+  'pass_only': boolean;
+  'peptide_sequence_length': number;
+  'phased_proximal_variants_vcf': string,
+  'prediction_algorithms': Boxed<string[]>;
+  'samplename': string;
+  'tdna_cov': number;
   'tdna_vaf': number;
+  'top_score_metric': string;
+  'trna_cov': number;
   'trna_vaf': number;
-  'fasta_size': number;
-  'iedb_retries': number;
-  'downstream_sequence_length': number;
-  'iedb_install_dir': string;
-  'keep_tmp_files': boolean;
-  'force': boolean;
 }
 export const StartFormGroupInitialState = {
-  'input': null,
-  'phased_proximal_variants_vcf': null,
-  'samplename': '',
+  'allele_specific_cutoffs': false,
   'alleles': box([]),
-  'prediction_algorithms': box([]),
+  'binding_threshold': 500,
+  'downstream_sequence_length': 1000,
   'epitope_lengths': box(['10']),
-  'peptide_sequence_length': 21,
+  'expn_val': 1,
+  'fasta_size': 200,
+  'force': false,
+  'iedb_install_dir': '',
+  'iedb_retries': 5,
+  'input': null,
+  'keep_tmp_files': false,
+  'minimum_fold_change': 0,
   'net_chop_method': '',
   'net_chop_threshold': 0.5,
   'netmhc_stab': false,
-  'pass_only': false,
-  'top_score_metric': 'median',
-  'binding_threshold': 500,
-  'allele_specific_cutoffs': false,
-  'minimum_fold_change': 0,
-  'expn_val': 1,
   'normal_cov': 5,
-  'tdna_cov': 5,
-  'trna_cov': 5,
   'normal_vaf': 5,
+  'pass_only': false,
+  'peptide_sequence_length': 21,
+  'phased_proximal_variants_vcf': null,
+  'prediction_algorithms': box([]),
+  'samplename': '',
+  'tdna_cov': 5,
   'tdna_vaf': 5,
+  'top_score_metric': 'median',
+  'trna_cov': 5,
   'trna_vaf': 5,
-  'fasta_size': 200,
-  'iedb_retries': 5,
-  'downstream_sequence_length': 1000,
-  'iedb_install_dir': '',
-  'keep_tmp_files': false,
-  'force': false,
 }
 // TODO keep checking for v3.1.0, which adds transparent validation for boxed values:
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
 export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
   input: validate(required),
-  phased_proximal_variants_vcf: validate(required),
   samplename: validate((value) => {
     return required(value);
   }, minLength(2)),
@@ -94,22 +93,7 @@ export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
     return minLength(1)(unbox(value))
   }),
   alleles: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
-  epitope_lengths: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
-  peptide_sequence_length: validate(required),
-  net_chop_threshold: validate(required),
-  top_score_metric: validate(required),
-  binding_threshold: validate(required),
-  minimum_fold_change: validate(required),
-  expn_val: validate(required),
-  normal_cov: validate(required),
-  tdna_cov: validate(required),
-  trna_cov: validate(required),
-  normal_vaf: validate(required),
-  tdna_vaf: validate(required),
-  trna_vaf: validate(required),
-  fasta_size: validate(required),
-  iedb_retries: validate(required, lessThanOrEqualTo(100), greaterThan(0)),
-  downstream_sequence_length: validate(required),
+  epitope_lengths: validate(value => required(unbox(value)), value => minLength(1)(unbox(value)))
 });
 
 export const FORM_ID = 'startForm';

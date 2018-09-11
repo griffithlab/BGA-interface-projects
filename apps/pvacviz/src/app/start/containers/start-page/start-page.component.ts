@@ -15,7 +15,7 @@ import {
   unbox
 } from 'ngrx-forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { StartFormGroupValue } from '@pvz/start/models/start-form.models';
+import { StartFormGroupValue } from '@pvz/start/reducers/start.reducer';
 
 import { File, Files } from '@pvz/core/models/file.model';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
@@ -39,23 +39,22 @@ export class StartPageComponent implements OnInit, OnDestroy {
 
   inputs$: Observable<Files>;
 
-  algorithmsControl$: Observable<any>;
-  algorithms$: Observable<Array<Algorithm>>;
+  algorithmsControl$: Observable<any>; // algorithms ngrx-forms control
+  algorithms$: Observable<Array<Algorithm>>; // agorithms field values
+  selectedAlgorithms$: Observable<Array<Algorithm>>; // user-selected algorithms
 
-  allelesControl$: Observable<any>;
-  alleles$: Observable<Array<Allele>>;
-  alleles: Allele[] = []; // stores allele objects for alleles select
-  concatAlleles: boolean = false;
-  allelesTypeahead$ = new BehaviorSubject<string>('');
-  allelesScroll$ = new Subject<any>();
-  allelesScrollToEnd$ = new Subject<any>();
-  allelesMeta$: Observable<ApiMeta>;
-  allelesLoading$: Observable<boolean>;
+  allelesControl$: Observable<any>; // alleles ngrx-form controls
+  alleles$: Observable<Array<Allele>>; // alleles field values
+  alleles: Allele[] = []; // list of alleles displayed in alleles field dropdown
 
-  predictionAlgorithms$: Observable<Array<string>>;
+  concatAlleles: boolean = false; // flag determines if dropdown alleles list is replaced or appended
+  allelesTypeahead$ = new BehaviorSubject<string>(''); // subject provided to alleles ng-select, fires off typeahead keypresses
+  allelesScroll$ = new Subject<any>(); // subject provided to alleles ng-select, fires on all scroll events (not currently used)
+  allelesScrollToEnd$ = new Subject<any>(); // subject provided to alleles ng-select fires on scroll to end
+  allelesMeta$: Observable<ApiMeta>; // paging data from alleles endpoint request
+  allelesLoading$: Observable<boolean>; // flag communicated the state of alleles requests, used for loading indicator
 
-  epitopeLengthsControl$: Observable<any>;
-
+  // selector values
   netChopMethodOptions: {};
   topScoreMetricOptions: {};
   epitopeLengths: string[];
@@ -72,29 +71,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.submittedValue$ = store.pipe(select(fromStart.getSubmittedValue),
       filter(v => v !== undefined && v !== null));
 
-    // TODO do this grouping in the service or create a new selector in start.reducer
-    this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
-      let options = [];
-      let dir = '~pVAC-Seq';
-
-      function groupFiles(dir, contents) {
-        contents.forEach((item) => {
-          if (item.type === "file") {
-            let option = {
-              display_name: item.display_name,
-              fileID: item.fileID,
-              directory: dir
-            }
-            options.push(option);
-          } else if (item.type === "directory") {
-            dir = dir + '/' + item.display_name;
-            groupFiles(dir, item.contents);
-          }
-        })
-      }
-      groupFiles(dir, inputs);
-      return options;
-    }));
+    this.inputs$ = store.pipe(select(fromStart.getAllInputsFlattened));
     this.algorithmsControl$ = store.pipe(select(fromStart.getFormControl('prediction_algorithms')));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
@@ -104,7 +81,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.formPost$ = store.pipe(select(fromStart.getStartState), map(state => state.post));
     this.newProcessId$ = store.pipe(select(fromStart.getStartState), map(state => state.post.processid));
 
-    // concatAlleles flag, set by predictionAlgorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
+    // concatAlleles flag, set by algorithms$, allelesTypeahead$, and allelesScrollToEnd$ subscriptions
     // scrollToEnd required concat, others replacement of alleles array
     this.subscriptions.push(
       this.alleles$.subscribe((alleles) => {
@@ -136,10 +113,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
     // reload alleles when typeahead updates
     this.subscriptions.push(
       this.allelesTypeahead$.pipe(
-        debounceTime(100),
-        distinctUntilChanged(),
-        filter(term => term && term.length > 0),
-        withLatestFrom(this.allelesMeta$, this.algorithmsControl$)
+        debounceTime(100), // wait 1/10th second for user to stop typing before sending requests
+        distinctUntilChanged(), // don't send identical requests
+        filter(term => term && term.length > 0), // don't send undefined or empty requests
+        withLatestFrom(this.allelesMeta$, this.algorithmsControl$) // get metadata and alleles to construct request
       ).subscribe(([term, meta, control]) => {
         const req = {
           prediction_algorithms: unbox(control.value).join(','),
@@ -147,13 +124,12 @@ export class StartPageComponent implements OnInit, OnDestroy {
           page: 1,
           count: dropdownPageCount
         }
-        this.concatAlleles = false;
+        this.concatAlleles = false; // typeahead requests should replace all alleles in dropdown
         this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
       }));
 
-    const dropdownPageCount = 50; // items loaded per alleles select page-load
-    const loadPageOnScrollStart = .35 // query next page of results on scroll start > alleles.length - Math.floor(alleles.length / loadPageOnScrollStart)
     // load next page of alleles when dropdown scrolls past loadPageOnScrollStart% of allele length
+    const dropdownPageCount = 50; // items loaded per alleles select page-load
     this.subscriptions.push(
       Observable
         .merge(this.allelesScroll$, this.allelesScrollToEnd$)
@@ -169,7 +145,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
           }
           let loadAlleles = req.page <= meta.total_pages;
           if (loadAlleles) {
-            this.concatAlleles = true;
+            this.concatAlleles = true; // scrolling alleles requests should append query results
             this.store.dispatch(new fromAllelesActions.LoadAlleles(req))
           }
         }));
@@ -193,14 +169,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
       this.formState$.pipe(
         take(1),
         map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
-  }
-
-  selectTest(action) {
-    if (action === 'disable') {
-      this.store.dispatch(new DisableAction('startForm.input'));
-    } else {
-      this.store.dispatch(new EnableAction('startForm.input'));
-    }
   }
 
   reset() {

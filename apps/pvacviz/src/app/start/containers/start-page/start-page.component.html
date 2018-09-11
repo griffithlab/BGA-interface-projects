@@ -11,7 +11,7 @@
   [ngrxFormState]="formState$ | async" (submit)="onSubmit()">
   <clr-tabs>
     <clr-tab>
-      <button clrTabLink>Inputs, Algorithms &amp; Alleles</button>
+      <button clrTabLink>Required Parameters</button>
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
@@ -34,21 +34,6 @@
                 [ngrxFormControlState]="(formState$ | async).controls.input">
               </ng-select>
               <span class="help-text">Input VCF</span>
-            </pvz-select-container>
-
-            <pvz-select-container field-name="Phased Prox. VCF">
-              <ng-select
-                pvzSelect
-                [items]="inputs$ | async"
-                [clearable]="false"
-                bindLabel="display_name"
-                bindValue="fileID"
-                [searchable]="true"
-                groupBy="directory"
-                placeholder="Select Phased Prox. VCF File"
-                [ngrxFormControlState]="(formState$ | async).controls.phased_proximal_variants_vcf">
-              </ng-select>
-              <span class="help-text">A VCF with phased proximal variant information.</span>
             </pvz-select-container>
 
             <pvz-select-container field-name="Prediction Algorithms">
@@ -90,7 +75,7 @@
                   </span>
                 </ng-template>
               </ng-select>
-              <span *ngIf="(algorithms$ | async).length === 0" class="form-control-notes">Select prediction algorithm(s) to populate and activate alleles selector.</span>
+              <span *ngIf="(algorithmsControl$ | async).isInvalid" class="form-control-notes">Select prediction algorithm(s) to populate and activate alleles selector.</span>
               <span class="help-text">
                 List of alleles against which to run the selected algorithms.
               </span>
@@ -115,10 +100,25 @@
       </clr-tab-content>
     </clr-tab>
     <clr-tab>
-      <button clrTabLink>Settings</button>
+      <button clrTabLink>Optional Parameters</button>
       <clr-tab-content *clrIfActive>
         <div class="tab-bg">
           <section class="form-block">
+
+            <pvz-select-container field-name="Phased Prox. VCF">
+              <ng-select
+                pvzSelect
+                [items]="inputs$ | async"
+                [clearable]="false"
+                bindLabel="display_name"
+                bindValue="fileID"
+                [searchable]="true"
+                groupBy="directory"
+                placeholder="Select Phased Prox. VCF File"
+                [ngrxFormControlState]="(formState$ | async).controls.phased_proximal_variants_vcf">
+              </ng-select>
+              <span class="help-text">A VCF with phased proximal variant information.</span>
+            </pvz-select-container>
 
             <pvz-input-container field-name="Peptide Sequence Length" required="true">
               <input pvzInput type="text" class="clr-input" size="32"
@@ -255,25 +255,33 @@
 
   <section class="form-block">
     <div class="row">
-      <div class="col-sm-3">
-        <button class="btn btn-block" [ngClass]="{'btn-primary': (formPost$ | async).error == false, 'btn-warning': (formPost$ | async).error == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
-          <!-- default play icon -->
-          <clr-icon shape="play" size="18" *ngIf="(formPost$ | async).submitting == false && (formPost$ | async).submitted == false"></clr-icon>
-          <!-- spinner while submitting -->
-          <span class="spinner spinner-inline" *ngIf="(formPost$ | async).submitting == true"></span>
-          <!-- successful submit -->
-          <clr-icon shape="check-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == false"></clr-icon>
-          <!-- submit error -->
-          <clr-icon shape="exclamation-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == true"></clr-icon>
-          Submit Process
-        </button>
-      </div>
-      <div class="col-sm-9">
+      <div class="col-sm-6">
         <!-- form incomplete -->
         <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false" *ngIf="(formState$ | async).isDirty && (formState$ | async).isInvalid">
           <div class="alert-item">
             <span class="alert-text">
-              To submit, please ensure that all required fields are properly specified.
+              To submit, please ensure that all required paramters are properly specified:
+              <ul>
+                <li *ngIf="(formState$ | async).errors._samplename?.required">
+                  Sample Name is required.
+                </li>
+                <li *ngIf="(formState$ | async).errors._samplename?.minLength">
+                  Sample Name must be more than {{ (formState$ | async).errors._samplename?.minLength.minLength }} characters in length.
+                </li>
+                <li *ngIf="(formState$ | async).errors._input?.required">
+                  Input VCF is required.
+                </li>
+                <li *ngIf="(formState$ | async).errors._prediction_algorithms?.required">
+                  At least one Prediction Algorithm must be specified.
+                </li>
+                <li *ngIf="(formState$ | async).errors._alleles?.required">
+                  At least one Allele must be specified.
+                </li>
+                <li *ngIf="(formState$ | async).errors._epitope_lengths?.required">
+                  At least one Epitope Length must be specified.
+                </li>
+
+              </ul>
             </span>
           </div>
         </clr-alert>
@@ -296,79 +304,43 @@
           </div>
         </clr-alert>
       </div>
-    </div>
-    <div class="row" >
-      <div class="col-sm-12" >
-        <button type="button" class="btn btn-primary"
+      <div class="col-sm-2" >
+        <button type="button" class="btn btn-primary btn-block"
           [disabled]="(formState$ | async).isPristine
           && (formState$ | async).isUntouched
           && (formState$ | async).isUnsubmitted"
           (click)="reset()">
           Reset
         </button>
-        <button type="button" class="btn btn-primary"
-          (click)="selectTest('disable')">
-          Disable Input VCF
-        </button>
-        <button type="button" class="btn btn-primary"
-          (click)="selectTest('enable')">
-          Enable Input VCF
+      </div>
+      <div class="col-sm-4">
+        <button class="btn btn-block" [ngClass]="{'btn-primary': (formPost$ | async).error == false, 'btn-warning': (formPost$ | async).error == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
+          <!-- default play icon -->
+          <clr-icon shape="play" size="18" *ngIf="(formPost$ | async).submitting == false && (formPost$ | async).submitted == false"></clr-icon>
+          <!-- spinner while submitting -->
+          <span class="spinner spinner-inline" *ngIf="(formPost$ | async).submitting == true"></span>
+          <!-- successful submit -->
+          <clr-icon shape="check-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == false"></clr-icon>
+          <!-- submit error -->
+          <clr-icon shape="exclamation-circle" size="18" *ngIf="(formPost$ | async).submitted == true && (formPost$ | async).error == true"></clr-icon>
+          Submit Process
         </button>
       </div>
     </div>
   </section>
 </form>
-<div class="row">
-  <div class="col-sm-6">
-    <p>formState$</p>
-    <prettyjson [obj]="(formState$ | async) | json:2" [style.min-height]="800">
-    </prettyjson>
-  </div>
-  <div class="col-sm-6">
-    <p>formState$.controls.iedb_retries:</p>
-    <prettyjson [obj]="(formState$ | async).controls.iedb_retries | json:2" [style.min-height]="800"></prettyjson>
-    <p>formState$.controls.samplename:</p>
-    <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson>
-    <p>formState$.controls.prediction_algorithms:</p>
-    <prettyjson [obj]="(formState$ | async).controls.prediction_algorithms | json:2" [style.min-height]="800"></prettyjson>
-  </div>
-</div>
-
-<!-- FORM ROW TEMPLATES -->
-
-<!-- text input -->
-<ng-template #inputRow
-  let-control="control"
-  let-fieldName="fieldName"
-  let-helpText="helpText"
-  let-required="required">
-  <div class="form-group row">
-    <div class="col-xs-12 col-sm-3 col-form-label">
-      <label for="{{control.id}}" [ngClass]="{ 'required': required === true }">{{ fieldName }}</label>
-    </div>
-    <div class="col-xs-12 col-sm-4">
-      <label for="control"
-        role="tooltip"
-        [class.invalid]="control.isInvalid && control.isTouched"
-        class="tooltip tooltip-validation tooltip-md">
-
-        <input type="text" id="{{control.id}}"
-          size="32"
-          [disabled]="control.isDisabled"
-          [ngrxFormControlState]="control">
-
-        <span class="tooltip-content">
-          <pvz-validation-messages #messages
-            [control]="control"
-            [errors]="control.errors">
-            <pvz-validation-message name="required">{{ fieldName }} is required.</pvz-validation-message>
-            <pvz-validation-message name="minLength">{{ fieldName }} must contain at least {{ messages.errors.minLength?.minLength }} characters.</pvz-validation-message>
-          </pvz-validation-messages>
-        </span>
-      </label>
-    </div>
-    <div class="col-xs-12 col-sm-5 col-form-help">
-      {{ helpText }}
-    </div>
-  </div>
-</ng-template>
+<!-- <div class="row"> -->
+<!-- <div class="col-sm-6"> -->
+<!-- <p>formState$</p> -->
+<!-- <prettyjson [obj]="(formState$ | async) | json:2" [style.min-height]="800"> -->
+<!-- </prettyjson> -->
+<!-- </div> -->
+<!-- <div class="col-sm-6"> -->
+<!-- <p>formState$.controls.iedb_retries:</p> -->
+<!-- <prettyjson [obj]="(formState$ | async).controls.iedb_retries | json:2" [style.min-height]="800"></prettyjson> -->
+<!-- <p>formState$.controls.samplename:</p> -->
+<!-- <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson> -->
+<!-- <p>formState$.controls.prediction_algorithms:</p> -->
+<!-- <prettyjson [obj]="(formState$ | async).controls.prediction_algorithms | json:2" [style.min-height]="800"></prettyjson> -->
+<!-- </div> -->
+<!-- </div> -->

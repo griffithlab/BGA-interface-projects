@@ -4,7 +4,7 @@ import {
   StartFormGroupValue,
   StartFormGroupInitialState,
   updateStartFormGroup
-} from '@pvz/start/models/start-form.models';
+} from '@pvz/start/reducers/start.reducer';
 import { ProcessParameters } from '@pvz/core/models/process-parameters.model';
 import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 export enum StartActionTypes {

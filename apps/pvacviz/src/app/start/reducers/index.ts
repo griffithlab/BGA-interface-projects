@@ -49,16 +49,6 @@ export const reducers = {
 
 export const getStartState = createFeatureSelector<StartState>('start');
 
-/**
- * Every reducer module exports selector functions, however child reducers
- * have no knowledge of the overall state tree. To make them usable, we
- * need to make new selectors that wrap them.
- *
- * The createSelector function creates very efficient selectors that are memoized and
- * only recompute when arguments change. The created selectors can also be composed
- * together to select different pieces of state.
- */
-
 export const getInputsState = createSelector(
   getStartState,
   state => state.inputs
@@ -72,31 +62,6 @@ export const getAlgorithmsState = createSelector(
 export const getAllelesState = createSelector(
   getStartState,
   state => state.alleles
-);
-
-export const getFormState = createSelector(
-  getStartState,
-  state => state.form
-);
-
-export const getFormControls = createSelector(
-  getFormState,
-  form => form.state.controls
-);
-
-export const getFormControl = (field: string) => createSelector(
-  getFormControls,
-  controls => controls[field]
-);
-
-export const getSubmittedValue = createSelector(
-  getStartState,
-  state => state.form.submittedValue
-);
-
-export const getPostState = createSelector(
-  getStartState,
-  state => state.post
 );
 
 /**
@@ -122,3 +87,67 @@ export const {
   selectEntities: getAlleles,
   selectAll: getAllAlleles,
 } = fromAlleles.adapter.getSelectors(getAllelesState);
+
+/**
+ * Every reducer module exports selector functions, however child reducers
+ * have no knowledge of the overall state tree. To make them usable, we
+ * need to make new selectors that wrap them.
+ *
+ * The createSelector function creates very efficient selectors that are memoized and
+ * only recompute when arguments change. The created selectors can also be composed
+ * together to select different pieces of state.
+ */
+
+export const getFormState = createSelector(
+  getStartState,
+  state => state.form
+);
+
+// if you need to get a single control, don't pipe getFormControls and then map
+// a function that selects your control - instead use the getFormControl function
+// as it will provide a memoized selector for the control
+export const getFormControls = createSelector(
+  getFormState,
+  form => form.state.controls
+);
+
+export const getFormControl = (field: string) => createSelector(
+  getFormControls,
+  controls => controls[field]
+);
+
+export const getSubmittedValue = createSelector(
+  getStartState,
+  state => state.form.submittedValue
+);
+
+export const getPostState = createSelector(
+  getStartState,
+  state => state.post
+);
+
+export const getAllInputsFlattened = createSelector(
+  getAllInputs,
+  (inputs) => {
+    let flatInputs = [];
+    let dir = '~pVAC-Seq';
+
+    function groupFiles(dir, contents) {
+      contents.forEach((item) => {
+        if (item.type === "file") {
+          let option = {
+            display_name: item.display_name,
+            fileID: item.fileID,
+            directory: dir
+          }
+          flatInputs.push(option);
+        } else if (item.type === "directory") {
+          dir = dir + '/' + item.display_name;
+          groupFiles(dir, item.contents);
+        }
+      })
+    }
+    groupFiles(dir, inputs);
+    return flatInputs;
+  }
+)
