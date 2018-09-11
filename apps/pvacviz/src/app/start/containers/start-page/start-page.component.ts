@@ -70,29 +70,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.submittedValue$ = store.pipe(select(fromStart.getSubmittedValue),
       filter(v => v !== undefined && v !== null));
 
-    // TODO do this grouping in the service or create a new selector in start.reducer
-    this.inputs$ = store.pipe(select(fromStart.getAllInputs), map((inputs) => {
-      let options = [];
-      let dir = '~pVAC-Seq';
-
-      function groupFiles(dir, contents) {
-        contents.forEach((item) => {
-          if (item.type === "file") {
-            let option = {
-              display_name: item.display_name,
-              fileID: item.fileID,
-              directory: dir
-            }
-            options.push(option);
-          } else if (item.type === "directory") {
-            dir = dir + '/' + item.display_name;
-            groupFiles(dir, item.contents);
-          }
-        })
-      }
-      groupFiles(dir, inputs);
-      return options;
-    }));
+    this.inputs$ = store.pipe(select(fromStart.getAllInputsFlattened));
     this.algorithmsControl$ = store.pipe(select(fromStart.getFormControl('prediction_algorithms')));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
@@ -134,10 +112,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
     // reload alleles when typeahead updates
     this.subscriptions.push(
       this.allelesTypeahead$.pipe(
-        debounceTime(100), // don't send requests for every keypress
+        debounceTime(100), // wait 1/10th second for user to stop typing before sending requests
         distinctUntilChanged(), // don't send identical requests
-        filter(term => term && term.length > 0), // don't send empty requests
-        withLatestFrom(this.allelesMeta$, this.algorithmsControl$) // get metadata to provide paging information
+        filter(term => term && term.length > 0), // don't send undefined or empty requests
+        withLatestFrom(this.allelesMeta$, this.algorithmsControl$) // get metadata and alleles to construct request
       ).subscribe(([term, meta, control]) => {
         const req = {
           prediction_algorithms: unbox(control.value).join(','),
