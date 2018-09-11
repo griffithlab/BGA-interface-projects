@@ -69,7 +69,7 @@ export const StartFormGroupInitialState = {
   'netmhc_stab': false,
   'normal_cov': 5,
   'normal_vaf': 5,
-  'pass-only': false,
+  'pass_only': false,
   'peptide_sequence_length': 21,
   'phased_proximal_variants_vcf': null,
   'prediction_algorithms': box([]),
