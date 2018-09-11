@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
 import { Process } from '@pvz/core/models/process.model';
+import { ApiMeta } from '@pvz/core/models/api-responses.model';
 import { Parameters } from '@pvz/core/models/parameters.model';
 
 import * as processes from '@pvz/manage/actions/manage.actions';
@@ -27,7 +28,7 @@ import * as fromProcesses from '@pvz/reducers';
 })
 export class ProcessTableComponent implements OnInit {
   @Input() processes: Process[];
-
+  @Input() paging: ApiMeta;
   ascSort;
   descSort;
 
@@ -38,11 +39,6 @@ export class ProcessTableComponent implements OnInit {
     this.descSort = SortOrder.Desc;
 
     console.log(this.processes);
-
-    // this.processes = this.processes.map((process) => {
-    //   return process;
-    // })
-
   }
 
   ngOnInit() {

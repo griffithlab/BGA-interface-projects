@@ -18,7 +18,7 @@ import {
 
 import { Process } from '../models/process.model';
 import { ProcessService } from '../services/process.service';
-
+import { ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
 import {
   ProcessActionTypes,
   ProcessActions,
@@ -63,7 +63,7 @@ export class ProcessEffects {
       return this.processes
         .query()
         .pipe(
-          map((processes: Process[]) => new LoadSuccess(processes)),
+          map((response: ApiProcessesResponse) => new LoadSuccess(response)),
           catchError(err => of(new LoadFail(err)))
         );
     })

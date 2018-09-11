@@ -1,4 +1,5 @@
 import { File } from './file.model';
+import { Process } from './process.model';
 
 export interface ApiMeta {
   page: string;
@@ -6,6 +7,13 @@ export interface ApiMeta {
   total_count: string;
   total_pages: string;
 }
+
+export const initialMeta = {
+  count: null,
+  page: null,
+  total_count: null,
+  total_pages: null
+};
 
 export interface ApiStartResponse {
   status: number;
@@ -26,6 +34,11 @@ export interface Allele {
 export interface ApiAllelesResponse {
   _meta: ApiMeta;
   result: Allele[];
+}
+
+export interface ApiProcessesResponse {
+  _meta: ApiMeta;
+  result: Process[];
 }
 
 export interface ApiInputResponse extends Array<File> { }

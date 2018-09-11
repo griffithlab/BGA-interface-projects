@@ -15,7 +15,10 @@
 <div class="page-content">
   <div class="row">
     <div class="col-xs-12">
-      <pvz-process-table [processes]="processes$ | async"></pvz-process-table>
+      <pvz-process-table
+        [processes]="processes$ | async"
+        [paging]="processesMeta$ | async">
+      </pvz-process-table>
     </div>
   </div>
 </div>

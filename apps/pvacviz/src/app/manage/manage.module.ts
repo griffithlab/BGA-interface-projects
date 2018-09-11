@@ -6,6 +6,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MomentModule } from 'ngx-moment';
 
+// misc
+import { PrettyJsonModule } from 'angular2-prettyjson';
+
 import { ProcessEffects } from './effects/manage.effects';
 import { reducers } from './reducers';
 
@@ -19,6 +22,7 @@ import { ProcessTableComponent } from './components/process-table/process-table.
     ClarityModule,
     MomentModule,
     ManageRoutingModule,
+    PrettyJsonModule
   ],
   declarations: [ManagePageComponent, ProcessPageComponent, ProcessTableComponent]
 })

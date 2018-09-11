@@ -16,7 +16,7 @@ import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.act
 export interface State extends EntityState<Process> {
   loading: boolean;
   loaded: boolean;
-  error: string;
+  error: boolean;
 }
 
 /**
@@ -40,7 +40,7 @@ export const adapter: EntityAdapter<Process> = createEntityAdapter<Process>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  error: ''
+  error: false
 });
 
 export function reducer(state = initialState, action: ManageActions): State {
