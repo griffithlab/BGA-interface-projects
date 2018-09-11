@@ -171,14 +171,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
         map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
   }
 
-  selectTest(action) {
-    if (action === 'disable') {
-      this.store.dispatch(new DisableAction('startForm.input'));
-    } else {
-      this.store.dispatch(new EnableAction('startForm.input'));
-    }
-  }
-
   reset() {
     this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this.store.dispatch(new ResetAction(INITIAL_STATE.id));

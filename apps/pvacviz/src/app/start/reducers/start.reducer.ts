@@ -93,22 +93,7 @@ export const validateAndUpdateFormState = updateGroup<StartFormGroupValue>({
     return minLength(1)(unbox(value))
   }),
   alleles: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
-  epitope_lengths: validate(value => required(unbox(value)), value => minLength(1)(unbox(value))),
-  peptide_sequence_length: validate(required),
-  net_chop_threshold: validate(required),
-  top_score_metric: validate(required),
-  binding_threshold: validate(required),
-  minimum_fold_change: validate(required),
-  expn_val: validate(required),
-  normal_cov: validate(required),
-  tdna_cov: validate(required),
-  trna_cov: validate(required),
-  normal_vaf: validate(required),
-  tdna_vaf: validate(required),
-  trna_vaf: validate(required),
-  fasta_size: validate(required),
-  iedb_retries: validate(required, lessThanOrEqualTo(100), greaterThan(0)),
-  downstream_sequence_length: validate(required),
+  epitope_lengths: validate(value => required(unbox(value)), value => minLength(1)(unbox(value)))
 });
 
 export const FORM_ID = 'startForm';
