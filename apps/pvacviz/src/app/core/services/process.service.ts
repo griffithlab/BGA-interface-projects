@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Process } from '@pvz/core/models/process.model';
-import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
+import { ApiStartResponse, ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
 
 import { ConfigService } from './config.service';
 
@@ -19,10 +19,10 @@ export class ProcessService {
     this.stagingPath = conf.apiUrl() + '/staging';
   }
 
-  query(): Observable<Process[]> {
+  query(): Observable<ApiProcessesResponse> {
     return this.http
-      .get<{ result: Process[] }>(this.processesPath)
-      .pipe(map(processes => processes.result || []));
+      .get<ApiProcessesResponse>(this.processesPath)
+      .pipe(map(processes => processes));
   }
 
   get(id): Observable<Process> {
