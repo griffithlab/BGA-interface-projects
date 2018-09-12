@@ -4,6 +4,7 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import 'rxjs/add/observable/of';
 import { Process } from '../models/process.model';
 import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
+import { ApiMeta, initialMeta } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -15,7 +16,9 @@ import { ProcessActions, ProcessActionTypes } from '../actions/process.actions';
 export interface State extends EntityState<Process> {
   loading: boolean;
   loaded: boolean;
-  error: string;
+  error: boolean;
+  errorMessage?: string;
+  meta: ApiMeta;
 }
 
 /**
@@ -39,7 +42,8 @@ export const adapter: EntityAdapter<Process> = createEntityAdapter<Process>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  error: ''
+  error: false,
+  meta: initialMeta
 });
 
 export function reducer(state = initialState, action: ProcessActions): State {
@@ -60,9 +64,11 @@ export function reducer(state = initialState, action: ProcessActions): State {
          * the collection is to be sorted, the adapter will
          * sort each record upon entry into the sorted array.
          */
-        ...adapter.addMany(action.payload, state),
+        ...adapter.addAll(action.payload.result, state),
         loading: false,
-        loaded: true
+        loaded: true,
+        error: false,
+        meta: action.payload._meta
       };
 
     case ProcessActionTypes.LoadFail:

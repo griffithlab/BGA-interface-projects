@@ -64,6 +64,11 @@ export const getProcessesState = createSelector(
   core => core.processes
 );
 
+export const getProcessesMeta = createSelector(
+  getCoreState,
+  core => core.processes.meta
+);
+
 export const getDropboxState = createSelector(
   getCoreState,
   core => core.dropbox

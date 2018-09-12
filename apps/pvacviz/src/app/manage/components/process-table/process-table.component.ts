@@ -1,22 +1,23 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  OnInit,
+  Component,
+  EventEmitter,
   Input,
-  OnChanges,
-  SimpleChanges
+  Output,
+  SimpleChanges,
 } from '@angular/core';
 
-import { SortOrder, ClrDatagridComparatorInterface } from '@clr/angular';
+import { SortOrder, ClrDatagridComparatorInterface, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { filter, map } from 'rxjs/operators';
 
 import { Process } from '@pvz/core/models/process.model';
+import { ApiMeta } from '@pvz/core/models/api-responses.model';
 import { Parameters } from '@pvz/core/models/parameters.model';
 
-import * as processes from '@pvz/manage/actions/manage.actions';
+import * as processes from '@pvz/core/actions/process.actions';
 import * as fromProcesses from '@pvz/reducers';
 
 @Component({
@@ -25,40 +26,28 @@ import * as fromProcesses from '@pvz/reducers';
   styleUrls: ['./process-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProcessTableComponent implements OnInit {
+export class ProcessTableComponent {
   @Input() processes: Process[];
-
+  @Input() meta: ApiMeta;
+  @Output() refresh = new EventEmitter<ClrDatagridStateInterface>();
+  @Output() archive = new EventEmitter<number>();
   ascSort;
   descSort;
-
-  idComparator = new IdComparator();
 
   constructor(private store: Store<fromProcesses.State>) {
     this.ascSort = SortOrder.Asc;
     this.descSort = SortOrder.Desc;
 
     console.log(this.processes);
-
-    // this.processes = this.processes.map((process) => {
-    //   return process;
-    // })
-
   }
 
-  ngOnInit() {
+  onRefresh($event: ClrDatagridStateInterface) {
+    console.log($event);
+    this.refresh.emit($event);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  onArchive(processId: number) {
+    this.archive.emit(processId)
   }
 
-  onArchive(processId) {
-    this.store.dispatch(new processes.Archive(processId));
-  }
-
-}
-
-class IdComparator implements ClrDatagridComparatorInterface<Process> {
-  compare(a: Process, b: Process) {
-    return a.id - b.id;
-  }
 }

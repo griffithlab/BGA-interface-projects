@@ -18,7 +18,7 @@ import {
 
 import { Process } from '../models/process.model';
 import { ProcessService } from '../services/process.service';
-
+import { ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
 import {
   ProcessActionTypes,
   ProcessActions,
@@ -32,7 +32,7 @@ import {
   Archive,
   ArchiveSuccess,
   ArchiveFail
-} from '../actions/process.actions';
+} from '@pvz/core/actions/process.actions';
 
 import * as fromRoot from '../../reducers';
 import { Store, select } from '@ngrx/store';
@@ -59,11 +59,11 @@ export class ProcessEffects {
   @Effect()
   query$: Observable<Action> = this.actions$.pipe(
     ofType<Load>(ProcessActionTypes.Load),
-    switchMap(query => {
+    switchMap(action => {
       return this.processes
-        .query()
+        .query(action.payload)
         .pipe(
-          map((processes: Process[]) => new LoadSuccess(processes)),
+          map((response: ApiProcessesResponse) => new LoadSuccess(response)),
           catchError(err => of(new LoadFail(err)))
         );
     })

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+
 import { Process } from '@pvz/core/models/process.model';
-import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
+import { ApiStartResponse, ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
 
 import { ConfigService } from './config.service';
 
@@ -19,10 +20,19 @@ export class ProcessService {
     this.stagingPath = conf.apiUrl() + '/staging';
   }
 
-  query(): Observable<Process[]> {
+  query(req): Observable<ApiProcessesResponse> {
+    const params = new HttpParams()
+      .set('count', req.count)
+      .set('page', req.page)
+    // .set('sorting', req.sorting);
+
+    const options = {
+      params: params,
+    }
+
     return this.http
-      .get<{ result: Process[] }>(this.processesPath)
-      .pipe(map(processes => processes.result || []));
+      .get<ApiProcessesResponse>(this.processesPath, options)
+      .pipe(map(processes => processes));
   }
 
   get(id): Observable<Process> {

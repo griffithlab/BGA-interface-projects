@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { AllelesActions, AllelesActionTypes } from '@pvz/start/actions/alleles.actions';
-import { Allele, ApiMeta } from '@pvz/core/models/api-responses.model';
+import { Allele, ApiMeta, initialMeta } from '@pvz/core/models/api-responses.model';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -36,12 +36,6 @@ export const adapter: EntityAdapter<Allele> = createEntityAdapter<Allele>({
  * for the generated entity state. Initial state
  * additional properties can also be defined.
  */
-export const initialMeta = {
-  count: null,
-  page: null,
-  total_count: null,
-  total_pages: null
-};
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
