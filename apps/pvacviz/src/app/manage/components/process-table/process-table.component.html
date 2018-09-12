@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-xs-12">
-    <clr-datagrid class="processes-table">
+    <clr-datagrid class="processes-table" (clrDgRefresh)="onRefresh($event)">
 
-      <clr-dg-column  [clrDgSortBy]="idComparator" [clrDgSortOrder]="ascSort">
+      <clr-dg-column [clrDgSortBy]="idComparator" [clrDgSortOrder]="ascSort">
         ID
       </clr-dg-column>
 
@@ -39,18 +39,28 @@
         </clr-dg-action-overflow>
       </clr-dg-row>
 
-      <clr-dg-footer></clr-dg-footer>
+      <clr-dg-footer>
+        <clr-dg-pagination #pagination
+          [clrDgPageSize]="meta.count"
+          [clrDgTotalItems]="meta.total_count"
+          [clrDgLastPage]="meta.total_pages">
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} processes
+        </clr-dg-pagination>
+      </clr-dg-footer>
     </clr-datagrid>
   </div>
 </div>
 <div class="row">
   <div class="row">
-    <div class="col-xs-12">
-      <p>paging:</p>
-      <prettyjson [obj]="paging | json:2" [style.min-height]="800">
+    <div class="col-xs-6">
+      <p>meta:</p>
+      <prettyjson [obj]="meta | json:2" [style.min-height]="800">
       </prettyjson>
     </div>
     <div class="col-sm-6">
+      <p>pagination:</p>
+      <prettyjson [obj]="pagination | json:2" [style.min-height]="800">
+      </prettyjson>
     </div>
   </div>
 </div>

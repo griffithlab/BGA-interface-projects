@@ -9,7 +9,6 @@ import { MomentModule } from 'ngx-moment';
 // misc
 import { PrettyJsonModule } from 'angular2-prettyjson';
 
-import { ProcessEffects } from './effects/manage.effects';
 import { reducers } from './reducers';
 
 import { ManagePageComponent } from './containers/manage-page/manage-page.component';

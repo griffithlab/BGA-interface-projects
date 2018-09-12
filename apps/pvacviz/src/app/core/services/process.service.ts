@@ -19,9 +19,15 @@ export class ProcessService {
     this.stagingPath = conf.apiUrl() + '/staging';
   }
 
-  query(): Observable<ApiProcessesResponse> {
+  query(req): Observable<ApiProcessesResponse> {
+    const options = {
+      params: {
+        count: req.count ? req.count : '10',
+        page: req.page ? req.page : '1'
+      }
+    }
     return this.http
-      .get<ApiProcessesResponse>(this.processesPath)
+      .get<ApiProcessesResponse>(this.processesPath, options)
       .pipe(map(processes => processes));
   }
 

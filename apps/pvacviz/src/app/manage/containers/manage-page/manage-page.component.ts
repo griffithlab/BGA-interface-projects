@@ -22,7 +22,8 @@ export class ManagePageComponent implements OnInit {
   processes$: Observable<Process[]>;
   processesMeta$: Observable<ApiMeta>; // paging data from processes endpoint request
   inputFiles$: Observable<string[]>;
-
+  count = 10;
+  page = 1;
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
@@ -39,7 +40,7 @@ export class ManagePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new processes.Load());
+    this.store.dispatch(new processes.Load({ count: this.count, page: this.page }));
   }
 
   reload() {

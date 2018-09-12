@@ -7,7 +7,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { SortOrder, ClrDatagridComparatorInterface } from '@clr/angular';
+import { SortOrder, ClrDatagridComparatorInterface, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ import { Process } from '@pvz/core/models/process.model';
 import { ApiMeta } from '@pvz/core/models/api-responses.model';
 import { Parameters } from '@pvz/core/models/parameters.model';
 
-import * as processes from '@pvz/manage/actions/manage.actions';
+import * as processes from '@pvz/core/actions/process.actions';
 import * as fromProcesses from '@pvz/reducers';
 
 @Component({
@@ -26,13 +26,18 @@ import * as fromProcesses from '@pvz/reducers';
   styleUrls: ['./process-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProcessTableComponent implements OnInit {
+export class ProcessTableComponent {
   @Input() processes: Process[];
-  @Input() paging: ApiMeta;
+  @Input() meta: ApiMeta;
   ascSort;
   descSort;
 
   idComparator = new IdComparator();
+
+  currentPage: number;
+  pageSize: number;
+  totalItems: number;
+  lastPage: number;
 
   constructor(private store: Store<fromProcesses.State>) {
     this.ascSort = SortOrder.Asc;
@@ -41,10 +46,11 @@ export class ProcessTableComponent implements OnInit {
     console.log(this.processes);
   }
 
-  ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
+  onRefresh($event: ClrDatagridStateInterface) {
+    console.log($event);
+    const page = Math.ceil(($event.page.from + 1) / $event.page.size);
+    const req = { page: page, count: $event.page.size };
+    this.store.dispatch(new processes.Load(req))
   }
 
   onArchive(processId) {
