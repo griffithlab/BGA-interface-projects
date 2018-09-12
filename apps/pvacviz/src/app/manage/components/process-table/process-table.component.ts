@@ -1,10 +1,10 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
   Input,
   Output,
   SimpleChanges,
-  SimpleChange
 } from '@angular/core';
 
 import { SortOrder, ClrDatagridComparatorInterface, ClrDatagridStateInterface } from '@clr/angular';
@@ -29,8 +29,8 @@ import * as fromProcesses from '@pvz/reducers';
 export class ProcessTableComponent {
   @Input() processes: Process[];
   @Input() meta: ApiMeta;
-  @Output() refresh: ClrDatagridStateInterface;
-  @Output() archive: number;
+  @Output() refresh = new EventEmitter<ClrDatagridStateInterface>();
+  @Output() archive = new EventEmitter<number>();
   ascSort;
   descSort;
 
@@ -43,15 +43,11 @@ export class ProcessTableComponent {
 
   onRefresh($event: ClrDatagridStateInterface) {
     console.log($event);
-    const page = Math.ceil(($event.page.from + 1) / $event.page.size);
-    const sortField = ($event.sort.by as string).split('.').pop();
-    const sortOrder = $event.sort.reverse ? '-' : '+';
-    const req = { page: page, count: $event.page.size, sorting: sortOrder + sortField };
-    this.store.dispatch(new processes.Load(req))
+    this.refresh.emit($event);
   }
 
-  onArchive(processId) {
-    this.store.dispatch(new processes.Archive(processId));
+  onArchive(processId: number) {
+    this.archive.emit(processId)
   }
 
 }

@@ -33,16 +33,21 @@ export class ManagePageComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
-    this.store.dispatch(new processes.Load({ count: this.count, page: this.page, sorting: 'asc:id' }));
+  // initially this component had an onInit function, clr-datagrid emits a refresh event
+  // that calls process.Load, so the client was making the Load query twice in a row.
+  onRefresh($event) {
+    const page = Math.ceil(($event.page.from + 1) / $event.page.size);
+    const sortField = ($event.sort.by as string).split('.').pop();
+    const sortOrder = $event.sort.reverse ? '-' : '+';
+    const req = { page: page, count: $event.page.size, sorting: sortOrder + sortField };
+    this.store.dispatch(new processes.Load(req))
   }
 
+  onArchive(processId) {
+    this.store.dispatch(new processes.Archive(processId));
+  }
 
-  reload() {
+  onReload() {
     this.store.dispatch(new processes.Load());
-  }
-
-  archive(id) {
-    this.store.dispatch(new processes.Archive(id));
   }
 }
