@@ -64,7 +64,7 @@ export function reducer(state = initialState, action: ProcessActions): State {
          * the collection is to be sorted, the adapter will
          * sort each record upon entry into the sorted array.
          */
-        ...adapter.addMany(action.payload.result, state),
+        ...adapter.addAll(action.payload.result, state),
         loading: false,
         loaded: true,
         error: false,
