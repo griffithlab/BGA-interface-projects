@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ import * as fromCore from '@pvz/core/reducers';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ManagePageComponent implements OnInit {
+export class ManagePageComponent {
 
   processes$: Observable<Process[]>;
   processesMeta$: Observable<ApiMeta>; // paging data from processes endpoint request
