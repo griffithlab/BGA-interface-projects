@@ -97,10 +97,26 @@ export const getRouteProcessId = createSelector(
   router => router.state.params.processId
 )
 
+export const getRouteFileId = createSelector(
+  fromRoot.getRouterState,
+  router => router.state.params.fileId
+)
+
 export const getSelectedProcess = createSelector(
   getProcesses,
   getRouteProcessId,
   (processes, processId) => { return processes[processId]; }
+);
+
+export const getSelectedFile = createSelector(
+  getFiles,
+  getRouteFileId,
+  (files, fileId) => { return files[fileId]; }
+);
+
+export const getProcess = (id: number) => createSelector(
+  getProcesses,
+  processes => processes[id]
 );
 
 export const getProcessesWithVisualizableFiles = createSelector(

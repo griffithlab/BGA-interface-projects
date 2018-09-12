@@ -10,4 +10,12 @@
     </div>
   </div>
 </div>
-<pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization>
+<!-- <pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization> -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <p>process$</p>
+    <prettyjson [obj]="(process$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
+  </div>
+</div>

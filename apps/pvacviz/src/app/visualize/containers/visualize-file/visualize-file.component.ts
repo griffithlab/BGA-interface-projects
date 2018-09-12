@@ -1,14 +1,18 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs';
+
 import 'rxjs/add/observable/of';
 import { combineLatest, switchMap, withLatestFrom } from 'rxjs/operators';
 
+import { File } from '@pvz/core/models/file.model';
+import { Process } from '@pvz/core/models/process.model';
 import { environment } from '@pvz/environments/environment';
-import * as fromProcesses from '@pvz/visualize/reducers';
-
+import * as fromCore from '@pvz/core/reducers';
+import * as processes from '@pvz/core/actions/process.actions';
 
 @Component({
   selector: 'pvz-visualize-file',
@@ -21,10 +25,15 @@ export class VisualizeFileComponent implements OnInit {
   fileId$: Observable<number>;
   visualizeUrl$: Observable<SafeResourceUrl>;
 
-  constructor(private store: Store<fromProcesses.State>,
+  process$: Observable<Process>;
+  file$: Observable<File>;
+
+  subscriptions: Subscription[] = [];
+
+  constructor(private store: Store<fromCore.State>,
     private sanitizer: DomSanitizer) {
-    this.processId$ = store.pipe(select(fromProcesses.getRouteProcessId));
-    this.fileId$ = store.pipe(select(fromProcesses.getRouteFileId));
+    this.processId$ = store.pipe(select(fromCore.getRouteProcessId));
+    this.fileId$ = store.pipe(select(fromCore.getRouteFileId));
     this.visualizeUrl$ = this.processId$.pipe(
       withLatestFrom(this.fileId$),
       switchMap(
@@ -36,9 +45,27 @@ export class VisualizeFileComponent implements OnInit {
         }
       )
     );
+
+    this.subscriptions.push(
+      this.processId$.subscribe((id) => {
+        if (id !== 0) {
+          this.process$ = store.pipe(select(fromCore.getSelectedProcess));
+        }
+      }));
+    this.subscriptions.push(
+      this.fileId$.subscribe((id) => {
+        this.file$ = store.pipe(select(fromCore.getSelectedFile));
+      }));
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.dispatch(new processes.LoadDetail());
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map(sub => sub.unsubscribe());
+  }
+
   private server = {
     protocol: 'http://',
     domain: 'localhost',
