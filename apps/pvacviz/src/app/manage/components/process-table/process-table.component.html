@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <clr-datagrid class="processes-table" (clrDgRefresh)="onRefresh($event)">
 
-      <clr-dg-column [clrDgSortBy]="idComparator" [clrDgSortOrder]="ascSort">
+      <clr-dg-column [clrDgSortBy]="'parameters.id'" [clrDgSortOrder]="ascSort">
         ID
       </clr-dg-column>
 
@@ -13,7 +13,7 @@
       <!-- <clr-dg-column >Algorithms</clr-dg-column> -->
       <clr-dg-column>&nbsp;</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let process of processes">
+      <clr-dg-row *ngFor="let process of processes">
         <clr-dg-cell class="col-id">
           <span class="label" [ngClass]="{'label-info': process.attached === true}">{{process.id}}</span>
         </clr-dg-cell>
@@ -58,8 +58,8 @@
       </prettyjson>
     </div>
     <div class="col-sm-6">
-      <p>pagination:</p>
-      <prettyjson [obj]="pagination | json:2" [style.min-height]="800">
+      <p>processes:</p>
+      <prettyjson [obj]="processes | json:2" [style.min-height]="800">
       </prettyjson>
     </div>
   </div>

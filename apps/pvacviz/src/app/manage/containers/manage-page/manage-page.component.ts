@@ -27,21 +27,16 @@ export class ManagePageComponent implements OnInit {
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
-    this.inputFiles$ = this.processes$.pipe(filter(val => !!val), map(
-      (processes) => {
-        return processes.map((process) => {
-          return process.parameters.input
-            .split('/')
-            .slice(-2)
-            .join('/');
-        });
-      }
-    ))
+    this.processes$.subscribe((processes) => {
+      console.log('processes$ updated -=-=-=-=-=-=-=-=-');
+      console.log(this.processes$);
+    })
   }
 
   ngOnInit() {
-    this.store.dispatch(new processes.Load({ count: this.count, page: this.page }));
+    this.store.dispatch(new processes.Load({ count: this.count, page: this.page, sorting: 'asc:id' }));
   }
+
 
   reload() {
     this.store.dispatch(new processes.Load());

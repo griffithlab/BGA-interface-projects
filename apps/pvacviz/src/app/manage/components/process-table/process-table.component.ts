@@ -1,10 +1,10 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  OnInit,
   Input,
-  OnChanges,
-  SimpleChanges
+  Output,
+  SimpleChanges,
+  SimpleChange
 } from '@angular/core';
 
 import { SortOrder, ClrDatagridComparatorInterface, ClrDatagridStateInterface } from '@clr/angular';
@@ -29,15 +29,10 @@ import * as fromProcesses from '@pvz/reducers';
 export class ProcessTableComponent {
   @Input() processes: Process[];
   @Input() meta: ApiMeta;
+  @Output() refresh: ClrDatagridStateInterface;
+  @Output() archive: number;
   ascSort;
   descSort;
-
-  idComparator = new IdComparator();
-
-  currentPage: number;
-  pageSize: number;
-  totalItems: number;
-  lastPage: number;
 
   constructor(private store: Store<fromProcesses.State>) {
     this.ascSort = SortOrder.Asc;
@@ -49,7 +44,9 @@ export class ProcessTableComponent {
   onRefresh($event: ClrDatagridStateInterface) {
     console.log($event);
     const page = Math.ceil(($event.page.from + 1) / $event.page.size);
-    const req = { page: page, count: $event.page.size };
+    const sortField = ($event.sort.by as string).split('.').pop();
+    const sortOrder = $event.sort.reverse ? '-' : '+';
+    const req = { page: page, count: $event.page.size, sorting: sortOrder + sortField };
     this.store.dispatch(new processes.Load(req))
   }
 
@@ -57,10 +54,4 @@ export class ProcessTableComponent {
     this.store.dispatch(new processes.Archive(processId));
   }
 
-}
-
-class IdComparator implements ClrDatagridComparatorInterface<Process> {
-  compare(a: Process, b: Process) {
-    return a.id - b.id;
-  }
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+
 import { Process } from '@pvz/core/models/process.model';
 import { ApiStartResponse, ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
 
@@ -20,12 +21,15 @@ export class ProcessService {
   }
 
   query(req): Observable<ApiProcessesResponse> {
+    const params = new HttpParams()
+      .set('count', req.count)
+      .set('page', req.page)
+    // .set('sorting', req.sorting);
+
     const options = {
-      params: {
-        count: req.count ? req.count : '10',
-        page: req.page ? req.page : '1'
-      }
+      params: params,
     }
+
     return this.http
       .get<ApiProcessesResponse>(this.processesPath, options)
       .pipe(map(processes => processes));
