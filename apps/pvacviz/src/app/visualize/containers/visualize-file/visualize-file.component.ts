@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 
 import 'rxjs/add/observable/of';
-import { combineLatest, switchMap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 
 import { File } from '@pvz/core/models/file.model';
 import { Process } from '@pvz/core/models/process.model';
@@ -27,6 +27,9 @@ export class VisualizeFileComponent implements OnInit {
 
   process$: Observable<Process>;
   file$: Observable<File>;
+  samplename: string;
+  fileDisplayname: string;
+  fileDescription: string;
 
   subscriptions: Subscription[] = [];
 
@@ -46,16 +49,34 @@ export class VisualizeFileComponent implements OnInit {
       )
     );
 
+    this.file$ = store.pipe(select(fromCore.getSelectedFile));
+
     this.subscriptions.push(
       this.processId$.subscribe((id) => {
         if (id !== 0) {
           this.process$ = store.pipe(select(fromCore.getSelectedProcess));
         }
       }));
+
     this.subscriptions.push(
       this.fileId$.subscribe((id) => {
         this.file$ = store.pipe(select(fromCore.getSelectedFile));
       }));
+
+    this.subscriptions.push(
+      this.process$
+        .pipe(filter(p => p !== undefined && p !== null))
+        .subscribe((process) => {
+          this.samplename = process.parameters.samplename;
+        }));
+
+    this.subscriptions.push(
+      this.file$
+        .pipe(filter(f => f !== undefined && f !== null))
+        .subscribe((file) => {
+          this.fileDisplayname = file.display_name;
+          this.fileDescription = file.description;
+        }));
   }
 
   ngOnInit() {
