@@ -50,33 +50,7 @@ export class VisualizeFileComponent implements OnInit {
     );
 
     this.file$ = store.pipe(select(fromCore.getSelectedFile));
-
-    this.subscriptions.push(
-      this.processId$.subscribe((id) => {
-        if (id !== 0) {
-          this.process$ = store.pipe(select(fromCore.getSelectedProcess));
-        }
-      }));
-
-    this.subscriptions.push(
-      this.fileId$.subscribe((id) => {
-        this.file$ = store.pipe(select(fromCore.getSelectedFile));
-      }));
-
-    this.subscriptions.push(
-      this.process$
-        .pipe(filter(p => p !== undefined && p !== null))
-        .subscribe((process) => {
-          this.samplename = process.parameters.samplename;
-        }));
-
-    this.subscriptions.push(
-      this.file$
-        .pipe(filter(f => f !== undefined && f !== null))
-        .subscribe((file) => {
-          this.fileDisplayname = file.display_name;
-          this.fileDescription = file.description;
-        }));
+    this.process$ = store.pipe(select(fromCore.getSelectedProcess));
   }
 
   ngOnInit() {

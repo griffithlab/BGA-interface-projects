@@ -2,25 +2,12 @@
   <div class="row">
     <div class="col-xs-12">
       <h3 class="page-title">
-        <span class="page-type">{{samplename}}</span><br/>
-        <span class="page-subtitle">{{ fileDisplayname}} ({{ fileDescription }})</span>
+        <span class="page-type">{{(process$ | async)?.parameters.samplename}}</span><br/>
+        <span class="page-subtitle">{{ (file$ | async)?.display_name }} ({{ (file$ | async)?.description }})</span>
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
     </div>
   </div>
 </div>
-<!-- <pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization> -->
-
-<div class="row">
-  <div class="col-sm-6">
-    <p>process$</p>
-    <prettyjson [obj]="(process$ | async) | json:2" [style.min-height]="800">
-    </prettyjson>
-  </div>
-  <div class="col-sm-6">
-    <p>file$</p>
-    <prettyjson [obj]="(file$ | async) | json:2" [style.min-height]="800">
-    </prettyjson>
-  </div>
-</div>
+<pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization>
