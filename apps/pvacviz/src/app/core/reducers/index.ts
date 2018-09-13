@@ -109,9 +109,11 @@ export const getSelectedProcess = createSelector(
 );
 
 export const getSelectedFile = createSelector(
-  getFiles,
+  getSelectedProcess,
   getRouteFileId,
-  (files, fileId) => { return files[fileId]; }
+  (process, fileID) => {
+    return process ? process.files.filter(f => f.fileID === fileID)[0] : undefined;
+  }
 );
 
 export const getProcess = (id: number) => createSelector(
