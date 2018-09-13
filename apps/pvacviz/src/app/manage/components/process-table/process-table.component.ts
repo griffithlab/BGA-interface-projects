@@ -31,6 +31,8 @@ export class ProcessTableComponent {
   @Input() meta: ApiMeta;
   @Output() refresh = new EventEmitter<ClrDatagridStateInterface>();
   @Output() archive = new EventEmitter<number>();
+  @Output() restart = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<number>();
   ascSort;
   descSort;
 
@@ -42,12 +44,15 @@ export class ProcessTableComponent {
   }
 
   onRefresh($event: ClrDatagridStateInterface) {
-    console.log($event);
     this.refresh.emit($event);
   }
 
-  onArchive(processId: number) {
-    this.archive.emit(processId)
+  onRestart(id: number) {
+    this.restart.emit(id);
+  }
+
+  onArchive(id: number) {
+    this.archive.emit(id)
   }
 
 }

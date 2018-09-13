@@ -7,15 +7,23 @@ export enum ProcessActionTypes {
   LoadSuccess = '[Processes] Load Processes Success',
   LoadFail = '[Processes] Load Processes Fail',
 
-  Remove = '[Processes] Remove Process',
-
   LoadDetail = '[Processes] Load Process Detail',
   LoadDetailSuccess = '[Processes] Load Process Detail Success',
   LoadDetailFail = '[Processes] Load Process Detail Fail',
 
   Archive = '[Processes] Archive Process',
   ArchiveSuccess = '[Processes] Archive Process Success',
-  ArchiveFail = '[Processes] Archive Process Fail'
+  ArchiveFail = '[Processes] Archive Process Fail',
+
+  Restart = '[Processes] Restart Process',
+  RestartSuccess = '[Processes] Restart Process Success',
+  RestartFail = '[Processes] Restart Process Fail',
+
+  Delete = '[Processes] Delete Process',
+  DeleteSuccess = '[Processes] Delete Process Success',
+  DeleteFail = '[Processes] Delete Process Fail',
+
+  Remove = '[Processes] Remove Process',
 }
 
 /**
@@ -41,12 +49,6 @@ export class LoadFail implements Action {
   readonly type = ProcessActionTypes.LoadFail;
 
   constructor(public payload: any) { }
-}
-
-export class Remove implements Action {
-  readonly type = ProcessActionTypes.Remove;
-
-  constructor(public payload: number) { }
 }
 
 export class LoadDetail implements Action {
@@ -85,11 +87,57 @@ export class ArchiveFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class Restart implements Action {
+  readonly type = ProcessActionTypes.Restart;
+
+  constructor(public payload?: number) { }
+}
+
+export class RestartSuccess implements Action {
+  readonly type = ProcessActionTypes.RestartSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class RestartFail implements Action {
+  readonly type = ProcessActionTypes.RestartFail;
+
+  constructor(public payload: any) { }
+}
+
+export class Delete implements Action {
+  readonly type = ProcessActionTypes.Delete;
+
+  constructor(public payload?: number) { }
+}
+
+export class DeleteSuccess implements Action {
+  readonly type = ProcessActionTypes.DeleteSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class DeleteFail implements Action {
+  readonly type = ProcessActionTypes.DeleteFail;
+
+  constructor(public payload: any) { }
+}
+
+// removes a process from the store
+export class Remove implements Action {
+  readonly type = ProcessActionTypes.Remove;
+
+  constructor(public payload: number) { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
 export type ProcessActions =
-  Load | LoadSuccess | LoadFail | Remove
+  Load | LoadSuccess | LoadFail
   | LoadDetail | LoadDetailSuccess | LoadDetailFail
-  | Archive | ArchiveSuccess | ArchiveFail;
+  | Archive | ArchiveSuccess | ArchiveFail
+  | Restart | RestartSuccess | RestartFail
+  | Delete | DeleteSuccess | DeleteFail
+  | Remove;

@@ -27,10 +27,6 @@ export class ManagePageComponent {
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
-    this.processes$.subscribe((processes) => {
-      console.log('processes$ updated -=-=-=-=-=-=-=-=-');
-      console.log(this.processes$);
-    })
   }
 
   // initially this component had an onInit function, clr-datagrid emits a refresh event
@@ -45,6 +41,14 @@ export class ManagePageComponent {
 
   onArchive(processId) {
     this.store.dispatch(new processes.Archive(processId));
+  }
+
+  onRestart(processId) {
+    this.store.dispatch(new processes.Restart(processId));
+  }
+
+  onDelete(processId) {
+    this.store.dispatch(new processes.Delete(processId));
   }
 
   onReload() {

@@ -11,12 +11,11 @@ import { ConfigService } from './config.service';
 @Injectable()
 export class ProcessService {
   private processesPath: string;
-  private archivePath: string;
   private stagingPath: string;
-
+  private apiPath: string;
   constructor(private http: HttpClient, private conf: ConfigService) {
+    this.apiPath = conf.apiUrl();
     this.processesPath = conf.apiUrl() + '/processes';
-    this.archivePath = conf.apiUrl() + '/archive';
     this.stagingPath = conf.apiUrl() + '/staging';
   }
 
@@ -43,7 +42,7 @@ export class ProcessService {
 
   archive(id): Observable<string> {
     return this.http
-      .get<string>(`${this.archivePath}/${id}`)
+      .post<string>(`${this.apiPath}/processes/${id}/archive`, null)
       .pipe(map(message => message || null));
   }
 
