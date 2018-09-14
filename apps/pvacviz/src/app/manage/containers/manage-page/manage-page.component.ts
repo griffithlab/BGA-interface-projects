@@ -24,6 +24,7 @@ export class ManagePageComponent {
   inputFiles$: Observable<string[]>;
   count = 10;
   page = 1;
+  filters = 'none';
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
@@ -35,7 +36,9 @@ export class ManagePageComponent {
     const page = Math.ceil(($event.page.from + 1) / $event.page.size);
     const sortField = ($event.sort.by as string).split('.').pop();
     const sortOrder = $event.sort.reverse ? '-' : '+';
-    const req = { page: page, count: $event.page.size, sorting: sortOrder + sortField };
+    this.page = page;
+    this.count = $event.page.size;
+    const req = { page: this.page, count: this.count, filters: this.filters };
     this.store.dispatch(new processes.Load(req))
   }
 
@@ -52,6 +55,7 @@ export class ManagePageComponent {
   }
 
   onReload() {
-    this.store.dispatch(new processes.Load());
+    const req = { page: this.page, count: this.count };
+    this.store.dispatch(new processes.Load(req));
   }
 }

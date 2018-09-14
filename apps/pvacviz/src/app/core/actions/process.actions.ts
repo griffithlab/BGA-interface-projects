@@ -36,7 +36,7 @@ export enum ProcessActionTypes {
 export class Load implements Action {
   readonly type = ProcessActionTypes.Load;
 
-  constructor(public payload?: {}) { }
+  constructor(public payload: {}) { }
 }
 
 export class LoadSuccess implements Action {
