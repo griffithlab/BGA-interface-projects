@@ -25,6 +25,8 @@ export class ManagePageComponent {
   count = 10;
   page = 1;
   filters = 'none';
+  loaded = false;
+
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
