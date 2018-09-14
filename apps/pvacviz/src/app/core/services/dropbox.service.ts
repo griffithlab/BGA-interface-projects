@@ -16,7 +16,7 @@ export class DropboxService {
   private dropboxPath: string;
 
   constructor(private http: HttpClient, conf: ConfigService) {
-    this.dropboxPath = conf.apiUrl() + '/dropbox';
+    this.dropboxPath = conf.apiUrl() + '/visualize';
   }
 
   query(): Observable<ApiDropboxResponse> {
