@@ -19,6 +19,7 @@
         [processes]="processes$ | async"
         [meta]="processesMeta$ | async"
         (refresh)="onRefresh($event)"
+        (export)="onExport($event)"
         (archive)="onArchive($event)"
         (restart)="onRestart($event)">
 

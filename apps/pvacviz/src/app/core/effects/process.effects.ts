@@ -31,6 +31,9 @@ import {
   Archive,
   ArchiveSuccess,
   ArchiveFail,
+  Export,
+  ExportSuccess,
+  ExportFail,
   Remove
 } from '@pvz/core/actions/process.actions';
 
@@ -112,6 +115,33 @@ export class ProcessEffects {
             return new ArchiveSuccess({ id: processId, message: message })
           }),
           catchError(err => of(new ArchiveFail(err)))
+        )
+    })
+  );
+
+  // if action payload contains a processId, it is used
+  // otherwise the router state processId is used.
+  @Effect()
+  export$: Observable<Action> = this.actions$.pipe(
+    ofType<Export>(ProcessActionTypes.Export),
+    withLatestFrom(
+      this.store.select(fromRoot.getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+
+      return this.processes
+        .export(processId)
+        .pipe(
+          map((message: string) => {
+            return new ExportSuccess({ id: processId, message: message })
+          }),
+          catchError(err => of(new ExportFail(err)))
         )
     })
   );

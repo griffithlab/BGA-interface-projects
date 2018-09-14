@@ -46,6 +46,12 @@ export class ProcessService {
       .pipe(map(message => message || null));
   }
 
+  export(id): Observable<string> {
+    return this.http
+      .post<string>(`${this.apiPath}/processes/${id}/export`, null)
+      .pipe(map(message => message || null));
+  }
+
   start(processParameters: any): Observable<ApiStartResponse> {
     const httpOptions = {
       headers: new HttpHeaders({

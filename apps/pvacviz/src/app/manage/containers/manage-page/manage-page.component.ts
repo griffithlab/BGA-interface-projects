@@ -52,6 +52,9 @@ export class ManagePageComponent {
     this.store.dispatch(new processes.Restart(processId));
   }
 
+  onExport(processId) {
+    this.store.dispatch(new processes.Export(processId));
+  }
   onDelete(processId) {
     this.store.dispatch(new processes.Delete(processId));
   }

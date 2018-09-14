@@ -15,6 +15,10 @@ export enum ProcessActionTypes {
   ArchiveSuccess = '[Processes] Archive Process Success',
   ArchiveFail = '[Processes] Archive Process Fail',
 
+  Export = '[Processes] Export Process',
+  ExportSuccess = '[Processes] Export Process Success',
+  ExportFail = '[Processes] Export Process Fail',
+
   Restart = '[Processes] Restart Process',
   RestartSuccess = '[Processes] Restart Process Success',
   RestartFail = '[Processes] Restart Process Fail',
@@ -105,6 +109,23 @@ export class RestartFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class Export implements Action {
+  readonly type = ProcessActionTypes.Export;
+
+  constructor(public payload?: number) { }
+}
+
+export class ExportSuccess implements Action {
+  readonly type = ProcessActionTypes.ExportSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class ExportFail implements Action {
+  readonly type = ProcessActionTypes.ExportFail;
+
+  constructor(public payload: any) { }
+}
 export class Delete implements Action {
   readonly type = ProcessActionTypes.Delete;
 
