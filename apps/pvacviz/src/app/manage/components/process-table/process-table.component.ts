@@ -55,6 +55,11 @@ export class ProcessTableComponent {
   onExport(id: number) {
     this.export.emit(id);
   }
+
+  onDelete(id: number) {
+    this.delete.emit(id);
+  }
+
   onArchive(id: number) {
     this.archive.emit(id)
   }

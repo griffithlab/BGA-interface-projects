@@ -31,6 +31,9 @@ import {
   Archive,
   ArchiveSuccess,
   ArchiveFail,
+  Delete,
+  DeleteSuccess,
+  DeleteFail,
   Export,
   ExportSuccess,
   ExportFail,
@@ -146,14 +149,50 @@ export class ProcessEffects {
     })
   );
 
+  // if action payload contains a processId, it is used
+  // otherwise the router state processId is used.
+  @Effect()
+  delete$: Observable<Action> = this.actions$.pipe(
+    ofType<Delete>(ProcessActionTypes.Delete),
+    withLatestFrom(
+      this.store.select(fromRoot.getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+
+      return this.processes
+        .delete(processId)
+        .pipe(
+          map((message: string) => {
+            return new DeleteSuccess({ id: processId, message: message })
+          }),
+          catchError(err => of(new DeleteFail(err)))
+        )
+    })
+  );
+
+
   // TODO see if this is the idiomatic way of chaining actions after a successful call.
   // I have a feeling that effects requiring a subsequent refresh should dispatch the
   // action themselves (e.g. archive$ effect). See:
   // https://github.com/ngrx/platform/issues/468
   // https://stackoverflow.com/questions/47554267/dispatch-multiple-action-from-one-effect
   @Effect()
-  requery$: Observable<Action> = this.actions$.pipe(
+  removeArchived$: Observable<Action> = this.actions$.pipe(
     ofType<ArchiveSuccess>(ProcessActionTypes.ArchiveSuccess),
+    switchMap((action) => {
+      return of(new Remove(action.payload.id))
+    })
+  );
+
+  @Effect()
+  removeDeleted$: Observable<Action> = this.actions$.pipe(
+    ofType<DeleteSuccess>(ProcessActionTypes.DeleteSuccess),
     switchMap((action) => {
       return of(new Remove(action.payload.id))
     })

@@ -52,6 +52,12 @@ export class ProcessService {
       .pipe(map(message => message || null));
   }
 
+  delete(id): Observable<string> {
+    return this.http
+      .delete<string>(`${this.apiPath}/processes/${id}/delete`)
+      .pipe(map(message => message || null));
+  }
+
   start(processParameters: any): Observable<ApiStartResponse> {
     const httpOptions = {
       headers: new HttpHeaders({
