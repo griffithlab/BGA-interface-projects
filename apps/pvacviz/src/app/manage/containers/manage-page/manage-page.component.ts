@@ -24,13 +24,10 @@ export class ManagePageComponent {
   inputFiles$: Observable<string[]>;
   count = 10;
   page = 1;
+  filters = 'none';
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
-    this.processes$.subscribe((processes) => {
-      console.log('processes$ updated -=-=-=-=-=-=-=-=-');
-      console.log(this.processes$);
-    })
   }
 
   // initially this component had an onInit function, clr-datagrid emits a refresh event
@@ -39,7 +36,9 @@ export class ManagePageComponent {
     const page = Math.ceil(($event.page.from + 1) / $event.page.size);
     const sortField = ($event.sort.by as string).split('.').pop();
     const sortOrder = $event.sort.reverse ? '-' : '+';
-    const req = { page: page, count: $event.page.size, sorting: sortOrder + sortField };
+    this.page = page;
+    this.count = $event.page.size;
+    const req = { page: this.page, count: this.count, filters: this.filters };
     this.store.dispatch(new processes.Load(req))
   }
 
@@ -47,7 +46,16 @@ export class ManagePageComponent {
     this.store.dispatch(new processes.Archive(processId));
   }
 
+  onRestart(processId) {
+    this.store.dispatch(new processes.Restart(processId));
+  }
+
+  onDelete(processId) {
+    this.store.dispatch(new processes.Delete(processId));
+  }
+
   onReload() {
-    this.store.dispatch(new processes.Load());
+    const req = { page: this.page, count: this.count };
+    this.store.dispatch(new processes.Load(req));
   }
 }

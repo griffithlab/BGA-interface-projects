@@ -19,7 +19,8 @@
         [processes]="processes$ | async"
         [meta]="processesMeta$ | async"
         (refresh)="onRefresh($event)"
-        (archive)="onArchive($event)">
+        (archive)="onArchive($event)"
+        (restart)="onRestart($event)">
 
       </pvz-process-table>
     </div>

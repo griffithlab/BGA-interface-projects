@@ -4,7 +4,7 @@ import { Parameters } from './parameters.model'
 export interface Process {
   readonly attached: boolean;
   readonly command: string;
-  readonly files: { [key: number]: File };
+  readonly files: File[];
   readonly id: number;
   readonly last_message: string;
   readonly log?: string[];

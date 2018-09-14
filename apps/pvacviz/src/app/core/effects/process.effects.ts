@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Optional, Inject } from '@angular/core';
 
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
 import { Scheduler } from 'rxjs/Scheduler';
@@ -25,17 +25,16 @@ import {
   Load,
   LoadSuccess,
   LoadFail,
-  Remove,
   LoadDetail,
   LoadDetailSuccess,
   LoadDetailFail,
   Archive,
   ArchiveSuccess,
-  ArchiveFail
+  ArchiveFail,
+  Remove
 } from '@pvz/core/actions/process.actions';
 
 import * as fromRoot from '../../reducers';
-import { Store, select } from '@ngrx/store';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -129,5 +128,4 @@ export class ProcessEffects {
       return of(new Remove(action.payload.id))
     })
   );
-
 }

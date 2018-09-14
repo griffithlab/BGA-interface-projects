@@ -19,7 +19,7 @@ export class VisualizePageComponent implements OnInit {
   processes$: Observable<Process[]>;
   processesWithVisualizableFiles$: Observable<Process[]>;
   dropboxFiles$: Observable<File[]>;
-
+  req = { page: 1, count: 1000 };
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
@@ -28,11 +28,11 @@ export class VisualizePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new processes.Load());
+    this.store.dispatch(new processes.Load(this.req));
     this.store.dispatch(new dropbox.Load());
   }
 
   reload() {
-    this.store.dispatch(new processes.Load());
+    this.store.dispatch(new processes.Load(this.req));
   }
 }
