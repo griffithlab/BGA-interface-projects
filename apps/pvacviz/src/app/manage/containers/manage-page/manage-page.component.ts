@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
-import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { take, filter, map, withLatestFrom } from 'rxjs/operators';
 
 import { ModalConfig } from '@pvz/core/models/layout.model';
 import { Process } from '@pvz/core/models/process.model';
@@ -49,7 +49,7 @@ export class ManagePageComponent {
   }
 
   onArchive(processId) {
-    this.store.pipe(select(fromCore.getProcess(processId)))
+    this.store.pipe(select(fromCore.getProcess(processId)), take(1))
       .subscribe((proc: Process) => {
         const config: ModalConfig = {
           message: `Archive ${proc.parameters.samplename}? Process will be moved to ~/pVACSeq/archive.`,
@@ -66,20 +66,71 @@ export class ManagePageComponent {
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
-      }).unsubscribe();
+      });
   }
 
 
   onRestart(processId) {
-    this.store.dispatch(new processes.Restart(processId));
+    this.store.pipe(select(fromCore.getProcess(processId)), take(1))
+      .subscribe((proc: Process) => {
+        const config: ModalConfig = {
+          message: `Restart ${proc.parameters.samplename}?`,
+          labels: {
+            title: 'Restart Process',
+            buttons: {
+              confirm: 'OK',
+              cancel: 'Cancel'
+            }
+          },
+          actions: {
+            confirm: new processes.Restart(processId),
+            cancel: new layout.CloseModal()
+          }
+        }
+        this.store.dispatch(new layout.OpenModal(config));
+      });
   }
 
   onExport(processId) {
-    this.store.dispatch(new processes.Export(processId));
+    this.store.pipe(select(fromCore.getProcess(processId)), take(1))
+      .subscribe((proc: Process) => {
+        const config: ModalConfig = {
+          message: `Export ${proc.parameters.samplename}?`,
+          labels: {
+            title: 'Export Process',
+            buttons: {
+              confirm: 'OK',
+              cancel: 'Cancel'
+            }
+          },
+          actions: {
+            confirm: new processes.Export(processId),
+            cancel: new layout.CloseModal()
+          }
+        }
+        this.store.dispatch(new layout.OpenModal(config));
+      });
   }
 
   onDelete(processId) {
-    this.store.dispatch(new processes.Delete(processId));
+    this.store.pipe(select(fromCore.getProcess(processId)), take(1))
+      .subscribe((proc: Process) => {
+        const config: ModalConfig = {
+          message: `Delete ${proc.parameters.samplename}? A deleted process cannot be recovered!`,
+          labels: {
+            title: 'Delete Process',
+            buttons: {
+              confirm: 'OK',
+              cancel: 'Cancel'
+            }
+          },
+          actions: {
+            confirm: new processes.Delete(processId),
+            cancel: new layout.CloseModal()
+          }
+        }
+        this.store.dispatch(new layout.OpenModal(config));
+      });
   }
 
   onReload() {
