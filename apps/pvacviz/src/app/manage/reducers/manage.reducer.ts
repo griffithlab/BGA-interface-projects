@@ -1,10 +1,10 @@
 import { createSelector } from '@ngrx/store';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import 'rxjs/add/observable/of';
 
 import { Process } from '@pvz/core/models/process.model';
 import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.actions';
+import { ProcessActions, ProcessActionTypes } from '@pvz/core/actions/process.actions';
 
 /**
  * @ngrx/entity provides a predefined interface for handling
@@ -13,90 +13,34 @@ import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.act
  * model type by id. This interface is then extended to include
  * any additional interface properties.
  */
-export interface State extends EntityState<Process> {
-  loading: boolean;
-  loaded: boolean;
-  error: boolean;
+export interface State {
+  showNotice: boolean;
+  notice: {
+    message: string;
+    type: string;
+  }
 }
 
-/**
- * createEntityAdapter creates many an object of helper
- * functions for single or multiple operations
- * against the dictionary of records. The configuration
- * object takes a record id selector function and
- * a sortComparer option which is set to a compare
- * function if the records are to be sorted.
- */
-export const adapter: EntityAdapter<Process> = createEntityAdapter<Process>({
-  selectId: (process: Process) => process.id,
-  sortComparer: false,
-});
+export const initialState = {
+  showNotice: false,
+  notice: {
+    message: undefined,
+    type: undefined
+  }
+};
 
-/**
- * getInitialState returns the default initial state
- * for the generated entity state. Initial state
- * additional properties can also be defined.
- */
-export const initialState: State = adapter.getInitialState({
-  loading: false,
-  loaded: false,
-  error: false
-});
-
-export function reducer(state = initialState, action: ManageActions): State {
+export function reducer(state = initialState, action: ProcessActions | ManageActions): State {
   switch (action.type) {
 
-    case ManageActionTypes.Load:
+    case ProcessActionTypes.ArchiveSuccess:
       return {
-        ...state,
-        loading: true,
+        showNotice: true,
+        notice: {
+          message: 'Process archived.',
+          type: 'info'
+        }
       };
 
-    case ManageActionTypes.LoadSuccess:
-      return {
-        /**
-         * The addMany function provided by the created adapter
-         * adds many records to the entity dictionary
-         * and returns a new state including those records. If
-         * the collection is to be sorted, the adapter will
-         * sort each record upon entry into the sorted array.
-         */
-        ...adapter.addMany(action.payload, state),
-        loading: false,
-        loaded: true
-      };
-
-    case ManageActionTypes.LoadFail:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.payload
-      }
-
-    case ManageActionTypes.Remove:
-      return adapter.removeOne(action.payload, state);
-
-    case ManageActionTypes.LoadDetail:
-      return {
-        ...state,
-        loading: true,
-      };
-
-    case ManageActionTypes.LoadDetailSuccess:
-      return {
-        ...adapter.upsertOne(action.payload, state),
-        loading: false,
-        loaded: true
-      };
-
-    case ManageActionTypes.LoadDetailFail:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.payload
-      }
     default:
       return state;
   }

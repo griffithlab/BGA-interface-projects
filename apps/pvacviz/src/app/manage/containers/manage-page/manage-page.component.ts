@@ -11,6 +11,7 @@ import { ApiMeta } from '@pvz/core/models/api-responses.model';
 import * as processes from '@pvz/core/actions/process.actions';
 import * as layout from '@pvz/core/actions/layout.actions';
 import * as fromCore from '@pvz/core/reducers';
+import * as fromManage from '@pvz/manage/reducers';
 
 @Component({
   selector: 'pvz-manage-page',
@@ -23,6 +24,7 @@ export class ManagePageComponent {
 
   processes$: Observable<Process[]>;
   processesMeta$: Observable<ApiMeta>; // paging data from processes endpoint request
+  manageState$: Observable<{}>;
   modalConfig$: Observable<ModalConfig>;
   inputFiles$: Observable<string[]>;
   count = 10;
@@ -34,6 +36,7 @@ export class ManagePageComponent {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
     this.modalConfig$ = store.pipe(select(fromCore.getModalConfig));
+    this.manageState$ = store.pipe(select(fromManage.getManageState))
   }
 
   // initially this component had an onInit function, clr-datagrid emits a refresh event

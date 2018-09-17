@@ -13,6 +13,17 @@
   </div>
 </div>
 <div class="page-content">
+  <div class="row" *ngIf="(manageState$ | async).showNotice">
+    <div class="col-xs-12" >
+      <clr-alert [clrAlertType]="(manageState$ | async).notice.type" [clrAlertClosable]="false">
+        <div class="alert-item">
+          <span class="alert-text">
+            {{ (manageState$ | async).notice.message }}
+          </span>
+        </div>
+      </clr-alert>
+    </div>
+  </div>
   <div class="row">
     <div class="col-xs-12">
       <pvz-process-table
@@ -26,5 +37,12 @@
 
       </pvz-process-table>
     </div>
+  </div>
+</div>
+<div class="row" >
+  <div class="col-xs-12" >
+    <p>manageState$</p>
+    <prettyjson [obj]="(manageState$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
   </div>
 </div>

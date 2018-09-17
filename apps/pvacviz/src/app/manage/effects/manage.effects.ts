@@ -35,7 +35,6 @@ import {
 
 import * as fromRoot from '@pvz/reducers';
 import { Store, select } from '@ngrx/store';
-import { getRouterState } from '@pvz/manage/reducers';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
