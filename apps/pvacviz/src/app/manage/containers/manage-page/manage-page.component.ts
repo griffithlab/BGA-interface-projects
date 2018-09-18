@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +20,7 @@ import * as fromManage from '@pvz/manage/reducers';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ManagePageComponent {
+export class ManagePageComponent implements OnInit {
 
   processes$: Observable<Process[]>;
   processesMeta$: Observable<ApiMeta>; // paging data from processes endpoint request
@@ -39,6 +39,10 @@ export class ManagePageComponent {
     this.manageState$ = store.pipe(select(fromManage.getManageState))
   }
 
+  ngOnInit() {
+    this.store.dispatch(new processes.Load({ count: 10, page: 1 }));
+  }
+
   // initially this component had an onInit function, clr-datagrid emits a refresh event
   // that calls process.Load, so the client was making the Load query twice in a row.
   onRefresh($event) {
@@ -46,7 +50,7 @@ export class ManagePageComponent {
     const sortField = ($event.sort.by as string).split('.').pop();
     const sortOrder = $event.sort.reverse ? '-' : '+';
     this.page = page;
-    this.count = $event.page.size;
+    this.count = 10;
     const req = { page: this.page, count: this.count, filters: this.filters };
     this.store.dispatch(new processes.Load(req))
   }
