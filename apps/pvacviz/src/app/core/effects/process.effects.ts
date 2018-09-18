@@ -29,6 +29,9 @@ import {
   LoadDetail,
   LoadDetailSuccess,
   LoadDetailFail,
+  Stop,
+  StopSuccess,
+  StopFail,
   Archive,
   ArchiveSuccess,
   ArchiveFail,
@@ -182,18 +185,49 @@ export class ProcessEffects {
   );
 
   @Effect()
+  stop$: Observable<Action> = this.actions$.pipe(
+    ofType<Stop>(ProcessActionTypes.Stop),
+    withLatestFrom(
+      this.store.select(fromRoot.getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+
+      return this.processes
+        .stop(processId)
+        .pipe(
+          map((message: string) => {
+            return new StopSuccess({ id: processId, message: message })
+          }),
+          catchError(err => of(new StopFail(err)))
+        )
+    })
+  );
+
+  @Effect()
   reloadPagedProcesses$: Observable<Action> = this.actions$.pipe(
     ofType<Action>(
       ProcessActionTypes.ArchiveSuccess,
       ProcessActionTypes.DeleteSuccess,
+      ProcessActionTypes.StopSuccess,
       ProcessActionTypes.RestartSuccess),
     withLatestFrom(this.store.select(fromCore.getProcessesMeta), // not sure why this.processMeta$ doesn't work here
       (action, meta) => {
         return [action, meta];
       }),
     switchMap(([action, meta]: [Action, ApiMeta]) => {
-      // ensure we haven't deleted the last entry on a page, thus requesting an empty response
-      const page = Math.ceil((meta.total_count - 1) / meta.count) >= meta.page ? meta.page : meta.page - 1;
+      let page;
+      if (action.type === 'DeleteSuccess' || action.type === 'ArchiveSuccess') {
+        // ensure we haven't removed the last process entry on a page, thus requesting an empty response
+        page = Math.ceil((meta.total_count - 1) / meta.count) >= meta.page ? meta.page : meta.page - 1;
+      } else {
+        page = meta.page;
+      }
       const req = { page: page, count: meta.count };
       return of(new Load(req))
     })

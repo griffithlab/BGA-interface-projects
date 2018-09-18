@@ -11,6 +11,10 @@ export enum ProcessActionTypes {
   LoadDetailSuccess = '[Processes] Load Process Detail Success',
   LoadDetailFail = '[Processes] Load Process Detail Fail',
 
+  Stop = '[Processes] Stop Process',
+  StopSuccess = '[Processes] Stop Process Success',
+  StopFail = '[Processes] Stop Process Fail',
+
   Archive = '[Processes] Archive Process',
   ArchiveSuccess = '[Processes] Archive Process Success',
   ArchiveFail = '[Processes] Archive Process Fail',
@@ -91,6 +95,24 @@ export class ArchiveFail implements Action {
   constructor(public payload: any) { }
 }
 
+export class Stop implements Action {
+  readonly type = ProcessActionTypes.Stop;
+
+  constructor(public payload?: number) { }
+}
+
+export class StopSuccess implements Action {
+  readonly type = ProcessActionTypes.StopSuccess;
+
+  constructor(public payload: { id: number, message: any }) { }
+}
+
+export class StopFail implements Action {
+  readonly type = ProcessActionTypes.StopFail;
+
+  constructor(public payload: any) { }
+}
+
 export class Restart implements Action {
   readonly type = ProcessActionTypes.Restart;
 
@@ -158,6 +180,7 @@ export class Remove implements Action {
 export type ProcessActions =
   Load | LoadSuccess | LoadFail
   | LoadDetail | LoadDetailSuccess | LoadDetailFail
+  | Stop | StopSuccess | StopFail
   | Archive | ArchiveSuccess | ArchiveFail
   | Restart | RestartSuccess | RestartFail
   | Export | ExportSuccess | ExportFail

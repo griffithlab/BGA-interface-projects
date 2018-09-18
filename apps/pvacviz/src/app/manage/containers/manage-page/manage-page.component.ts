@@ -72,6 +72,26 @@ export class ManagePageComponent {
       });
   }
 
+  onStop(processId) {
+    this.store.pipe(select(fromCore.getProcess(processId)), take(1))
+      .subscribe((proc: Process) => {
+        const config: ModalConfig = {
+          message: `Stop ${proc.parameters.samplename}?`,
+          labels: {
+            title: 'Stop Process',
+            buttons: {
+              confirm: 'OK',
+              cancel: 'Cancel'
+            }
+          },
+          actions: {
+            confirm: new processes.Stop(processId),
+            cancel: new layout.CloseModal()
+          }
+        }
+        this.store.dispatch(new layout.OpenModal(config));
+      });
+  }
 
   onRestart(processId) {
     this.store.pipe(select(fromCore.getProcess(processId)), take(1))

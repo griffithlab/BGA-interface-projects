@@ -34,6 +34,7 @@ export class ProcessTableComponent {
   @Output() export = new EventEmitter<number>();
   @Output() restart = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
+  @Output() stop = new EventEmitter<number>();
   ascSort;
   descSort;
 
@@ -50,6 +51,10 @@ export class ProcessTableComponent {
 
   onRestart(id: number) {
     this.restart.emit(id);
+  }
+
+  onStop(id: number) {
+    this.stop.emit(id);
   }
 
   onExport(id: number) {
