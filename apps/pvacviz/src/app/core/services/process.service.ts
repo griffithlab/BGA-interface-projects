@@ -46,6 +46,18 @@ export class ProcessService {
       .pipe(map(message => message || null));
   }
 
+  stop(id): Observable<string> {
+    return this.http
+      .get<string>(`${this.apiPath}/stop/${id}`)
+      .pipe(map(message => message || null));
+  }
+
+  restart(id): Observable<string> {
+    return this.http
+      .get<string>(`${this.apiPath}/restart/${id}`)
+      .pipe(map(message => message || null));
+  }
+
   export(id): Observable<string> {
     return this.http
       .post<string>(`${this.apiPath}/processes/${id}/export`, null)
@@ -68,11 +80,4 @@ export class ProcessService {
     return this.http.post(`${this.stagingPath}`, processParameters, httpOptions)
       .map((res) => res as ApiStartResponse);
   }
-
-  // archive(id: number): Observable<string> {
-  //   return this.http.get(`${this.api}/archive/${id}`)
-  //     .map((response: Response) => {
-  //       return response.statusText;
-  //     });
-  // }
 }
