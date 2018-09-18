@@ -250,7 +250,7 @@ export class ProcessEffects {
       }),
     switchMap(([action, meta]: [Action, ApiMeta]) => {
       let page;
-      if (action.type === 'DeleteSuccess' || action.type === 'ArchiveSuccess') {
+      if (action.constructor.name === 'DeleteSuccess' || action.constructor.name === 'ArchiveSuccess') {
         // ensure we haven't removed the last process entry on a page, thus requesting an empty response
         page = Math.ceil((meta.total_count - 1) / meta.count) >= meta.page ? meta.page : meta.page - 1;
       } else {

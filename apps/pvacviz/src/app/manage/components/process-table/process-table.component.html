@@ -2,11 +2,11 @@
   <div class="col-xs-12">
     <clr-datagrid class="processes-table" (clrDgRefresh)="onRefresh($event)">
 
-      <clr-dg-column [clrDgSortBy]="'parameters.id'" [clrDgSortOrder]="ascSort">
+      <clr-dg-column class="col-id" [clrDgSortBy]="'parameters.id'" [clrDgSortOrder]="ascSort">
         ID
       </clr-dg-column>
 
-      <clr-dg-column>Status</clr-dg-column>
+      <clr-dg-column class="col-status">Status</clr-dg-column>
       <clr-dg-column [clrDgField]="'parameters.samplename'">Sample Name</clr-dg-column>
       <clr-dg-column [clrDgField]="'parameters.input'">Input File</clr-dg-column>
       <!-- <clr-dg-column >Alleles</clr-dg-column> -->
