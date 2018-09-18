@@ -32,6 +32,9 @@ import {
   Stop,
   StopSuccess,
   StopFail,
+  Restart,
+  RestartSuccess,
+  RestartFail,
   Archive,
   ArchiveSuccess,
   ArchiveFail,
@@ -205,6 +208,31 @@ export class ProcessEffects {
             return new StopSuccess({ id: processId, message: message })
           }),
           catchError(err => of(new StopFail(err)))
+        )
+    })
+  );
+
+  @Effect()
+  restart$: Observable<Action> = this.actions$.pipe(
+    ofType<Restart>(ProcessActionTypes.Restart),
+    withLatestFrom(
+      this.store.select(fromRoot.getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
+
+      return this.processes
+        .restart(processId)
+        .pipe(
+          map((message: string) => {
+            return new RestartSuccess({ id: processId, message: message })
+          }),
+          catchError(err => of(new RestartFail(err)))
         )
     })
   );

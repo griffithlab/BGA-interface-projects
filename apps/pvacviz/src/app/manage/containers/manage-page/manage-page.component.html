@@ -30,6 +30,7 @@
         [processes]="processes$ | async"
         [meta]="processesMeta$ | async"
         (refresh)="onRefresh($event)"
+        (restart)="onRestart($event)"
         (export)="onExport($event)"
         (stop)="onStop($event)"
         (archive)="onArchive($event)"
