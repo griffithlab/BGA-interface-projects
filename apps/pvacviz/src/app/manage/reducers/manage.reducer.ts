@@ -37,7 +37,7 @@ export function reducer(state = initialState,
       return {
         showNotice: true,
         notice: {
-          message: 'Process archived.',
+          message: `Process #${action.payload.id} archived.`,
           type: 'info'
         }
       };
