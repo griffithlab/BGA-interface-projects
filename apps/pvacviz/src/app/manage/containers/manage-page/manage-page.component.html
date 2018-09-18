@@ -40,9 +40,14 @@
   </div>
 </div>
 <div class="row" >
-  <div class="col-xs-12" >
+  <div class="col-xs-6" >
     <p>manageState$</p>
     <prettyjson [obj]="(manageState$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
+  </div>
+  <div class="col-xs-6" >
+    <p>processesMeta$</p>
+    <prettyjson [obj]="(processesMeta$ | async) | json:2" [style.min-height]="800">
     </prettyjson>
   </div>
 </div>

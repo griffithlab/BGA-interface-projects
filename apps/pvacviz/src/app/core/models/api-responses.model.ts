@@ -2,10 +2,10 @@ import { File } from './file.model';
 import { Process } from './process.model';
 
 export interface ApiMeta {
-  page: string;
-  count: string;
-  total_count: string;
-  total_pages: string;
+  page: number;
+  count: number;
+  total_count: number;
+  total_pages: number;
 }
 
 export const initialMeta = {

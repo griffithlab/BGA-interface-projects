@@ -16,9 +16,10 @@ import {
   withLatestFrom
 } from 'rxjs/operators';
 
-import { Process } from '../models/process.model';
-import { ProcessService } from '../services/process.service';
+import { Process } from '@pvz/core/models/process.model';
+import { ProcessService } from '@pvz/core/services/process.service';
 import { ApiProcessesResponse } from '@pvz/core/models/api-responses.model';
+import { ApiMeta } from '@pvz/core/models/api-responses.model';
 import {
   ProcessActionTypes,
   ProcessActions,
@@ -40,7 +41,8 @@ import {
   Remove
 } from '@pvz/core/actions/process.actions';
 
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '@pvz/reducers';
+import * as fromCore from '@pvz/core/reducers';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -55,11 +57,14 @@ import * as fromRoot from '../../reducers';
 
 @Injectable()
 export class ProcessEffects {
+  processesMeta$: Observable<ApiMeta>; // paging data from processes endpoint request
   constructor(
     private actions$: Actions,
     private processes: ProcessService,
     private store: Store<fromRoot.State>
-  ) { }
+  ) {
+    this.processesMeta$ = store.pipe(select(fromCore.getProcessesMeta));
+  }
 
   @Effect()
   query$: Observable<Action> = this.actions$.pipe(
@@ -182,19 +187,22 @@ export class ProcessEffects {
   // action themselves (e.g. archive$ effect). See:
   // https://github.com/ngrx/platform/issues/468
   // https://stackoverflow.com/questions/47554267/dispatch-multiple-action-from-one-effect
-  @Effect()
-  removeArchived$: Observable<Action> = this.actions$.pipe(
-    ofType<ArchiveSuccess>(ProcessActionTypes.ArchiveSuccess),
-    switchMap((action) => {
-      return of(new Remove(action.payload.id))
-    })
-  );
 
   @Effect()
-  removeDeleted$: Observable<Action> = this.actions$.pipe(
-    ofType<DeleteSuccess>(ProcessActionTypes.DeleteSuccess),
-    switchMap((action) => {
-      return of(new Remove(action.payload.id))
+  reloadPagedProcesses$: Observable<Action> = this.actions$.pipe(
+    ofType<Action>(
+      ProcessActionTypes.ArchiveSuccess,
+      ProcessActionTypes.DeleteSuccess,
+      ProcessActionTypes.RestartSuccess),
+    withLatestFrom(this.store.select(fromCore.getProcessesMeta), // not sure why this.processMeta$ doesn't work here
+      (action, meta) => {
+        return [action, meta];
+      }),
+    switchMap(([action, meta]: [Action, ApiMeta]) => {
+      // ensure we haven't deleted the last entry on a page, thus requesting an empty response
+      const page = Math.ceil((meta.total_count - 1) / meta.count) >= meta.page ? meta.page : meta.page - 1;
+      const req = { page: page, count: meta.count };
+      return of(new Load(req))
     })
   );
 }

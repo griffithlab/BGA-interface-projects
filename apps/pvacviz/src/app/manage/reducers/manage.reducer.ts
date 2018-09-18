@@ -3,7 +3,6 @@ import { createSelector } from '@ngrx/store';
 import 'rxjs/add/observable/of';
 
 import { Process } from '@pvz/core/models/process.model';
-import { ManageActions, ManageActionTypes } from '@pvz/manage/actions/manage.actions';
 import { ProcessActions, ProcessActionTypes } from '@pvz/core/actions/process.actions';
 
 /**
@@ -30,14 +29,41 @@ export const initialState = {
 };
 
 export function reducer(state = initialState,
-  action: ProcessActions | ManageActions): State {
+  action: ProcessActions): State {
   switch (action.type) {
 
     case ProcessActionTypes.ArchiveSuccess:
       return {
         showNotice: true,
         notice: {
-          message: `Process #${action.payload.id} archived.`,
+          message: `Process #${action.payload.id} archived to ~/pVAC-Seq/archive/.`,
+          type: 'info'
+        }
+      };
+
+    case ProcessActionTypes.DeleteSuccess:
+      return {
+        showNotice: true,
+        notice: {
+          message: `Process #${action.payload.id} deleted.`,
+          type: 'info'
+        }
+      };
+
+    case ProcessActionTypes.ExportSuccess:
+      return {
+        showNotice: true,
+        notice: {
+          message: `Process #${action.payload.id} exported to ~/pVAC-Seq/export/.`,
+          type: 'info'
+        }
+      };
+
+    case ProcessActionTypes.RestartSuccess:
+      return {
+        showNotice: true,
+        notice: {
+          message: `Process #${action.payload.id} restarted.`,
           type: 'info'
         }
       };

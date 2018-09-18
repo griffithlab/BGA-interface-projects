@@ -160,5 +160,6 @@ export type ProcessActions =
   | LoadDetail | LoadDetailSuccess | LoadDetailFail
   | Archive | ArchiveSuccess | ArchiveFail
   | Restart | RestartSuccess | RestartFail
+  | Export | ExportSuccess | ExportFail
   | Delete | DeleteSuccess | DeleteFail
   | Remove;
