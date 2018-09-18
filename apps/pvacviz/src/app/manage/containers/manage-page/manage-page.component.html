@@ -13,12 +13,12 @@
   </div>
 </div>
 <div class="page-content">
-  <div class="row" *ngIf="(manageState$ | async).showNotice">
+  <div class="row" *ngIf="(manageState$ | async).ui.showNotice">
     <div class="col-xs-12" >
-      <clr-alert [clrAlertType]="(manageState$ | async).notice.type" [clrAlertClosable]="false">
+      <clr-alert [clrAlertType]="(manageState$ | async).ui.notice.type" [clrAlertClosable]="false">
         <div class="alert-item">
           <span class="alert-text">
-            {{ (manageState$ | async).notice.message }}
+            {{ (manageState$ | async).ui.notice.message }}
           </span>
         </div>
       </clr-alert>

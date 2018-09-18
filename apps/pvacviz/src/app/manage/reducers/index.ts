@@ -3,15 +3,15 @@ import * as fromManage from './manage.reducer';
 import * as fromRoot from '@pvz/reducers';
 
 export interface ManageState {
-  manage: fromManage.State;
+  ui: fromManage.State;
 }
 
 export interface State extends fromRoot.State {
-  manage: ManageState;
+  ui: ManageState;
 }
 
 export const reducers = {
-  manage: fromManage.reducer
+  ui: fromManage.reducer
 }
 
 /**

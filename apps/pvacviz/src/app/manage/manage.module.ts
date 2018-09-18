@@ -29,7 +29,6 @@ import { ProcessTableComponent } from './components/process-table/process-table.
      * the existing state.
      */
     StoreModule.forFeature('manage', reducers),
-
   ],
   declarations: [ManagePageComponent, ProcessPageComponent, ProcessTableComponent]
 })
