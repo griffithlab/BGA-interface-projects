@@ -181,13 +181,6 @@ export class ProcessEffects {
     })
   );
 
-
-  // TODO see if this is the idiomatic way of chaining actions after a successful call.
-  // I have a feeling that effects requiring a subsequent refresh should dispatch the
-  // action themselves (e.g. archive$ effect). See:
-  // https://github.com/ngrx/platform/issues/468
-  // https://stackoverflow.com/questions/47554267/dispatch-multiple-action-from-one-effect
-
   @Effect()
   reloadPagedProcesses$: Observable<Action> = this.actions$.pipe(
     ofType<Action>(
