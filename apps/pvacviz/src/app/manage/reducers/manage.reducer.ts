@@ -29,7 +29,8 @@ export const initialState = {
   }
 };
 
-export function reducer(state = initialState, action: ProcessActions | ManageActions): State {
+export function reducer(state = initialState,
+  action: ProcessActions | ManageActions): State {
   switch (action.type) {
 
     case ProcessActionTypes.ArchiveSuccess:

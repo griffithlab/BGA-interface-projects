@@ -1,6 +1,5 @@
 import { LayoutActionTypes, LayoutActions } from '../actions/layout.actions';
 import { ModalConfig, ModalInitialState } from '../models/layout.model';
-import { Action } from '@ngrx/store';
 
 export interface State {
   collapsed: boolean;

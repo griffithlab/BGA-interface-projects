@@ -21,7 +21,15 @@ import { ProcessTableComponent } from './components/process-table/process-table.
     ClarityModule,
     MomentModule,
     ManageRoutingModule,
-    PrettyJsonModule
+    PrettyJsonModule,
+    /**
+     * StoreModule.forFeature is used for composing state
+     * from feature modules. These modules can be loaded
+     * eagerly or lazily and will be dynamically added to
+     * the existing state.
+     */
+    StoreModule.forFeature('manage', reducers),
+
   ],
   declarations: [ManagePageComponent, ProcessPageComponent, ProcessTableComponent]
 })

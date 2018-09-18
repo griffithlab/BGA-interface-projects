@@ -1,9 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import * as fromNgrxRouter from '@ngrx/router-store';
-
 import * as fromManage from './manage.reducer';
 import * as fromRoot from '@pvz/reducers';
-import { RouterStateUrl } from '@pvz/core/models/router.model';
 
 export interface ManageState {
   manage: fromManage.State;
