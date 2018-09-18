@@ -1,6 +1,7 @@
 // @angular
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -34,6 +35,7 @@ import { routes } from '@pvz/routes';
   imports: [
     HttpClientModule,
     BrowserModule,
+    BrowserAnimationsModule,
     NxModule.forRoot(),
     RouterModule.forRoot(routes, { initialNavigation: "enabled" }),
 

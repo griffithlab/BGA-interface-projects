@@ -8,17 +8,14 @@
       <router-outlet></router-outlet>
     </div>
 
-    <clr-vertical-nav
-      [clrVerticalNavCollapsible]="collapsible"
-      [clrVerticalNavCollapsed]="collapsed$ | async"
-      (clrVerticalNavCollapsedChange)="collapseChange($event)">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [clrVerticalNavCollapsed]="collapsed$ | async" (clrVerticalNavCollapsedChange)="collapseChange($event)">
       <a clrVerticalNavLink routerLink="./start" routerLinkActive="active">
-          <clr-icon clrVerticalNavIcon shape="play"></clr-icon>
-          Start
+        <clr-icon clrVerticalNavIcon shape="play"></clr-icon>
+        Start
       </a>
       <a clrVerticalNavLink routerLink="./manage" routerLinkActive="active">
-          <clr-icon clrVerticalNavIcon shape="view-list"></clr-icon>
-          Manage
+        <clr-icon clrVerticalNavIcon shape="view-list"></clr-icon>
+        Manage
       </a>
       <!-- <a clrVerticalNavLink routerLink="./review" routerLinkActive="active"> -->
       <!-- <clr-icon clrVerticalNavIcon shape="file-group"></clr-icon> -->
@@ -28,7 +25,17 @@
         <clr-icon clrVerticalNavIcon shape="scatter-plot"></clr-icon>
         Visualize
       </a>
-  </clr-vertical-nav>
+    </clr-vertical-nav>
   </div>
 
 </clr-main-container>
+<clr-modal [(clrModalOpen)]="modalOpen">
+  <h3 class="modal-title">{{(modalConfig$ | async).labels.title }}</h3>
+  <div class="modal-body">
+    <p>{{ (modalConfig$ | async).message }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="onCancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onConfirm()">Ok</button>
+  </div>
+</clr-modal>

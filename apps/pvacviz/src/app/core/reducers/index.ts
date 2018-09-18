@@ -50,6 +50,16 @@ export const getCollapsed = createSelector(
   core => core.layout.collapsed
 );
 
+export const getModalOpen = createSelector(
+  getCoreState,
+  core => core.layout.modalOpen
+);
+
+export const getModalConfig = createSelector(
+  getCoreState,
+  core => core.layout.modal
+);
+
 /**
  * Every reducer module exports selector functions, however child reducers
  * have no knowledge of the overall state tree. To make them usable, we
