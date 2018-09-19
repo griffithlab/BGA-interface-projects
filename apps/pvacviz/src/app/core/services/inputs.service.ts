@@ -23,7 +23,8 @@ export class InputService {
 
     function parseResponse(res: Response): ApiInputResponse {
       return map(res, f => f as File)
-        .filter(f => first(f.display_name) !== '.'); // filter out invisible files
+        .filter(f => first(f.display_name) !== '.') // filter out invisible files
+        .filter(f => f.type === 'directory' || f.is_input); // filter non-input files
     }
   }
 }
