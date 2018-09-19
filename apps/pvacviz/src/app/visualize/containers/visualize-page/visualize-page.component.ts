@@ -23,7 +23,6 @@ export class VisualizePageComponent implements OnInit {
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
-    // this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
     this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
   }
 

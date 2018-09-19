@@ -13,6 +13,7 @@ import { Process } from '@pvz/core/models/process.model';
 import { environment } from '@pvz/environments/environment';
 import * as fromCore from '@pvz/core/reducers';
 import * as processes from '@pvz/core/actions/process.actions';
+import * as dropbox from '@pvz/core/actions/dropbox.actions';
 
 @Component({
   selector: 'pvz-visualize-file',
@@ -55,6 +56,7 @@ export class VisualizeFileComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new processes.LoadDetail());
+    this.store.dispatch(new dropbox.Load());
   }
 
   ngOnDestroy() {
