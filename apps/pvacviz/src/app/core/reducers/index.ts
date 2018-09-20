@@ -159,25 +159,29 @@ export const getSelectedFile = createSelector(
   getRouteProcessId,
   getRouteFileId,
   (process, files, processId, fileId) => {
+    console.log(`GETSELECTED FILE processID: ${processId}`);
     let file: File;
     if (processId > 0) {
       file = process ? process.files.filter(f => f.fileID === fileId)[0] : undefined;
     } else {
-      return getDropboxFile(files, fileId);
+      file = getDropboxFile(files, fileId);
+      console.log('FOUND DROPBOX FILE:');
+      console.log(file)
     }
     return file;
   }
 );
 
-function getDropboxFile(files, id) {
-  if (files && id && files.length > 0) {
-    files.map((f) => {
-      if (f.fileID === id) {
-        return f;
-      }
-      if (f.type === 'directory') {
-        getDropboxFile(f.contents, id);
-      }
-    });
+function getDropboxFile(data, id) {
+  function iter(a) {
+    if (a.fileID === id) {
+      result = a;
+      return true;
+    }
+    return Array.isArray(a.contents) && a.contents.some(iter);
   }
+
+  var result;
+  data.some(iter);
+  return result
 }

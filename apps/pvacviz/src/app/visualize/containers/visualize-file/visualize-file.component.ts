@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 
 import 'rxjs/add/observable/of';
-import { combineLatest, switchMap, withLatestFrom, filter } from 'rxjs/operators';
+import { take, combineLatest, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 
 import { File } from '@pvz/core/models/file.model';
 import { Process } from '@pvz/core/models/process.model';
@@ -55,8 +55,19 @@ export class VisualizeFileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new processes.LoadDetail());
-    this.store.dispatch(new dropbox.Load());
+    this.file$.subscribe((f) => {
+      console.log(f);
+    });
+
+    this.processId$
+      .pipe(take(1))
+      .subscribe((id) => {
+        if (id > 0) {
+          this.store.dispatch(new processes.LoadDetail());
+        } else {
+          this.store.dispatch(new dropbox.Load());
+        }
+      });
   }
 
   ngOnDestroy() {
