@@ -1,4 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { File } from '@pvz/core/models/file.model';
 import * as fromRoot from '@pvz/reducers';
 import * as fromLayout from './layout.reducer';
 import * as fromProcesses from './processes.reducer';
@@ -118,13 +119,6 @@ export const getSelectedProcess = createSelector(
   (processes, processId) => { return processes[processId]; }
 );
 
-export const getSelectedFile = createSelector(
-  getSelectedProcess,
-  getRouteFileId,
-  (process, fileID) => {
-    return process ? process.files.filter(f => f.fileID === fileID)[0] : undefined;
-  }
-);
 
 export const getProcess = (id: number) => createSelector(
   getProcesses,
@@ -157,4 +151,37 @@ export const getDropboxVisualizableFiles = createSelector(
 
 function isVisualizable(display_name) {
   return (display_name.includes('final\.tsv') || display_name.includes('combined\.parsed\.tsv'));
+}
+
+export const getSelectedFile = createSelector(
+  getSelectedProcess,
+  getAllDropboxFiles,
+  getRouteProcessId,
+  getRouteFileId,
+  (process, files, processId, fileId) => {
+    console.log(`GETSELECTED FILE processID: ${processId}`);
+    let file: File;
+    if (processId > 0) {
+      file = process ? process.files.filter(f => f.fileID === fileId)[0] : undefined;
+    } else {
+      file = getDropboxFile(files, fileId);
+      console.log('FOUND DROPBOX FILE:');
+      console.log(file)
+    }
+    return file;
+  }
+);
+
+function getDropboxFile(data, id) {
+  function iter(a) {
+    if (a.fileID === id) {
+      result = a;
+      return true;
+    }
+    return Array.isArray(a.contents) && a.contents.some(iter);
+  }
+
+  var result;
+  data.some(iter);
+  return result
 }

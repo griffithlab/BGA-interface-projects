@@ -2,10 +2,22 @@
   <div class="row">
     <div class="col-xs-12">
       <h3 class="page-title">
-        <span class="page-type">{{(process$ | async)?.parameters.samplename}}</span><br/>
-        <span class="page-subtitle">
-          <span class="filename">{{ (file$ | async)?.display_name }}</span>&nbsp;
-          <span class="file-description" >({{ (file$ | async)?.description }})</span></span>
+        <ng-container [ngSwitch]="(processId$ | async) > 0">
+          <ng-container *ngSwitchCase="true">
+            <span class="page-type">{{(process$ | async)?.parameters.samplename}}</span>
+            <br/>
+            <span class="page-subtitle">
+              <span class="filename">{{ (file$ | async)?.display_name }}</span>&nbsp;
+              <span class="file-description" >({{ (file$ | async)?.description }})</span>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="false">
+            <span class="page-type">{{ (file$ | async)?.display_name }}</span><br/>
+            <span class="page-subtitle">
+              <span class="filename">{{ (file$ | async)?.description }}</span>&nbsp;
+            </span>
+          </ng-container>
+        </ng-container>
       </h3>
     </div>
     <div class="col-xs-4 text-right page-buttons">
@@ -13,3 +25,16 @@
   </div>
 </div>
 <pvz-bokeh-visualization [visualizeUrl]="visualizeUrl$ | async"></pvz-bokeh-visualization>
+
+<div class="row">
+  <div class="col-xs-6">
+    <p>file$</p>
+    <prettyjson [obj]="(file$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
+  </div>
+  <div class="col-xs-6">
+    <p>processId$</p>
+    <prettyjson [obj]="(processId$ | async) | json:2" [style.min-height]="800">
+    </prettyjson>
+  </div>
+</div>
