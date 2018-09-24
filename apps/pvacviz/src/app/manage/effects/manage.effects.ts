@@ -90,33 +90,37 @@ export class ManageEffects {
     withLatestFrom(
       this.store.select(fromRoot.getRouterState),
       (action, router) => {
-        return [action, router.state.params.processId]
+        return [action, router.state.params]
       }
     ),
-    switchMap(([action, processId]) => {
-      if (action.payload.id === processId) { // need to reload or redirect
-        let o;
-        if (action.constructor.name === 'StopSuccess' || action.constructor.name === 'RestartSuccess') {
-          o = of(new LoadDetail())
-        } else {
-          const config: ModalConfig = {
-            message: `Requested process does not exist. Return to Manage Processes page?`,
-            labels: {
-              title: 'Unknown Process',
-              buttons: {
-                confirm: 'OK',
-                cancel: 'Cancel'
+    switchMap(([action, params]) => {
+      let o;
+      if (params.processId) {
+        if (action.payload.id === Number(params.processId) { // on a process detail page, need to reload process
+          if (action.constructor.name === 'StopSuccess' || action.constructor.name === 'RestartSuccess') {
+            o = of(new LoadDetail())
+          } else { // we're on a process detail page of a process that has just been removed
+            const config: ModalConfig = {
+              message: `Requested process does not exist. Return to Manage Processes page?`,
+              labels: {
+                title: 'Unknown Process',
+                buttons: {
+                  confirm: 'OK',
+                  cancel: 'Cancel'
+                }
+              },
+              actions: {
+                confirm: new layout.CloseModal(),
+                cancel: new layout.CloseModal()
               }
-            },
-            actions: {
-              confirm: new layout.CloseModal(),
-              cancel: new layout.CloseModal()
             }
+            o = of(new layout.OpenModal(config));
           }
-          o = of(new layout.OpenModal(config));
         }
-        return o;
+      } else {
+        o = Observable.of({ type: "NO_ACTION" }); // we're not on a process detail page, no need to reload or prompt
       }
+      return o;
     })
   );
 
