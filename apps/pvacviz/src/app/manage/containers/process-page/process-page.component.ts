@@ -44,30 +44,6 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
     this.epitope_lengths$ = this.parameters$.pipe(filter(val => !!val), map(params => params.epitope_lengths));
     this.prediction_algorithms$ = this.parameters$.pipe(filter(val => !!val), map(params => params.prediction_algorithms));
 
-    // catch undefined processes from Archive, Delete action and pop up a modal
-    this.subscriptions.push(
-      this.process$.pipe(skip(1)).subscribe((proc) => {
-        if (proc === undefined) {
-          const config: ModalConfig = {
-            message: `Requested process does not exist. Returning to Manage Process page.`,
-            labels: {
-              title: 'Unknown Process',
-              buttons: {
-                confirm: 'OK',
-                cancel: 'Cancel'
-              }
-            },
-            actions: {
-              confirm: () => {
-                this.router.navigate(['/', 'manage'])
-                return new layout.CloseModal();
-              },
-              cancel: () => new layout.CloseModal()
-            }
-          }
-          this.store.dispatch(new layout.OpenModal(config));
-        }
-      }));
   }
 
   ngOnInit() {

@@ -68,8 +68,8 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: new processes.Archive(processId),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Archive(processId),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -89,8 +89,8 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: new processes.Stop(processId),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Stop(processId),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -110,8 +110,8 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: new processes.Restart(processId),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Restart(processId),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -131,8 +131,8 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: new processes.Export(processId),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Export(processId),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -152,8 +152,8 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: new processes.Delete(processId),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Delete(processId),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
