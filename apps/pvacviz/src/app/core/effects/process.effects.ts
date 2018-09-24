@@ -106,32 +106,6 @@ export class ProcessEffects {
     })
   )
 
-  // if action payload contains a processId, it is used
-  // otherwise the router state processId is used.
-  @Effect()
-  archive$: Observable<Action> = this.actions$.pipe(
-    ofType<Archive>(ProcessActionTypes.Archive),
-    withLatestFrom(
-      this.store.select(fromRoot.getRouterState),
-      (action, router) => {
-        return [action.payload, router.state.params.processId]
-      }
-    ),
-    switchMap((processIds) => {
-      const payloadProcessId = processIds[0];
-      const routeProcessId = processIds[1];
-      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
-
-      return this.processes
-        .archive(processId)
-        .pipe(
-          map((message: string) => {
-            return new ArchiveSuccess({ id: processId, message: message })
-          }),
-          catchError(err => of(new ArchiveFail(err)))
-        )
-    })
-  );
 
   // if action payload contains a processId, it is used
   // otherwise the router state processId is used.
@@ -237,27 +211,4 @@ export class ProcessEffects {
     })
   );
 
-  @Effect()
-  reloadPagedProcesses$: Observable<Action> = this.actions$.pipe(
-    ofType<Action>(
-      ProcessActionTypes.ArchiveSuccess,
-      ProcessActionTypes.DeleteSuccess,
-      ProcessActionTypes.StopSuccess,
-      ProcessActionTypes.RestartSuccess),
-    withLatestFrom(this.store.select(fromCore.getProcessesMeta), // not sure why this.processMeta$ doesn't work here
-      (action, meta) => {
-        return [action, meta];
-      }),
-    switchMap(([action, meta]: [Action, ApiMeta]) => {
-      let page;
-      if (action.constructor.name === 'DeleteSuccess' || action.constructor.name === 'ArchiveSuccess') {
-        // ensure we haven't removed the last process entry on a page, thus requesting an empty response
-        page = Math.ceil((meta.total_count - 1) / meta.count) >= meta.page ? meta.page : meta.page - 1;
-      } else {
-        page = meta.page;
-      }
-      const req = { page: page, count: meta.count };
-      return of(new Load(req))
-    })
-  );
 }
