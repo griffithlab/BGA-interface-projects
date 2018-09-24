@@ -68,7 +68,10 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: () => new processes.Archive(processId),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Archive(processId);
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -89,7 +92,10 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: () => new processes.Stop(processId),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Stop(processId)
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -110,7 +116,10 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: () => new processes.Restart(processId),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Restart(processId);
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -131,7 +140,10 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: () => new processes.Export(processId),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Export(processId);
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -152,7 +164,10 @@ export class ManagePageComponent implements OnInit {
             }
           },
           actions: {
-            confirm: () => new processes.Delete(processId),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Delete(processId);
+            },
             cancel: () => new layout.CloseModal()
           }
         }
