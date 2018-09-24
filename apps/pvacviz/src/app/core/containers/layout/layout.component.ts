@@ -44,14 +44,13 @@ export class LayoutComponent implements OnDestroy {
 
   onCancel() {
     this.modalConfig$.pipe(take(1)).subscribe((modal) => {
-      this.store.dispatch(modal.actions.cancel);
+      this.store.dispatch(modal.actions.cancel());
     });
   }
   onConfirm() {
     this.modalConfig$.pipe(take(1)).subscribe((modal) => {
-      this.store.dispatch(modal.actions.confirm);
+      this.store.dispatch(modal.actions.confirm());
     });
-    this.store.dispatch(new layout.CloseModal);
   }
 
   ngOnDestroy() {

@@ -96,17 +96,17 @@ export class ManageEffects {
     switchMap(([action, params]) => {
       let o;
       if (params.processId) {
-        if (action.payload.id === Number(params.processId) { // on a process detail page, need to reload process
+        if (action.payload.id === Number(params.processId)) { // on a process detail page, need to reload process
           if (action.constructor.name === 'StopSuccess' || action.constructor.name === 'RestartSuccess') {
             o = of(new LoadDetail())
           } else { // we're on a process detail page of a process that has just been removed
             const config: ModalConfig = {
-              message: `Requested process does not exist. Return to Manage Processes page?`,
+              message: `Requested process no longer exists. Return to Manage Processes page?`,
               labels: {
-                title: 'Unknown Process',
+                title: 'Process Removed',
                 buttons: {
                   confirm: 'OK',
-                  cancel: 'Cancel'
+                  cancel: 'No'
                 }
               },
               actions: {

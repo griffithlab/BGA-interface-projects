@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 
 import { Parameters } from '@pvz/core/models/parameters.model';
@@ -32,7 +33,7 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  constructor(private store: Store<fromCore.State>) {
+  constructor(private store: Store<fromCore.State>, private router: Router) {
     this.process$ = store.pipe(select(fromCore.getSelectedProcess));
     this.status$ = this.process$.pipe(filter(val => !!val), map((process) => {
       return process.running ? 'Running' : process.status === 1 ? 'Completed' : 'Stopped';
@@ -43,6 +44,30 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
     this.epitope_lengths$ = this.parameters$.pipe(filter(val => !!val), map(params => params.epitope_lengths));
     this.prediction_algorithms$ = this.parameters$.pipe(filter(val => !!val), map(params => params.prediction_algorithms));
 
+    // catch undefined processes from Archive, Delete action and pop up a modal
+    this.subscriptions.push(
+      this.process$.pipe(skip(1)).subscribe((proc) => {
+        if (proc === undefined) {
+          const config: ModalConfig = {
+            message: `Requested process does not exist. Returning to Manage Process page.`,
+            labels: {
+              title: 'Unknown Process',
+              buttons: {
+                confirm: 'OK',
+                cancel: 'Cancel'
+              }
+            },
+            actions: {
+              confirm: () => {
+                this.router.navigate(['/', 'manage'])
+                return new layout.CloseModal();
+              },
+              cancel: () => new layout.CloseModal()
+            }
+          }
+          this.store.dispatch(new layout.OpenModal(config));
+        }
+      }));
   }
 
   ngOnInit() {
@@ -74,8 +99,8 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: new processes.Delete(proc.id),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Delete(proc.id),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -95,8 +120,8 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: new processes.Stop(proc.id),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Stop(proc.id),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -116,8 +141,8 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: new processes.Archive(proc.id),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Archive(proc.id),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -137,8 +162,8 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: new processes.Restart(proc.id),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Restart(proc.id),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));
@@ -158,8 +183,8 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: new processes.Export(proc.id),
-            cancel: new layout.CloseModal()
+            confirm: () => new processes.Export(proc.id),
+            cancel: () => new layout.CloseModal()
           }
         }
         this.store.dispatch(new layout.OpenModal(config));

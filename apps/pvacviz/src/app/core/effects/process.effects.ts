@@ -106,9 +106,31 @@ export class ProcessEffects {
     })
   )
 
+  @Effect()
+  archive$: Observable<Action> = this.actions$.pipe(
+    ofType<Archive>(ProcessActionTypes.Archive),
+    withLatestFrom(
+      this.store.select(fromRoot.getRouterState),
+      (action, router) => {
+        return [action.payload, router.state.params.processId]
+      }
+    ),
+    switchMap((processIds) => {
+      const payloadProcessId = processIds[0];
+      const routeProcessId = processIds[1];
+      const processId = payloadProcessId ? payloadProcessId : routeProcessId;
 
-  // if action payload contains a processId, it is used
-  // otherwise the router state processId is used.
+      return this.processes
+        .archive(processId)
+        .pipe(
+          map((message: string) => {
+            return new ArchiveSuccess({ id: processId, message: message })
+          }),
+          catchError(err => of(new ArchiveFail(err)))
+        )
+    })
+  );
+
   @Effect()
   export$: Observable<Action> = this.actions$.pipe(
     ofType<Export>(ProcessActionTypes.Export),
@@ -134,8 +156,6 @@ export class ProcessEffects {
     })
   );
 
-  // if action payload contains a processId, it is used
-  // otherwise the router state processId is used.
   @Effect()
   delete$: Observable<Action> = this.actions$.pipe(
     ofType<Delete>(ProcessActionTypes.Delete),

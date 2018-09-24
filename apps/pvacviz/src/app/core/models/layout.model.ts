@@ -10,8 +10,8 @@ export interface ModalConfig {
     }
   }
   actions: {
-    confirm: Action;
-    cancel: Action;
+    confirm: Function;
+    cancel: Function;
   }
 }
 
