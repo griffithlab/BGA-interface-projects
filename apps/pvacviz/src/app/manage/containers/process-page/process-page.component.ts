@@ -75,7 +75,10 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: () => new processes.Delete(proc.id),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal);
+              return new processes.Delete()
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -96,7 +99,10 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: () => new processes.Stop(proc.id),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal());
+              return new processes.Stop();
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -117,7 +123,10 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: () => new processes.Archive(proc.id),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal());
+              return new processes.Archive()
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -138,7 +147,10 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: () => new processes.Restart(proc.id),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal());
+              return new processes.Restart();
+            },
             cancel: () => new layout.CloseModal()
           }
         }
@@ -159,7 +171,10 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
             }
           },
           actions: {
-            confirm: () => new processes.Export(proc.id),
+            confirm: () => {
+              this.store.dispatch(new layout.CloseModal());
+              return new processes.Export();
+            },
             cancel: () => new layout.CloseModal()
           }
         }

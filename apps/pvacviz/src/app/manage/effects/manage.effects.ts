@@ -1,4 +1,5 @@
 import { Injectable, InjectionToken, Optional, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -53,7 +54,8 @@ import * as fromRoot from '@pvz/reducers';
 export class ManageEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<fromRoot.State>
+    private store: Store<fromRoot.State>,
+    private router: Router
   ) { }
 
   @Effect()
@@ -96,8 +98,9 @@ export class ManageEffects {
     switchMap(([action, params]) => {
       let o;
       if (params.processId) {
-        if (action.payload.id === Number(params.processId)) { // on a process detail page, need to reload process
+        if (Number(action.payload.id) === Number(params.processId)) { // on a process detail page, need to reload process
           if (action.constructor.name === 'StopSuccess' || action.constructor.name === 'RestartSuccess') {
+            this.store.dispatch(new layout.CloseModal())
             o = of(new LoadDetail())
           } else { // we're on a process detail page of a process that has just been removed
             const config: ModalConfig = {
@@ -110,8 +113,11 @@ export class ManageEffects {
                 }
               },
               actions: {
-                confirm: new layout.CloseModal(),
-                cancel: new layout.CloseModal()
+                confirm: () => {
+                  this.router.navigate(['/manage']);
+                  return new layout.CloseModal();
+                },
+                cancel: () => new layout.CloseModal()
               }
             }
             o = of(new layout.OpenModal(config));
