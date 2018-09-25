@@ -7,16 +7,16 @@
       </h3>
     </div>
     <div class="col-xs-6 text-right page-buttons">
-      <button class="btn btn-sm" (click)="onDelete()">
+      <button class="btn btn-sm" (click)="onDelete()" [disabled]="(process$ | async)?.running === true">
         Delete
       </button>
-      <button class="btn btn-sm" (click)="onArchive()">
+      <button class="btn btn-sm" (click)="onArchive()" [disabled]="(process$ | async)?.running === true">
         Archive
       </button>
-      <button class="btn btn-sm" (click)="onExport()">
+      <button class="btn btn-sm" (click)="onExport()" [disabled]="(process$ | async)?.running === true">
         Export
       </button>
-      <button class="btn btn-sm" (click)="onRestart()">
+      <button class="btn btn-sm" (click)="onRestart()" [disabled]="(process$ | async)?.running === true">
         Restart
       </button>
       <button class="btn btn-sm" (click)="onStop()">

@@ -36,10 +36,10 @@
 
         <clr-dg-action-overflow>
           <button class="action-item" (click)="onStop(process.id)">Stop</button>
-          <button class="action-item" (click)="onRestart(process.id)">Restart</button>
-          <button class="action-item" (click)="onExport(process.id)">Export</button>
-          <button class="action-item" (click)="onArchive(process.id)">Archive</button>
-          <button class="action-item" (click)="onDelete(process.id)">Delete</button>
+          <button class="action-item" (click)="onRestart(process.id)" [disabled]="process.running === true">Restart</button>
+          <button class="action-item" (click)="onExport(process.id)" [disabled]="process.running === true">Export</button>
+          <button class="action-item" (click)="onArchive(process.id)" [disabled]="process.running === true">Archive</button>
+          <button class="action-item" (click)="onDelete(process.id)" [disabled]="process.running === true">Delete</button>
         </clr-dg-action-overflow>
       </clr-dg-row>
 
