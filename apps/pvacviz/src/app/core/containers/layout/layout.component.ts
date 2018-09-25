@@ -4,7 +4,6 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-
 import { ModalConfig } from '@pvz/core/models/layout.model';
 import * as fromCore from '@pvz/core/reducers';
 import * as layout from '@pvz/core/actions/layout.actions';
@@ -16,7 +15,6 @@ import * as layout from '@pvz/core/actions/layout.actions';
 })
 export class LayoutComponent implements OnDestroy {
   collapsible: boolean = true;
-  collapsed$: Observable<boolean>;
   modalOpen$: Observable<boolean>;
   modalOpen: boolean;
   modalConfig$: Observable<ModalConfig>;
@@ -28,18 +26,8 @@ export class LayoutComponent implements OnDestroy {
      * Selectors can be layoutlied with the `select` operator which passes the state
      * tree to the provided selector
      */
-    this.collapsed$ = this.store.pipe(select(fromCore.getCollapsed));
     this.modalOpen$ = this.store.pipe(select(fromCore.getModalOpen));
     this.modalConfig$ = this.store.pipe(select(fromCore.getModalConfig));
-  }
-
-  collapseChange($event) {
-    $event ? this.store.dispatch(new layout.CollapseSidenav()) : this.store.dispatch(new layout.OpenSidenav());
-    this.subscriptions.push(
-      this.modalOpen$.subscribe((open) => {
-        this.modalOpen = open;
-      })
-    );
   }
 
   onCancel() {

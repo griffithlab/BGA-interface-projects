@@ -46,11 +46,6 @@ export const reducers = {
 
 export const getCoreState = createFeatureSelector<CoreState>('core');
 
-export const getCollapsed = createSelector(
-  getCoreState,
-  core => core.layout.collapsed
-);
-
 export const getModalOpen = createSelector(
   getCoreState,
   core => core.layout.modalOpen

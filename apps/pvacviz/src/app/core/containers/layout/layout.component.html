@@ -8,7 +8,8 @@
       <router-outlet></router-outlet>
     </div>
 
-    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible" [clrVerticalNavCollapsed]="collapsed$ | async" (clrVerticalNavCollapsedChange)="collapseChange($event)">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="collapsible"
+      [clrVerticalNavCollapsed]="false">
       <a clrVerticalNavLink routerLink="./start" routerLinkActive="active">
         <clr-icon clrVerticalNavIcon shape="play"></clr-icon>
         Start
