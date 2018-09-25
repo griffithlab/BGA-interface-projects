@@ -6,12 +6,12 @@ export interface ModalConfig {
     title: string;
     buttons: {
       confirm: string;
-      cancel: string;
+      cancel?: string;
     }
   }
   actions: {
-    confirm: Action;
-    cancel: Action;
+    confirm: Function;
+    cancel?: Function;
   }
 }
 

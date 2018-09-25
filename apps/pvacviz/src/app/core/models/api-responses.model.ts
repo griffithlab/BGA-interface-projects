@@ -9,8 +9,8 @@ export interface ApiMeta {
 }
 
 export const initialMeta = {
-  count: null,
-  page: null,
+  count: 10,
+  page: 1,
   total_count: null,
   total_pages: null
 };

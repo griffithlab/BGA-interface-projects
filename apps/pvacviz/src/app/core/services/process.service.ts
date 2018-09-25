@@ -54,7 +54,7 @@ export class ProcessService {
 
   restart(id): Observable<string> {
     return this.http
-      .get<string>(`${this.apiPath}/restart/${id}`)
+      .post<string>(`${this.apiPath}/processes/${id}/restart`, null)
       .pipe(map(message => message || null));
   }
 

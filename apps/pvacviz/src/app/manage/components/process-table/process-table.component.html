@@ -35,10 +35,10 @@
         </clr-dg-cell>
 
         <clr-dg-action-overflow>
-          <button class="action-item" (click)="onExport(process.id)">Export</button>
-          <button class="action-item" (click)="onRestart(process.id)">Restart</button>
-          <button class="action-item" (click)="onArchive(process.id)">Archive</button>
           <button class="action-item" (click)="onStop(process.id)">Stop</button>
+          <button class="action-item" (click)="onRestart(process.id)">Restart</button>
+          <button class="action-item" (click)="onExport(process.id)">Export</button>
+          <button class="action-item" (click)="onArchive(process.id)">Archive</button>
           <button class="action-item" (click)="onDelete(process.id)">Delete</button>
         </clr-dg-action-overflow>
       </clr-dg-row>

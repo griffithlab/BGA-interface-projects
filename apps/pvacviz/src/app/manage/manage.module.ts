@@ -9,6 +9,7 @@ import { MomentModule } from 'ngx-moment';
 // misc
 import { PrettyJsonModule } from 'angular2-prettyjson';
 
+import { ManageEffects } from './effects/manage.effects';
 import { reducers } from './reducers';
 
 import { SharedComponentsModule } from '@pvz/core/shared-components.module';
@@ -34,6 +35,9 @@ import { ProcessTableComponent } from './components/process-table/process-table.
      * the existing state.
      */
     StoreModule.forFeature('manage', reducers),
+    EffectsModule.forFeature([
+      ManageEffects,
+    ]),
   ],
   declarations: [
     ManagePageComponent,
