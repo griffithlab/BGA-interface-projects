@@ -1,0 +1,16 @@
+<clr-tree-node>
+  {{item.display_name}}
+  <ng-container *ngIf="item.contents?.length > 0" ngProjectAs="[clrIfExpanded]">
+    <ng-template
+      [clrIfExpanded]="true"
+      *ngFor="let child of item.contents">
+      <recursive-treeview
+        [item]="child">
+      </recursive-treeview>
+    </ng-template>
+  </ng-container>
+  <ng-template *ngIf="item && item.contents && !item.contents[0]">
+    <recursive-treeview [item]="item.contents">
+    </recursive-treeview>
+  </ng-template>
+</clr-tree-node>
