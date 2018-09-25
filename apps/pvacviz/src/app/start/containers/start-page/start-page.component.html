@@ -244,7 +244,7 @@
                 placeholder="Choose Max. Transcript Support Leevel"
                 [ngrxFormControlState]="(formState$ | async).controls.maximum_transcript_support_level">
               </ng-select>
-              <span class="help-text">Maximum transcript support level</span>
+              <span class="help-text">The threshold to use for filtering epitopes on the transcript support level. Keep all epitopes with a transcript support level less than or equal to this cutoff.</span>
             </pvz-select-container>
 
             <pvz-checkbox-container field-name="Keep Temp Files?">
