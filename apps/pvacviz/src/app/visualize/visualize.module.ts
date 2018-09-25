@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClarityModule } from '@clr/angular';
+import { SharedComponentsModule } from '@pvz/core/shared-components.module';
+
 import { VisualizeRoutingModule } from './visualize-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -9,7 +11,6 @@ import { VisualizePageComponent } from './containers/visualize-page/visualize-pa
 import { BokehVisualizationComponent } from './components/bokeh-visualization/bokeh-visualization.component';
 import { VisualizeFileComponent } from './containers/visualize-file/visualize-file.component';
 import { ConsolePipe } from '@pvz/core/pipes/console.pipe';
-import { RecursiveTreeviewComponent } from '@pvz/core/components/recursive-treeview.component';
 
 // import { reducers } from './reducers';
 
@@ -18,15 +19,15 @@ import { RecursiveTreeviewComponent } from '@pvz/core/components/recursive-treev
     CommonModule,
     ClarityModule,
     VisualizeRoutingModule,
+    SharedComponentsModule,
     PrettyJsonModule
   ],
   declarations: [
     VisualizePageComponent,
     BokehVisualizationComponent,
     VisualizeFileComponent,
-    ConsolePipe,
-    RecursiveTreeviewComponent
+    ConsolePipe
   ],
-  exports: [ConsolePipe, RecursiveTreeviewComponent]
+  exports: [ConsolePipe]
 })
 export class VisualizeModule { }

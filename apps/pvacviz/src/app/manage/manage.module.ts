@@ -11,9 +11,13 @@ import { PrettyJsonModule } from 'angular2-prettyjson';
 
 import { reducers } from './reducers';
 
+import { SharedComponentsModule } from '@pvz/core/shared-components.module';
+
 import { ManagePageComponent } from './containers/manage-page/manage-page.component';
 import { ProcessPageComponent } from './containers/process-page/process-page.component';
 import { ProcessTableComponent } from './components/process-table/process-table.component';
+
+
 
 @NgModule({
   imports: [
@@ -21,6 +25,7 @@ import { ProcessTableComponent } from './components/process-table/process-table.
     ClarityModule,
     MomentModule,
     ManageRoutingModule,
+    SharedComponentsModule,
     PrettyJsonModule,
     /**
      * StoreModule.forFeature is used for composing state
@@ -30,6 +35,10 @@ import { ProcessTableComponent } from './components/process-table/process-table.
      */
     StoreModule.forFeature('manage', reducers),
   ],
-  declarations: [ManagePageComponent, ProcessPageComponent, ProcessTableComponent]
+  declarations: [
+    ManagePageComponent,
+    ProcessPageComponent,
+    ProcessTableComponent
+  ]
 })
 export class ManageModule { }
