@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { File } from '@pvz/core/models/file.model';
@@ -15,11 +16,12 @@ import * as fromCore from '@pvz/core/reducers';
   templateUrl: './visualize-page.component.html',
   styleUrls: ['./visualize-page.component.scss']
 })
-export class VisualizePageComponent implements OnInit {
+export class VisualizePageComponent implements OnInit, OnDestroy {
   processes$: Observable<Process[]>;
   processesWithVisualizableFiles$: Observable<Process[]>;
   dropboxFiles$: Observable<File[]>;
   filesItem: {};
+  subscriptions: Subscription[] = [];
   req = { page: 1, count: 1000 };
 
   constructor(private store: Store<fromCore.State>) {
@@ -27,17 +29,23 @@ export class VisualizePageComponent implements OnInit {
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
     this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
 
-    this.dropboxFiles$.subscribe((files) => {
-      this.filesItem = {
-        display_name: '~/pVAC-Seq/visualize',
-        contents: files
-      }
-    });
+    this.subscriptions.push(
+      this.dropboxFiles$.subscribe((files) => {
+        this.filesItem = {
+          display_name: '~/pVAC-Seq/visualize',
+          type: 'directory',
+          contents: files
+        }
+      }));
   }
 
   ngOnInit() {
     this.store.dispatch(new processes.Load(this.req));
     this.store.dispatch(new dropbox.Load());
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.map(s => s.unsubscribe());
   }
 
   reload() {

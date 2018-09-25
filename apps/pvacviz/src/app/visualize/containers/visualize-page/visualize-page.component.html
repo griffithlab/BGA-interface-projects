@@ -75,7 +75,8 @@
           <ng-container *ngIf="(dropboxFiles$ | async)?.length > 0">
           </ng-container>
           <recursive-treeview
-            [item]="filesItem">
+            [item]="filesItem"
+            [processId]="'-1'">
           </recursive-treeview>
 
         </div>

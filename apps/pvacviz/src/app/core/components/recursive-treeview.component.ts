@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
 })
 export class RecursiveTreeviewComponent {
   @Input() item: any;
-  @Input() selected: boolean = false;
+  @Input() processId: number;
 }
