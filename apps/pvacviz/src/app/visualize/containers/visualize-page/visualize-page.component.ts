@@ -19,11 +19,20 @@ export class VisualizePageComponent implements OnInit {
   processes$: Observable<Process[]>;
   processesWithVisualizableFiles$: Observable<Process[]>;
   dropboxFiles$: Observable<File[]>;
+  filesItem: {};
   req = { page: 1, count: 1000 };
+
   constructor(private store: Store<fromCore.State>) {
     this.processes$ = store.pipe(select(fromCore.getAllProcesses));
     this.processesWithVisualizableFiles$ = store.pipe(select(fromCore.getProcessesWithVisualizableFiles));
     this.dropboxFiles$ = store.pipe(select(fromCore.getAllDropboxFiles));
+
+    this.dropboxFiles$.subscribe((files) => {
+      this.filesItem = {
+        display_name: '~/pVAC-Seq/visualize',
+        contents: files
+      }
+    });
   }
 
   ngOnInit() {

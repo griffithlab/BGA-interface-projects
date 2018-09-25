@@ -71,33 +71,12 @@
           <p *ngIf="(dropboxFiles$ | async)?.length < 1">
             No visualizable files found in ~/pVACseq/visualize/
           </p>
+
           <ng-container *ngIf="(dropboxFiles$ | async)?.length > 0">
-            <!-- begin /visualize template -->
-            <ng-template #dropboxFiles let-files>
-              <ng-container *ngFor="let node of files">
-                <!-- node directory or file? -->
-                <ng-container [ngSwitch]="node.type">
-
-                  <!-- DIRECTORY NODE -->
-                  <ng-container *ngSwitchCase="'directory'">
-                    <clr-tree-node>
-                      <clr-icon shape="folder"></clr-icon>
-                      {{ node.display_name }}
-                      <ng-container *ngTemplateOutlet="dropboxFiles; context: {$implicit: node.contents}"></ng-container>
-                    </clr-tree-node>
-                  </ng-container>
-
-                  <!-- FILE NODE -->
-                  <ng-container *ngSwitchCase="'file'">
-                    <clr-icon shape="file"></clr-icon>
-                    {{ node.display_name }}
-                  </ng-container>
-
-                </ng-container>
-              </ng-container>
-            </ng-template>
-            <ng-container *ngTemplateOutlet="dropboxFiles; context: { $implicit: (dropboxFiles$ | async)}"></ng-container>
           </ng-container>
+          <recursive-treeview
+            [item]="filesItem">
+          </recursive-treeview>
 
         </div>
       </div>
@@ -108,9 +87,63 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <!-- <p>formState$</p> -->
-    <!-- <prettyjson [obj]="(formState$ | async) | json:2" [style.min-height]="800"> -->
-    <!-- </prettyjson> -->
+    <clr-tree-node>
+      David Wallace (CFO)
+      <ng-template [clrIfExpanded]="true">
+        <clr-tree-node>
+          Michael Scott (Regional Manager)
+
+          <ng-template [clrIfExpanded]="true">
+            <clr-tree-node>Dwight K. Schrute (Assistant to the Regional Manager)</clr-tree-node>
+
+            <clr-tree-node>
+              Jim Halpert (Head of Sales)
+              <ng-template clrIfExpanded>
+                <clr-tree-node>Andy Bernard</clr-tree-node>
+                <clr-tree-node>Stanley Hudson</clr-tree-node>
+                <clr-tree-node>Phyllis Vance</clr-tree-node>
+                <clr-tree-node>Todd Packer</clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Angela Martin (Head of Accounting)
+              <ng-template clrIfExpanded>
+                <clr-tree-node>Kevin Malone</clr-tree-node>
+                <clr-tree-node>Oscar Martinez</clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Kelly Kapoor (Head of Customer Service)
+              <ng-template clrIfExpanded>
+                <clr-tree-node>Ryan Howard (Temp)</clr-tree-node>
+              </ng-template>
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Creed Bratton (Quality Assurance)
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Meredith Palmer (Supplier Relations)
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Toby Flenderson (Human Resources)
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Pam Beesly (Reception)
+            </clr-tree-node>
+
+            <clr-tree-node>
+              Darryl Philbin (Warehouse)
+            </clr-tree-node>
+          </ng-template>
+        </clr-tree-node>
+      </ng-template>
+    </clr-tree-node>
   </div>
   <div class="col-sm-6">
     <p>dropboxFiles$</p>

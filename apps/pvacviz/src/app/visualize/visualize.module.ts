@@ -9,6 +9,7 @@ import { VisualizePageComponent } from './containers/visualize-page/visualize-pa
 import { BokehVisualizationComponent } from './components/bokeh-visualization/bokeh-visualization.component';
 import { VisualizeFileComponent } from './containers/visualize-file/visualize-file.component';
 import { ConsolePipe } from '@pvz/core/pipes/console.pipe';
+import { RecursiveTreeviewComponent } from '@pvz/core/components/recursive-treeview.component';
 
 // import { reducers } from './reducers';
 
@@ -23,8 +24,9 @@ import { ConsolePipe } from '@pvz/core/pipes/console.pipe';
     VisualizePageComponent,
     BokehVisualizationComponent,
     VisualizeFileComponent,
-    ConsolePipe
+    ConsolePipe,
+    RecursiveTreeviewComponent
   ],
-  exports: [ConsolePipe]
+  exports: [ConsolePipe, RecursiveTreeviewComponent]
 })
 export class VisualizeModule { }
