@@ -325,26 +325,18 @@
       </div>
       <div class="card-block files">
         <div class="card-text">
-          <table class="table table-compact table-noborder file-table">
-            <thead>
-              <tr>
-                <th class="left">&nbsp;</th>
-                <th class="left">Description</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let file of (process$ | async)?.files">
-                <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
-                <td class="left">{{file.description}}</td>
-                <td class="right">
-                  <button [routerLink]="['/visualize/process', (process$ | async).id, 'results', file.fileID]"
-                    [disabled]="file.is_visualizable === false"
-                    class="btn btn-sm btn-link">Visualize</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <ng-container *ngIf="processFiles.length < 1" >
+            <p>This process has produced no results.</p>
+          </ng-container>
+          <ng-container *ngIf="processFiles.length > 0">
+            <ng-container *ngFor="let file of processFiles">
+              <recursive-treeview
+                [item]="file"
+                [processId]="(process$ | async)?.id">
+              </recursive-treeview>
+            </ng-container>
+          </ng-container>
+
         </div>
       </div>
     </div>

@@ -1,0 +1,44 @@
+<clr-tree-node>
+  <ng-container [ngSwitch]="item.type">
+    <ng-container *ngSwitchCase="'directory'">
+      <clr-icon shape="folder"></clr-icon>
+      {{item.display_name}}
+    </ng-container>
+    <ng-container *ngSwitchCase="'process'">
+      <clr-icon shape="dna"></clr-icon>
+      {{item.display_name}}
+    </ng-container>
+    <ng-container *ngSwitchCase="'file'">
+      <ng-container [ngSwitch]="item.is_visualizable">
+        <ng-container *ngSwitchCase="true" >
+          <button
+            [routerLink]="['/visualize/process', processId, 'results', item.fileID]"
+            class="clr-treenode-link visualizable">
+            <clr-icon shape="scatter-plot"></clr-icon>
+            {{item.display_name}}
+          </button>
+        </ng-container>
+        <ng-container *ngSwitchCase="false">
+          <button class="clr-treenode-link disabled">
+            <clr-icon shape="file"></clr-icon>
+            {{item.display_name}}
+          </button>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="item.contents?.length > 0" ngProjectAs="[clrIfExpanded]">
+    <ng-template
+      [clrIfExpanded]="true"
+      *ngFor="let child of item.contents">
+      <recursive-treeview
+        [item]="child"
+        [processId]="processId">
+      </recursive-treeview>
+    </ng-template>
+  </ng-container>
+  <ng-template *ngIf="item && item.contents && !item.contents[0]">
+    <recursive-treeview [item]="item.contents" [processId]="processId">
+    </recursive-treeview>
+  </ng-template>
+</clr-tree-node>

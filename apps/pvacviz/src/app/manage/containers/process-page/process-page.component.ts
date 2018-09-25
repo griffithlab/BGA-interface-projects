@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Parameters } from '@pvz/core/models/parameters.model';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 import { combineLatest, filter, map } from 'rxjs/operators';
@@ -26,6 +27,9 @@ export class ProcessPageComponent implements OnInit {
   alleles$: Observable<string[]>;
   epitope_lengths$: Observable<number[]>;
   prediction_algorithms$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
+
+  processFiles: any[] = [];
 
   constructor(private store: Store<fromCore.State>) {
     this.process$ = store.pipe(select(fromCore.getSelectedProcess));
@@ -37,6 +41,15 @@ export class ProcessPageComponent implements OnInit {
     this.alleles$ = this.parameters$.pipe(filter(val => !!val), map(params => params.alleles));
     this.epitope_lengths$ = this.parameters$.pipe(filter(val => !!val), map(params => params.epitope_lengths));
     this.prediction_algorithms$ = this.parameters$.pipe(filter(val => !!val), map(params => params.prediction_algorithms));
+
+    this.subscriptions.push(
+      this.process$.pipe(filter(p => p !== undefined)).subscribe(proc => {
+        this.processFiles = proc.files.map(file => {
+          return { ...file, type: 'file' };
+        })
+      })
+    );
+
   }
 
   ngOnInit() {

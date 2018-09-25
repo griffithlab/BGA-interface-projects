@@ -1,0 +1,18 @@
+button.disabled {
+  //Others
+  color: #cccccc;
+  cursor: not-allowed;
+  //States
+  &:link,
+  &:visited,
+  &:active,
+  &:hover {
+    color: #cccccc;
+  }
+
+  &:hover,
+  &:focus {
+    background: transparent;
+    text-decoration: none;
+  }
+}
