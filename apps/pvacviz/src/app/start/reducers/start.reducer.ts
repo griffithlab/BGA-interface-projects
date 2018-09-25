@@ -33,6 +33,7 @@ export interface StartFormGroupValue {
   'iedb_retries': number;
   'input': string;
   'keep_tmp_files': boolean;
+  'maximum_transcript_support_level': number,
   'minimum_fold_change': number;
   'net_chop_method': string;
   'net_chop_threshold': number;
@@ -63,6 +64,7 @@ export const StartFormGroupInitialState = {
   'iedb_retries': 5,
   'input': null,
   'keep_tmp_files': false,
+  'maximum_transcript_support_level': 1,
   'minimum_fold_change': 0,
   'net_chop_method': '',
   'net_chop_threshold': 0.5,

@@ -237,6 +237,16 @@
               <span class="help-text">Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence</span>
             </pvz-input-container>
 
+            <pvz-select-container field-name="Maximum Transcript Support Level">
+              <ng-select
+                pvzSelect
+                [items]="maxTranscriptSupportLevels"
+                placeholder="Choose Max. Transcript Support Leevel"
+                [ngrxFormControlState]="(formState$ | async).controls.maximum_transcript_support_level">
+              </ng-select>
+              <span class="help-text">Maximum transcript support level</span>
+            </pvz-select-container>
+
             <pvz-checkbox-container field-name="Keep Temp Files?">
               <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.keep_tmp_files"/>
               <span class="help-text">Keep temporary files in the output directory after completion</span>

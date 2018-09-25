@@ -55,9 +55,20 @@ export class StartPageComponent implements OnInit, OnDestroy {
   allelesLoading$: Observable<boolean>; // flag communicated the state of alleles requests, used for loading indicator
 
   // selector values
-  netChopMethodOptions: {};
-  topScoreMetricOptions: {};
-  epitopeLengths: string[];
+  netChopMethodOptions = [
+    { label: 'Skip Netchop', value: '' },
+    { label: 'C term 3.0', value: 'cterm' },
+    { label: '20S 3.0', value: '20s' },
+  ];
+
+  topScoreMetricOptions = [
+    { label: 'Median Score', value: 'median' },
+    { label: 'Lowest Score', value: 'lowest' },
+  ];
+
+  epitopeLengths = ['8', '9', '10', '11', '12', '13', '14'];
+
+  maxTranscriptSupportLevels = [1, 2, 3, 4, 5];
 
   formState$: Observable<FormGroupState<StartFormGroupValue>>;
   formPost$: Observable<{}>;
@@ -150,18 +161,6 @@ export class StartPageComponent implements OnInit, OnDestroy {
           }
         }));
 
-    this.epitopeLengths = ['8', '9', '10', '11', '12', '13', '14'];
-
-    this.netChopMethodOptions = [
-      { label: 'Skip Netchop', value: '' },
-      { label: 'C term 3.0', value: 'cterm' },
-      { label: '20S 3.0', value: '20s' },
-    ];
-
-    this.topScoreMetricOptions = [
-      { label: 'Median Score', value: 'median' },
-      { label: 'Lowest Score', value: 'lowest' },
-    ];
   }
 
   onSubmit() {
