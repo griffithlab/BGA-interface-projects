@@ -1,7 +1,11 @@
-<clr-tree-node *ngIf="item.type === 'directory' || item.is_visualizable">
+<clr-tree-node>
   <ng-container [ngSwitch]="item.type">
     <ng-container *ngSwitchCase="'directory'">
       <clr-icon shape="folder"></clr-icon>
+      {{item.display_name}}
+    </ng-container>
+    <ng-container *ngSwitchCase="'process'">
+      <clr-icon shape="dna"></clr-icon>
       {{item.display_name}}
     </ng-container>
     <ng-container *ngSwitchCase="'file'">
@@ -9,14 +13,16 @@
         <ng-container *ngSwitchCase="true" >
           <button
             [routerLink]="['/visualize/process', processId, 'results', item.fileID]"
-            class="clr-treenode-link">
+            class="clr-treenode-link visualizable">
             <clr-icon shape="file"></clr-icon>
             {{item.display_name}}
           </button>
         </ng-container>
-        <ng-container *ngSwitchCase="false" >
-          <clr-icon shape="file"></clr-icon>
-          {{item.display_name}}
+        <ng-container *ngSwitchCase="false">
+          <button class="clr-treenode-link disabled">
+            <clr-icon shape="file"></clr-icon>
+            {{item.display_name}}
+          </button>
         </ng-container>
       </ng-container>
     </ng-container>

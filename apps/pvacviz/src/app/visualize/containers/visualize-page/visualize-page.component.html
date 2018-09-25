@@ -2,83 +2,58 @@
   <div class="row">
     <div class="col-xs-6">
       <h3 class="page-title">
-        <span class="page-type">Process Results</span>
-      </h3>
-    </div>
-    <div class="col-xs-6">
-      <h3 class="page-title">
-        <span class="page-type">Visualize Folder</span>
+        <span class="page-type">Visualizable Files</span>
       </h3>
     </div>
   </div>
 </div>
 <div class="page-content">
   <div class="row">
-    <div class="col-xs-6">
-      <p *ngIf="(processesWithVisualizableFiles$ | async)?.length < 1">
-        No processes found with visualizable files.
-      </p>
-      <div class="card" *ngFor="let process of (processesWithVisualizableFiles$ | async)">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-xs-12">
-              {{process.parameters.samplename}}
-              <span class="p5">&nbsp;&nbsp;Output directory:&nbsp;~/pVACseq/{{ process.parameters.output}}</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-block files">
-          <div class="card-text">
-            <table class="table table-compact table-noborder file-table">
-              <thead>
-                <tr>
-                  <th class="left">Filename</th>
-                  <th class="left">Description</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container [ngSwitch]="process.files.length > 0">
-                  <ng-container *ngSwitchCase="true">
-                    <ng-container *ngFor="let file of process.files">
-                      <tr *ngIf="file.is_visualizable === true">
-                        <td class="left">{{file.display_name.split('/').slice(-1)}}</td>
-                        <td class="left">{{file.description}}</td>
-                        <td class="right">
-                          <button [routerLink]="['/visualize/process', process.id, 'results', file.fileID]" class="btn btn-sm btn-link">Visualize</button>
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="false">
-                    <tr>
-                      <td colspan="3">
-                        Process produced no files.
-                      </td>
-                    </tr>
-                  </ng-container>
-                </ng-container>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
+    <div class="col-xs-6">
+      <div class="card">
+        <div class="card-header" >
+          Processes with Visualizable Results
+        </div>
+        <div class="card-block">
+          <div class="card-text">
+            <p *ngIf="processItems.length < 1">
+              No processes found with visualizable results.
+            </p>
+
+            <ng-container *ngIf="processItems.length > 0">
+              <ng-container *ngFor="let processItem of processItems">
+                <recursive-treeview
+                  [item]="processItem"
+                  [processId]="processItem.id">
+                </recursive-treeview>
+              </ng-container>
+            </ng-container>
+
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="col-xs-6">
-      <div class="card-block">
-        <div class="card-text">
-          <p *ngIf="(dropboxFiles$ | async)?.length < 1">
-            No visualizable files found in ~/pVACseq/visualize/
-          </p>
+      <div class="card">
+        <div class="card-header" >
+          Visualize Folder
+        </div>
+        <div class="card-block">
+          <div class="card-text">
+            <p *ngIf="(dropboxFiles$ | async)?.length < 1">
+              No visualizable files found in ~/pVACseq/visualize/
+            </p>
 
-          <ng-container *ngIf="(dropboxFiles$ | async)?.length > 0">
-          </ng-container>
-          <recursive-treeview
-            [item]="filesItem"
-            [processId]="'-1'">
-          </recursive-treeview>
+            <ng-container *ngIf="(dropboxFiles$ | async)?.length > 0">
+              <recursive-treeview
+                [item]="filesItem"
+                [processId]="'-1'">
+              </recursive-treeview>
+            </ng-container>
 
+          </div>
         </div>
       </div>
 
@@ -88,66 +63,11 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <clr-tree-node>
-      David Wallace (CFO)
-      <ng-template [clrIfExpanded]="true">
-        <clr-tree-node>
-          Michael Scott (Regional Manager)
-
-          <ng-template [clrIfExpanded]="true">
-            <clr-tree-node>Dwight K. Schrute (Assistant to the Regional Manager)</clr-tree-node>
-
-            <clr-tree-node>
-              Jim Halpert (Head of Sales)
-              <ng-template clrIfExpanded>
-                <clr-tree-node>Andy Bernard</clr-tree-node>
-                <clr-tree-node>Stanley Hudson</clr-tree-node>
-                <clr-tree-node>Phyllis Vance</clr-tree-node>
-                <clr-tree-node>Todd Packer</clr-tree-node>
-              </ng-template>
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Angela Martin (Head of Accounting)
-              <ng-template clrIfExpanded>
-                <clr-tree-node>Kevin Malone</clr-tree-node>
-                <clr-tree-node>Oscar Martinez</clr-tree-node>
-              </ng-template>
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Kelly Kapoor (Head of Customer Service)
-              <ng-template clrIfExpanded>
-                <clr-tree-node>Ryan Howard (Temp)</clr-tree-node>
-              </ng-template>
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Creed Bratton (Quality Assurance)
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Meredith Palmer (Supplier Relations)
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Toby Flenderson (Human Resources)
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Pam Beesly (Reception)
-            </clr-tree-node>
-
-            <clr-tree-node>
-              Darryl Philbin (Warehouse)
-            </clr-tree-node>
-          </ng-template>
-        </clr-tree-node>
-      </ng-template>
-    </clr-tree-node>
+    <p>processItems</p>
+    <prettyjson [obj]="processItems | json:2" [style.min-height]="800"></prettyjson>
   </div>
   <div class="col-sm-6">
-    <p>dropboxFiles$</p>
-    <prettyjson [obj]="(dropboxFiles$ | async) | json:2" [style.min-height]="800"></prettyjson>
+    <p>filesItem</p>
+    <prettyjson [obj]="filesItem | json:2" [style.min-height]="800"></prettyjson>
   </div>
 </div>

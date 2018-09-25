@@ -21,6 +21,7 @@ export class VisualizePageComponent implements OnInit, OnDestroy {
   processesWithVisualizableFiles$: Observable<Process[]>;
   dropboxFiles$: Observable<File[]>;
   filesItem: {};
+  processItems: any[] = [];
   subscriptions: Subscription[] = [];
   req = { page: 1, count: 1000 };
 
@@ -37,6 +38,20 @@ export class VisualizePageComponent implements OnInit, OnDestroy {
           contents: files
         }
       }));
+
+    this.subscriptions.push(
+      this.processesWithVisualizableFiles$.subscribe((processes) => {
+        this.processItems = processes.map((proc) => {
+          return {
+            display_name: proc.parameters.samplename,
+            type: 'process',
+            id: proc.id,
+            // TODO add type to process files return objects in files.py::results_get
+            contents: proc.files.map((f) => { return { ...f, type: 'file' } })
+          }
+        });
+      })
+    );
   }
 
   ngOnInit() {
