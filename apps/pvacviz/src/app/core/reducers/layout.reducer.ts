@@ -8,7 +8,7 @@ export interface State {
 }
 
 const initialState: State = {
-  collapsed: true,
+  collapsed: false,
   modalOpen: false,
   modal: ModalInitialState
 };
