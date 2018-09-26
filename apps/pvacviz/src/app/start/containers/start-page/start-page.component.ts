@@ -164,10 +164,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.subscriptions.push(
-      this.formState$.pipe(
-        take(1),
-        map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
+    this.formState$.pipe(
+      take(1),
+      map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store);
+
   }
 
   reset() {
