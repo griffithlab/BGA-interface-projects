@@ -10,7 +10,8 @@ import { ApiStartResponse } from '@pvz/core/models/api-responses.model';
 export enum StartActionTypes {
   StartProcess = '[Start] Start Process',
   StartProcessSuccess = '[Start] Start Process Success',
-  StartProcessFail = '[Start] Start Process Fail'
+  StartProcessFail = '[Start] Start Process Fail',
+  MarkAsUnsubmitted = '[Start] Mark Start Form Unsubmitted'
 }
 
 /**
@@ -45,6 +46,11 @@ export class SetSubmittedValueAction implements Action {
   constructor(public submittedValue: StartFormGroupValue) { }
 }
 
+export class MarkAsUnsubmitted implements Action {
+  readonly type = StartActionTypes.MarkAsUnsubmitted;
+  constructor() { }
+}
+
 /**
  * Export a type alias of all actions in this action group
  * so that reducers can easily compose action types
@@ -53,4 +59,5 @@ export type StartActions =
   StartProcess
   | StartProcessSuccess
   | StartProcessFail
-  | SetSubmittedValueAction;
+  | SetSubmittedValueAction
+  | MarkAsUnsubmitted;

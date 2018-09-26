@@ -183,6 +183,16 @@ export function postReducer(state = initialState, action: StartActions): PostSta
         message: action.payload.message
       }
 
+    case StartActionTypes.MarkAsUnsubmitted:
+      return {
+        ...state,
+        submitting: false,
+        submitted: false,
+        error: false,
+        status: null,
+        message: null
+      }
+
     default:
       return state;
   }
