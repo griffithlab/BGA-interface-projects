@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Observable, Subject, BehaviorSubject, Subscription } from 'rxjs/Rx';
-import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { map, filter, take, combineLatest, startWith, withLatestFrom, debounceTime, tap, switchMap, distinctUntilChanged, throttleTime, skip } from 'rxjs/operators';
 
 import { Store, select, createSelector } from '@ngrx/store';
 
@@ -164,15 +164,25 @@ export class StartPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.formState$.pipe(
+      take(1),
+      map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))
+    ).subscribe(this.store);
+
+    // upon any subsequent form updates, reset form submit and error states
     this.subscriptions.push(
       this.formState$.pipe(
-        take(1),
-        map(fs => new fromStartActions.SetSubmittedValueAction(fs.value))).subscribe(this.store));
+        skip(1),
+      ).subscribe(() => {
+        this.store.dispatch(new fromStartActions.MarkAsUnsubmitted());
+      })
+    );
   }
 
   reset() {
     this.store.dispatch(new SetValueAction(INITIAL_STATE.id, INITIAL_STATE.value));
     this.store.dispatch(new ResetAction(INITIAL_STATE.id));
+    this.store.dispatch(new fromStartActions.MarkAsUnsubmitted());
   }
 
   ngOnInit() {
@@ -184,6 +194,5 @@ export class StartPageComponent implements OnInit, OnDestroy {
     if (this.subscriptions.length > 0) {
       this.subscriptions.forEach(sub => sub.unsubscribe());
     }
-    this.reset();
   }
 }
