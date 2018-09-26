@@ -28,6 +28,12 @@ export class LayoutComponent implements OnDestroy {
      */
     this.modalOpen$ = this.store.pipe(select(fromCore.getModalOpen));
     this.modalConfig$ = this.store.pipe(select(fromCore.getModalConfig));
+
+    this.subscriptions.push(
+      this.modalOpen$.subscribe((open) => {
+        this.modalOpen = open;
+      })
+    );
   }
 
   onCancel() {
