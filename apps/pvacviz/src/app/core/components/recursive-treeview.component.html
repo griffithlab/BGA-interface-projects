@@ -21,7 +21,10 @@
         <ng-container *ngSwitchCase="false">
           <button class="clr-treenode-link disabled">
             <clr-icon shape="file"></clr-icon>
-            {{item.display_name}}
+            {{item.display_name}}&nbsp;
+            <span *ngIf="item.visualization_type === 'File contains no data'" style="font-style: italic; font-size: 11px;">
+              (File contains no data for visualization)
+            </span>
           </button>
         </ng-container>
       </ng-container>
