@@ -80,6 +80,7 @@ export class StartEffects {
   private parseStageRequest = function(req) {
     //TODO implement these converstions with ngrx-form's ngrxValueConverters
     req.input = req.input.toString();
+    req.phased_proximal_variants_vcf = req.input.toString();
     req.prediction_algorithms = req.prediction_algorithms.join(',');
     req.alleles = req.alleles.join(',');
     req.epitope_lengths = req.epitope_lengths.join(',');
