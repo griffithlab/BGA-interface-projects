@@ -20,7 +20,7 @@ Run `ng generate app myapp` to generate an application. When using Nx, you can c
 
 ## Development server
 
-Run `ng serve --app=myapp` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve myapp` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
@@ -28,7 +28,7 @@ Run `ng generate component component-name --app=myapp` to generate a new compone
 
 ## Build
 
-Run `ng build --app=myapp` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build myapp` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
 ## Running unit tests
 
