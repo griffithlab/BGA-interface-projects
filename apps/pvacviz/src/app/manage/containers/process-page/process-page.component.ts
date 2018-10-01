@@ -31,6 +31,7 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
   epitope_lengths$: Observable<number[]>;
   prediction_algorithms$: Observable<string[]>;
   subscriptions: Subscription[] = [];
+  alertType: string = 'info';
 
   processFiles: any[] = [];
 
@@ -45,14 +46,32 @@ export class ProcessPageComponent implements OnInit, OnDestroy {
     this.epitope_lengths$ = this.parameters$.pipe(filter(val => !!val), map(params => params.epitope_lengths));
     this.prediction_algorithms$ = this.parameters$.pipe(filter(val => !!val), map(params => params.prediction_algorithms));
 
+    // TODO: add this attribute to files returned by pVACapi process detail endpoint
     this.subscriptions.push(
       this.process$.pipe(filter(p => p !== undefined)).subscribe(proc => {
         this.processFiles = proc.files.map(file => {
           return { ...file, type: 'file' };
         })
-      })
-    );
+      }));
 
+    this.subscriptions.push(
+      this.status$.subscribe((status) => {
+        let type;
+        switch (status) {
+          case 'Running':
+            type = 'info';
+            break;
+          case 'Completed':
+            type = 'success';
+            break;
+          case 'Stopped':
+            type = 'danger';
+            break;
+          default:
+            type = 'info';
+        }
+        this.alertType = type
+      }));
   }
 
   ngOnInit() {
