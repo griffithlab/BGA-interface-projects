@@ -49,19 +49,6 @@ export class StartEffects {
   ) { }
 
   @Effect()
-  start$: Observable<Action> = this.actions$.pipe(
-    ofType<StartProcess>(StartActionTypes.StartProcess),
-    switchMap(action => {
-      return this.processes
-        .start(action.payload)
-        .pipe(
-          map((response: ApiStartResponse) => new StartProcessSuccess(response)),
-          catchError(err => of(new StartProcessFail(err.error)))
-        );
-    })
-  );
-
-  @Effect()
   start2$: Observable<Action> = this.actions$.pipe(
     ofType<SetSubmittedValueAction>(SetSubmittedValueAction.TYPE),
     switchMap((action, index) => {
@@ -80,7 +67,7 @@ export class StartEffects {
   private parseStageRequest = function(req) {
     //TODO implement these converstions with ngrx-form's ngrxValueConverters
     req.input = req.input.toString();
-    req.phased_proximal_variants_vcf = req.input.toString();
+    req.phased_proximal_variants_vcf = req.phased_proximal_variants_vcf.toString();
     req.prediction_algorithms = req.prediction_algorithms.join(',');
     req.alleles = req.alleles.join(',');
     req.epitope_lengths = req.epitope_lengths.join(',');
