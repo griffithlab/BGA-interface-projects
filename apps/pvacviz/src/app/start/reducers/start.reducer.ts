@@ -73,7 +73,7 @@ export const StartFormGroupInitialState = {
   'normal_vaf': 5,
   'pass_only': false,
   'peptide_sequence_length': 21,
-  'phased_proximal_variants_vcf': '',
+  'phased_proximal_variants_vcf': null,
   'prediction_algorithms': box([]),
   'samplename': '',
   'tdna_cov': 5,
