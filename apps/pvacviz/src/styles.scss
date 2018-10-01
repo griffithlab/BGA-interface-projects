@@ -14,9 +14,10 @@ pre {
 
 // table cells with action buttons look better w/o padding
 .datagrid-cell {
-  &.row-actions {
+  &.cell-actions {
     padding-bottom: 3px;
     padding-top: 3px;
+    text-align: right;
   }
 }
 
