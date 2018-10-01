@@ -332,7 +332,10 @@
         </button>
       </div>
       <div class="col-sm-4">
-        <button class="btn btn-block" [ngClass]="{'btn-primary': (formPost$ | async).error == false, 'btn-warning': (formPost$ | async).error == true}" type="submit" [disabled]="(formState$ | async).isInvalid">
+        <button class="btn btn-block" [ngClass]="{
+          'btn-primary': (formPost$ | async).error == false,
+          'btn-warning': (formPost$ | async).error == true,
+          'btn-success': (formPost$ | async).submitted == true && (formPost$ | async).error == false}" type="submit" [disabled]="(formState$ | async).isInvalid">
           <!-- default play icon -->
           <clr-icon shape="play" size="18" *ngIf="(formPost$ | async).submitting == false && (formPost$ | async).submitted == false"></clr-icon>
           <!-- spinner while submitting -->
@@ -349,6 +352,9 @@
 </form>
 <!-- <div class="row"> -->
 <!-- <div class="col-sm-6"> -->
+<!-- <p>formPost$</p> -->
+<!-- <prettyjson [obj]="(formPost$ | async) | json:2" [style.min-height]="800"> -->
+<!-- </prettyjson> -->
 <!-- <p>formState$</p> -->
 <!-- <prettyjson [obj]="(formState$ | async) | json:2" [style.min-height]="800"> -->
 <!-- </prettyjson> -->
