@@ -109,7 +109,7 @@
               <ng-select
                 pvzSelect
                 [items]="inputs$ | async"
-                [clearable]="false"
+                [clearable]="true"
                 bindLabel="display_name"
                 bindValue="fileID"
                 [searchable]="true"
@@ -296,6 +296,14 @@
           </div>
         </clr-alert>
 
+        <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(formState$ | async).controls.phased_proximal_variants_vcf.value !== null">
+          <div class="alert-item">
+            <span class="alert-text">
+              <strong>NOTE:</strong> Ensure that both the Phased Proximal Variants VCF and Input VCF include their corresponsing tabix .tbi files within the same folder.
+            </span>
+          </div>
+        </clr-alert>
+
         <!-- submit error -->
         <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(formPost$ | async).error === true">
           <div class="alert-item">
@@ -346,8 +354,8 @@
 <!-- </prettyjson> -->
 <!-- </div> -->
 <!-- <div class="col-sm-6"> -->
-<!-- <p>formState$.controls.iedb_retries:</p> -->
-<!-- <prettyjson [obj]="(formState$ | async).controls.iedb_retries | json:2" [style.min-height]="800"></prettyjson> -->
+<!-- <p>formState$.controls.phased_proximal_variants_vcf:</p> -->
+<!-- <prettyjson [obj]="(formState$ | async).controls.phased_proximal_variants_vcf | json:2" [style.min-height]="800"></prettyjson> -->
 <!-- <p>formState$.controls.samplename:</p> -->
 <!-- <prettyjson [obj]="(formState$ | async).controls.samplename | json:2" [style.min-height]="800"></prettyjson> -->
 <!-- <p>formState$.controls.prediction_algorithms:</p> -->

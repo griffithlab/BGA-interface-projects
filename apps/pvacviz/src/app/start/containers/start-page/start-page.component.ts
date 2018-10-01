@@ -173,6 +173,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.formState$.pipe(
         skip(1),
+        take(1),
       ).subscribe(() => {
         this.store.dispatch(new fromStartActions.MarkAsUnsubmitted());
       })
