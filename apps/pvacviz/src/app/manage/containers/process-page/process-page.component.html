@@ -28,31 +28,30 @@
 <div class="status-bar">
   <div class="row">
     <div class="col-xs-12">
-      <!-- Running -->
-      <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Running'">
+      <clr-alert [clrAlertType]="alertType" [clrAlertClosable]="false">
         <div class="alert-item">
           <span class="alert-text">
-            <strong>Running:</strong> {{(process$ | async)?.last_message}}
+            <strong>{{(status$ | async)}}:&nbsp;</strong>
+            <!-- if last message blank, inform user either that no log messages exist, or to check log for messages - sometimes the last message is blank while log messages do exist. -->
+            <ng-container [ngSwitch]="(process$ | async)?.last_message === ''">
+              <ng-container *ngSwitchCase="true" >
+                <!-- last message is blank, determine if it's b/c of a blank log or intermittant blank last log string -->
+                <ng-container [ngSwitch]="(log$ | async)?.length > 1">
+                  <ng-container *ngSwitchCase="true" >
+                    Last log message is blank, check log for more information.
+                  </ng-container>
+                  <ng-container *ngSwitchCase="false" >
+                    Process has produced no log messages yet. Click Reload periodically to check for new log messages.
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngSwitchCase="false">
+                {{(process$ | async)?.last_message}}
+              </ng-container>
+            </ng-container>
           </span>
         </div>
       </clr-alert>
-      <!-- Completed -->
-      <clr-alert [clrAlertType]="'success'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Completed'">
-        <div class="alert-item">
-          <span class="alert-text">
-            <strong>Completed:</strong> {{(process$ | async)?.last_message}}
-          </span>
-        </div>
-      </clr-alert>
-      <!-- Stopped -->
-      <clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" *ngIf="(status$ | async) === 'Stopped'">
-        <div class="alert-item">
-          <span class="alert-text">
-            <strong>Stopped:</strong> {{(process$ | async)?.last_message}}
-          </span>
-        </div>
-      </clr-alert>
-
     </div>
   </div>
 </div>
@@ -172,7 +171,7 @@
           <div class="col-xs-12">
             <p class="p4 param-label">Allele Specific Cutoffs</p>
             <p class="p3 param-value">
-            {{(parameters$ | async)?.allele_specific_cutoffs}}
+              {{(parameters$ | async)?.allele_specific_cutoffs}}
             </p>
           </div>
         </div>
@@ -318,9 +317,16 @@
       </div>
       <div class="card-block log preformatted-sm">
         <div class="card-text">
-          <span *ngFor="let line of log$ | async; let last = last" class="soft-break">
-            {{ line }}
-          </span>
+          <ng-container [ngSwitch]="(log$ | async)?.length > 1">
+            <ng-container *ngSwitchCase="true" >
+              <span *ngFor="let line of log$ | async; let last = last" class="soft-break">
+                {{ line }}
+              </span>
+            </ng-container>
+            <ng-container *ngSwitchCase="false" >
+              Process has produced no log messages yet. Click Reload periodically to check for new log messages.
+            </ng-container>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -354,3 +360,15 @@
     </div>
   </div>
 </div>
+<!-- <div class="row" > -->
+<!-- <div class="col-xs-6" > -->
+<!-- <p>process$</p> -->
+<!-- <prettyjson [obj]="(process$ | async) | json:2" [style.min-height]="800"> -->
+<!-- </prettyjson> -->
+<!-- </div> -->
+<!-- <div class="col-xs-6" > -->
+<!-- <p>processesMeta$</p> -->
+<!-- <prettyjson [obj]="(process$| async)?.last_message | json:2" [style.min-height]="800"> -->
+<!-- </prettyjson> -->
+<!-- </div> -->
+<!-- </div> -->
