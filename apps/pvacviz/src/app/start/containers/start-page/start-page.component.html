@@ -5,6 +5,11 @@
         Start Process
       </h3>
     </div>
+    <div class="col-xs-4 text-right page-buttons">
+      <button class="btn btn-sm" (click)="onReload()">
+        Reload Inputs
+      </button>
+    </div>
   </div>
 </div>
 <form clrForm class="clr-form clr-form-compact"
@@ -25,6 +30,7 @@
               <ng-select
                 pvzSelect
                 [items]="inputs$ | async"
+                [loading]="inputsLoading$ | async"
                 [clearable]="false"
                 bindLabel="display_name"
                 bindValue="fileID"
@@ -109,6 +115,7 @@
               <ng-select
                 pvzSelect
                 [items]="inputs$ | async"
+                [loading]="inputsLoading$ | async"
                 [clearable]="true"
                 bindLabel="display_name"
                 bindValue="fileID"
@@ -296,7 +303,8 @@
           </div>
         </clr-alert>
 
-        <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(formState$ | async).controls.phased_proximal_variants_vcf.value !== null">
+        <clr-alert [clrAlertType]="'info'" [clrAlertClosable]="false" *ngIf="(formState$ | async).controls.phased_proximal_variants_vcf.value !== null
+          && (formState$ | async).isUnsubmitted">
           <div class="alert-item">
             <span class="alert-text">
               <strong>NOTE:</strong> Ensure that both the Phased Proximal Variants VCF and Input VCF include their corresponsing tabix .tbi files within the same folder.

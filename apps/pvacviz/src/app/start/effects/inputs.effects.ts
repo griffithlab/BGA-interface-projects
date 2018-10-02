@@ -42,7 +42,7 @@ export class InputsEffects {
   ) { }
 
   @Effect()
-  search$: Observable<Action> = this.actions$.pipe(
+  load$: Observable<Action> = this.actions$.pipe(
     ofType<LoadInputs>(InputsActionTypes.LoadInputs),
     switchMap(action => {
       return this.inputs
