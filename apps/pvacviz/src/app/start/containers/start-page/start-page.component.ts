@@ -38,6 +38,7 @@ export class StartPageComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   inputs$: Observable<Files>;
+  inputsLoading$: Observable<boolean>; // flag communicated the state of alleles requests, used for loading indicator
 
   algorithmsControl$: Observable<any>; // algorithms ngrx-forms control
   algorithms$: Observable<Array<Algorithm>>; // agorithms field values
@@ -83,6 +84,8 @@ export class StartPageComponent implements OnInit, OnDestroy {
       filter(v => v !== undefined && v !== null));
 
     this.inputs$ = store.pipe(select(fromStart.getAllInputsFlattened));
+    this.inputsLoading$ = store.pipe(select(fromStart.getStartState), map(state => state.inputs.loading));
+
     this.algorithmsControl$ = store.pipe(select(fromStart.getFormControl('prediction_algorithms')));
     this.algorithms$ = store.pipe(select(fromStart.getAllAlgorithms));
 
@@ -161,6 +164,10 @@ export class StartPageComponent implements OnInit, OnDestroy {
           }
         }));
 
+  }
+
+  onReload() {
+    this.store.dispatch(new fromInputsActions.LoadInputs());
   }
 
   onSubmit() {

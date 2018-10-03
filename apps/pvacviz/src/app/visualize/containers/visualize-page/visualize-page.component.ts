@@ -63,7 +63,11 @@ export class VisualizePageComponent implements OnInit, OnDestroy {
     this.subscriptions.map(s => s.unsubscribe());
   }
 
-  reload() {
+  onProcessReload() {
     this.store.dispatch(new processes.Load(this.req));
+  }
+
+  onVizReload() {
+    this.store.dispatch(new dropbox.Load());
   }
 }
