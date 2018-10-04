@@ -50,3 +50,11 @@ pre {
     padding-right: 0;
   }
 }
+
+// cards
+.card-header-buttons {
+  text-align: right;
+  .btn {
+    margin: 0;
+  }
+}
