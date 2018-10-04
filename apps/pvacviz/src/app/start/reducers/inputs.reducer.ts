@@ -26,7 +26,7 @@ export interface State extends EntityState<File> {
  * function if the records are to be sorted.
  */
 export const adapter: EntityAdapter<File> = createEntityAdapter<File>({
-  selectId: (file: File) => file.fileID, // TODO directories have no fileID - need to figure out a solution for a selectId that works for both files and directories
+  selectId: (file: File) => file.fileID,
   sortComparer: false,
 });
 
