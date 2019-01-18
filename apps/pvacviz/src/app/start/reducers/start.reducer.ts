@@ -70,17 +70,17 @@ export const StartFormGroupInitialState = {
   'net_chop_threshold': 0.5,
   'netmhc_stab': false,
   'normal_cov': 5,
-  'normal_vaf': 5,
+  'normal_vaf': 0.02,
   'pass_only': false,
   'peptide_sequence_length': 21,
   'phased_proximal_variants_vcf': null,
   'prediction_algorithms': box([]),
   'samplename': '',
-  'tdna_cov': 5,
-  'tdna_vaf': 5,
+  'tdna_cov': 10,
+  'tdna_vaf': 0.25,
   'top_score_metric': 'median',
-  'trna_cov': 5,
-  'trna_vaf': 5,
+  'trna_cov': 10,
+  'trna_vaf': 0.25,
 }
 // TODO keep checking for v3.1.0, which adds transparent validation for boxed values:
 // https://github.com/MrWolfZ/ngrx-forms/issues/96
