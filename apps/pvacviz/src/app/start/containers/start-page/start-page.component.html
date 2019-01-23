@@ -23,7 +23,7 @@
             <pvz-input-container field-name="Sample Name">
               <input pvzInput type="text" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.samplename" />
-              <span class="help-text">User-defined reference name for the process</span>
+              <span class="help-text">User-defined reference name for the process. If Input VCF is a multi-sample VCF, this needs to match the sample name in the VCF of the sample to analyze.</span>
             </pvz-input-container>
 
             <pvz-select-container field-name="Input VCF">
@@ -151,7 +151,7 @@
               <span class="help-text">Netchop prediction threshold</span>
             </pvz-input-container>
 
-            <pvz-checkbox-container field-name="Run NetHMC Stab?">
+            <pvz-checkbox-container field-name="Run Stability Predictions?">
               <input clrCheckbox pvzCheckbox type="checkbox" [ngrxFormControlState]="(formState$ | async).controls.netmhc_stab"/>
               <span class="help-text">Run NetMHCStabPan at the end of the pipeline</span>
             </pvz-checkbox-container>
