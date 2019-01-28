@@ -174,7 +174,7 @@
             </pvz-select-container>
 
             <pvz-input-container field-name="Binding Threshold">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.binding_threshold" />
               <span class="help-text">Report only epitopes with a predicted binding score below this value.</span>
             </pvz-input-container>
@@ -185,67 +185,67 @@
             </pvz-checkbox-container>
 
             <pvz-input-container field-name="Minimum Fold Change">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.minimum_fold_change" />
               <span class="help-text">Report only epitopes with a fold change between the mutant and wildtype sequences above this value</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Gene & Transcript Expn. Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.expn_val" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Normal Coverage Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.normal_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor DNA Coverage Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.tdna_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor RNA Coverage Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.trna_cov" />
               <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Normal VAF Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.normal_vaf" />
               <span class="help-text">Sites below this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor DNA VAF Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.tdna_vaf" />
               <span class="help-text">Sites below this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor RNA VAF Cutoff">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.trna_vaf" />
               <span class="help-text">Sites below this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="FASTA Size">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.fasta_size" />
               <span class="help-text">Number of entries submitted to IEDB in each request</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="IEDB Retries">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.iedb_retries" />
               <span class="help-text">Number of retries when making requests to the IEDB RESTful web interface. Must be less than or equal to 100.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Downstream Sequence Length">
-              <input pvzInput type="number" class="clr-input" size="32"
+              <input pvzInput type="number" step="1" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.downstream_sequence_length" />
               <span class="help-text">Cap to limit the downstream sequence length for frameshifts when creating the fasta file. Use 'full' to include the full downstream sequence</span>
             </pvz-input-container>
