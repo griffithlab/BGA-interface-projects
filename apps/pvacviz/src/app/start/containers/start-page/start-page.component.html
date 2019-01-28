@@ -223,13 +223,13 @@
             <pvz-input-container field-name="Tumor DNA VAF Cutoff">
               <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.tdna_vaf" />
-              <span class="help-text">Sites below this cutoff will be considered.</span>
+              <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="Tumor RNA VAF Cutoff">
               <input pvzInput type="number" step="0.01" class="clr-input" size="32"
                 [ngrxFormControlState]="(formState$ | async).controls.trna_vaf" />
-              <span class="help-text">Sites below this cutoff will be considered.</span>
+              <span class="help-text">Sites above this cutoff will be considered.</span>
             </pvz-input-container>
 
             <pvz-input-container field-name="FASTA Size">
