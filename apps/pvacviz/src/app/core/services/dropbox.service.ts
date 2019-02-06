@@ -8,11 +8,10 @@ import { map, filter, first } from 'lodash-es';
 import { ApiDropboxResponse } from '@pvz/core/models/api-responses.model';
 import { File } from '@pvz/core/models/file.model';
 
-import { ConfigService } from './config.service';
+import { ConfigService } from '@pvz/core/services/config.service';
 
 @Injectable()
 export class DropboxService {
-  private API_PATH = 'http://localhost:4200/api/v1';
   private dropboxPath: string;
 
   constructor(private http: HttpClient, conf: ConfigService) {
