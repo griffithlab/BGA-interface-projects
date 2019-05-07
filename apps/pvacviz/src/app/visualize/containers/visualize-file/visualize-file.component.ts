@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Store, select } from '@ngrx/store';
 
@@ -6,11 +6,12 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 
 import 'rxjs/add/observable/of';
-import { take, combineLatest, switchMap, withLatestFrom, filter } from 'rxjs/operators';
+import { take, switchMap, withLatestFrom } from 'rxjs/operators';
+
+import { ConfigService } from '@pvz/core/services/config.service';
 
 import { File } from '@pvz/core/models/file.model';
 import { Process } from '@pvz/core/models/process.model';
-import { environment } from '@pvz/environments/environment';
 import * as fromCore from '@pvz/core/reducers';
 import * as processes from '@pvz/core/actions/process.actions';
 import * as dropbox from '@pvz/core/actions/dropbox.actions';
@@ -35,7 +36,9 @@ export class VisualizeFileComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   constructor(private store: Store<fromCore.State>,
+    private conf: ConfigService,
     private sanitizer: DomSanitizer) {
+
     this.processId$ = store.pipe(select(fromCore.getRouteProcessId));
     this.fileId$ = store.pipe(select(fromCore.getRouteFileId));
     this.visualizeUrl$ = this.processId$.pipe(
@@ -43,9 +46,9 @@ export class VisualizeFileComponent implements OnInit {
       switchMap(
         ([processId, fileId]) => {
           console.log('processId: ' + processId + '; fileId: ' + fileId);
-          const visualizeUrl = this.bokehUrl() + '/processes/' +
+          const visualizeUrl = this.conf.bokehUrl() + '/processes/' +
             processId + '/results/' + fileId + '/visualize';
-          return Observable.of(sanitizer.bypassSecurityTrustResourceUrl(visualizeUrl));
+          return Observable.of(this.sanitizer.bypassSecurityTrustResourceUrl(visualizeUrl));
         }
       )
     );
@@ -73,43 +76,4 @@ export class VisualizeFileComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptions.map(sub => sub.unsubscribe());
   }
-
-  private server = {
-    protocol: 'http://',
-    domain: 'localhost',
-    port: environment.production ? 8080 : 4200,
-    api: 'api',
-    version: 'v1'
-  };
-
-  private bokehServer = {
-    protocol: 'http://',
-    domain: 'localhost',
-    port: 8080,
-    api: 'api',
-    version: 'v1'
-  };
-
-  private serverUrl() {
-    return this.server.protocol +
-      this.server.domain + ':' +
-      this.server.port;
-  }
-
-  private japiUrl() {
-    return this.server.protocol +
-      this.server.domain + ':' +
-      this.server.port + '/' +
-      this.server.api + '/' +
-      this.server.version;
-  }
-
-  private bokehUrl() {
-    return this.bokehServer.protocol +
-      this.bokehServer.domain + ':' +
-      this.bokehServer.port + '/' +
-      this.bokehServer.api + '/' +
-      this.bokehServer.version;
-  }
-
 }

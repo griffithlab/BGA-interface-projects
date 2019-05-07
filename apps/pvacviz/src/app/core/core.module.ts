@@ -16,10 +16,10 @@ import { AlgorithmsService } from '@pvz/core/services/algorithms.service';
 import { AllelesService } from '@pvz/core/services/alleles.service';
 import { InputService } from '@pvz/core/services/inputs.service';
 import { DropboxService } from '@pvz/core/services/dropbox.service';
+import { WINDOW_PROVIDERS } from '@pvz/core/services/window.provider';
 
 import { ProcessEffects } from '@pvz/core/effects/process.effects';
 import { DropboxEffects } from '@pvz/core/effects/dropbox.effects';
-
 import { reducers } from './reducers';
 
 export const COMPONENTS = [
@@ -41,7 +41,8 @@ export const COMPONENTS = [
     AlgorithmsService,
     AllelesService,
     InputService,
-    DropboxService
+    DropboxService,
+    WINDOW_PROVIDERS
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS

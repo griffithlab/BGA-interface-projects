@@ -40,7 +40,8 @@ export class ManagePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new processes.Load({ count: 10, page: 1 }));
+    // the datagrid emits a refresh event on init, making the following call unnecessary
+    // this.store.dispatch(new processes.Load({ count: 10, page: 1 }));
   }
 
   // initially this component had an onInit function, clr-datagrid emits a refresh event
